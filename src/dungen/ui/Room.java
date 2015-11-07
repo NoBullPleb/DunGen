@@ -11,10 +11,10 @@ import javax.swing.border.EmptyBorder;
 import dungen.mobs.NPC;
 
 public class Room extends JFrame {
-	public static int floor = 1; 
+	public static int floor = 1;
 	private static int numRooms = 0;
 	public boolean drawn = false;
-	private int neverTellMeTheOdds = 70 - (5 * numRooms);
+	private int neverTellMeTheOdds = 70 - (5 * (numRooms / 2));
 	private static final long serialVersionUID = -2853163315903184535L;
 	private JPanel contentPane;
 	private ArrayList<NPC> party = new ArrayList<>();

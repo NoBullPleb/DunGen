@@ -11,6 +11,7 @@ public class Dice {
 	public static int custom(int sides) {
 		return custom(1, sides);
 	}
+
 	public static int d20() {
 		return custom(1, 20);
 	}

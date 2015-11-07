@@ -19,24 +19,23 @@ public class Map extends JFrame {
 	public void addRoom(Integer x, Integer y) {
 		Point p = new Point((this.getWidth() / 2) + x * 20, this.getHeight()
 				/ 2 - y * 20);
-
 		if (!roomsLocations.contains(p)) {
 			JLabel room = new JLabel("[]");
 			room.setSize(10, 8);
 			room.setLocation((int) p.getX(), (int) p.getY());
 			room.setFont(font);
-
 			room.setVisible(true);
 			contentPane.add(room);
 			rooms.add(room);
 			roomsLocations.add(p);
-			moveStar(p);
 		}
 		contentPane.repaint();
 
 	}
 
-	private void moveStar(Point p) {
+	public void moveStar(int x, int y) {
+		Point p = new Point((this.getWidth() / 2) + (x * 20) + 3,
+				(this.getHeight() / 2) - (y * 20) + 2);
 		star.setLocation(p);
 		star.setVisible(true);
 		contentPane.add(star);
@@ -44,7 +43,8 @@ public class Map extends JFrame {
 	}
 
 	private static JLabel star = new JLabel("*");
-	{
+	static {
+		star.setSize(5, 5);
 		star.setFont(font);
 	}
 
@@ -57,17 +57,17 @@ public class Map extends JFrame {
 		hall.setFont(font);
 		hall.setSize(10, 10);
 		if (direction.equalsIgnoreCase("north")) {
-			modX = room.getX()+3;
+			modX = room.getX() + 3;
 			modY = room.getY() - room.getHeight();
 		} else if (direction.equalsIgnoreCase("south")) {
-			modX = room.getX()+3;
-			modY = room.getY() + room.getHeight()-3;
+			modX = room.getX() + 3;
+			modY = room.getY() + room.getHeight() - 3;
 		} else if (direction.equalsIgnoreCase("east")) {
-			modX = room.getX() + room.getWidth()-2;
-			modY = room.getY()-1;
+			modX = room.getX() + room.getWidth() - 2;
+			modY = room.getY() - 1;
 		} else if (direction.equalsIgnoreCase("west")) {
-			modX = room.getX()-3;
-			modY = room.getY()-1;
+			modX = room.getX() - 3;
+			modY = room.getY() - 1;
 		}
 		hall.setLocation(modX, modY);
 

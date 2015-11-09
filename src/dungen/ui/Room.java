@@ -44,14 +44,12 @@ public class Room extends JFrame {
 
 	}
 
-	public Room(boolean exit, String... directions) {
+	public Room(String... directions) {
+		setLocation(this.getX(), this.getY() + this.getHeight());
 		neverTellMeTheOdds -= 3;
 		for (String direction : directions)
 			addDoor(direction);
-		if (exit)
-			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		else
-			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(200, 100, 183, 200);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

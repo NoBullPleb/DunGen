@@ -8,20 +8,24 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 
+import dungen.generators.Tables;
 import dungen.mobs.NPC;
 
-@SuppressWarnings("serial")
 public class Room extends JFrame {
+	private static final long serialVersionUID = 2020213751688226679L;
 	public static int floor = 1;
 	private static int neverTellMeTheOdds = 70;
 	public boolean drawn = false;
 	private JPanel contentPane;
 	private boolean hasNPCs = Math.random() * 10 > 9.5; // 5% ODDS OF NPCS
 	private ArrayList<NPC> party = new ArrayList<NPC>();
+	private String encounter = "";
 	{ // If it has NPCs, generate the party. 1-3 adventurers.
 		if (hasNPCs) {
 			for (int i = 0; i < (Math.random() * 3); i++)
 				party.add(new NPC());
+		} else {
+			encounter = Tables.getEncounter();
 		}
 	}
 	public Boolean north = (Math.random() * 100) > 100 - neverTellMeTheOdds,
@@ -64,7 +68,7 @@ public class Room extends JFrame {
 				(int) Math.max(30 * Math.random(), 5));
 		party.forEach(e -> sb.append("\n NPC: " + e.getAlignment() + " class: "
 				+ e.getNpcClass() + " lvl: " + e.getLvl()));
-
+		sb.append("\n" + encounter);
 		positionLbl.setText(sb.toString());
 		contentPane.add(positionLbl, BorderLayout.NORTH);
 

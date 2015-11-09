@@ -57,4 +57,18 @@ public class Tables {
 	public static String getAlignment() {
 		return alignments.get(Dice.d20());
 	}
+
+	public static String getEncounter() {
+		String encounter = "";
+		int result = Dice.custom(10);
+
+		if (result == 10)
+			encounter = "Overpowering or Boss";
+		else if (result == 9)
+			encounter = "Challenging encounter";
+		else if (result >= 7)
+			encounter = "Moderate Encounter";
+
+		return encounter;
+	}
 }

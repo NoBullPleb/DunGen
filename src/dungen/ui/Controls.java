@@ -9,8 +9,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 
-@SuppressWarnings("serial")
 public class Controls extends JFrame {
+
+	private static final long serialVersionUID = 7985611292217902489L;
 	static JButton southButton, eastButton, westButton, northButton;
 	// used to track where rooms are. If one is already at that location, we can
 	// load it.
@@ -21,7 +22,7 @@ public class Controls extends JFrame {
 		rooms.put(new Point(showX, showY), thisRoom);
 	}
 	private final static Map mapView = new Map(false);
-	private JPanel contentPane;
+	private final static JPanel contentPane = new JPanel();;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
@@ -66,15 +67,12 @@ public class Controls extends JFrame {
 		southButton.setEnabled(thisRoom.south);
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public Controls() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("X: " + showX + " Y: " + showY);
 		setResizable(false);
 		setBounds(50, 50, 183, 110);
-		contentPane = new JPanel();
+
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 

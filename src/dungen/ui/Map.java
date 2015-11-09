@@ -9,18 +9,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Map extends JFrame {
-	
+
 	private static final long serialVersionUID = 3925862084304805067L;
-	static final ArrayList<Point> roomsLocations = new ArrayList<>();
-	static final ArrayList<JLabel> rooms = new ArrayList<>();
-	static final ArrayList<JLabel> halls = new ArrayList<>();
+	public ArrayList<Point> roomsLocations = new ArrayList<>();
+	public ArrayList<JLabel> rooms = new ArrayList<>();
+	public ArrayList<JLabel> halls = new ArrayList<>();
 	private static final JPanel contentPane = new JPanel();
 	private static final Font font = new Font(Font.MONOSPACED, 0, 9);
 
 	public void addRoom(Integer x, Integer y) {
-		Point p = new Point((contentPane.getWidth() / 2) + x * 20, this.getHeight()
-				/ 2 - y * 20);
-		if (!roomsLocations.contains(p)) {
+		Point p = new Point((contentPane.getWidth() / 2) + x * 20,
+				this.getHeight() / 2 - y * 20);
+		if (roomsLocations != null && !roomsLocations.contains(p)) {
 			JLabel room = new JLabel("[]");
 			room.setSize(10, 8);
 			room.setLocation((int) p.getX(), (int) p.getY());
@@ -50,8 +50,8 @@ public class Map extends JFrame {
 	}
 
 	public void addHall(Integer x, Integer y, String direction) {
-		Point p = new Point((this.getWidth() / 2) + x * 20, (this.getHeight()
-				/ 2) - y * 20);
+		Point p = new Point((this.getWidth() / 2) + x * 20,
+				(this.getHeight() / 2) - y * 20);
 		int modX = 0, modY = 0;
 		JLabel room = rooms.get(roomsLocations.indexOf(p));
 		JLabel hall = new JLabel("+");

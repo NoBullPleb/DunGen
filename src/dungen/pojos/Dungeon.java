@@ -17,10 +17,10 @@ import dungen.ui.Room;
 //used for serialization
 public class Dungeon implements Serializable {
 	private static final long serialVersionUID = 1586842009404988176L;
-	public static HashMap<Point, Room> rooms = null;
-	public static Room thisRoom = null;
-	public static int showX = 0, showY = 0;
-	public static Map mapView = null;
+	public HashMap<Point, Room> rooms = null;
+	public Room thisRoom = null;
+	public int showX = 0, showY = 0;
+	public Map mapView = null;
 
 	public Dungeon() {
 		rooms = Controls.rooms;
@@ -30,13 +30,14 @@ public class Dungeon implements Serializable {
 		mapView = Controls.mapView;
 	}
 
-	// used to avoid memory gain
-	public static void dump() {
-		rooms = null;
-		showX = 0;
-		showY = 0;
-		thisRoom = null;
-		mapView = null;
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("rooms=").append("" + rooms).append("showX=").append(showX)
+				.append("\n").append("Mapview: " + mapView + "\n\n")
+				.append("RoomLocations: " + mapView.roomsLocations);
+
+		return sb.toString();
 	}
 
 	public static Dungeon load() {
@@ -51,12 +52,11 @@ public class Dungeon implements Serializable {
 		} catch (Exception err) {
 			err.printStackTrace();
 		}
-		System.out.println(returnable.toString());
 		return returnable;
 	}
 
-	public static void save(ActionEvent e) {
-		System.out.println("SAVING");
+	public void save(ActionEvent e) {
+		System.out.println("SAVING: " + this);
 		try {
 			File f = new File("test.dgn");
 			System.out.println("WRITING: " + f.getAbsolutePath());

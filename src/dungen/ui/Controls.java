@@ -40,12 +40,11 @@ public class Controls extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 			try {
-
 				controls.setVisible(true);
 				mapView.setLocation(controls.getX() + controls.getWidth(),
 						controls.getY());
 				mapView.setVisible(true);
-				controls.showRoom();
+				Controls.showRoom();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -53,14 +52,15 @@ public class Controls extends JFrame {
 
 	}
 
-	private void hideRoom() {
+	private static void hideRoom() {
 		thisRoom.setVisible(false);
 	}
 
-	private void showRoom() {
-		thisRoom.setLocation(this.getX(), this.getY() + this.getHeight());
+	private static void showRoom() {
+		thisRoom.setLocation(controls.getX(),
+				controls.getY() + controls.getHeight());
 		thisRoom.setVisible(true);
-		this.setTitle("X: " + showX + " Y: " + showY);
+		controls.setTitle("X: " + showX + " Y: " + showY);
 		if (!thisRoom.drawn) {
 			mapView.addRoom(showX, showY);
 			if (thisRoom.north)
@@ -81,13 +81,22 @@ public class Controls extends JFrame {
 	}
 
 	public static void load(ActionEvent e) {
-		Dungeon.load();
-		Controls.mapView = Dungeon.mapView;
-		Controls.showX = Dungeon.showX;
-		Controls.showY = Dungeon.showY;
-		Controls.rooms = Dungeon.rooms;
-		Controls.thisRoom = Dungeon.thisRoom;
-		Dungeon.dump();
+		Dungeon d = Dungeon.load();
+		hideRoom();
+		Controls.mapView.setVisible(false);
+		Controls.mapView = d.mapView;
+		Controls.mapView.roomsLocations = d.mapView.roomsLocations;
+		Controls.mapView.halls = d.mapView.halls;
+		Controls.mapView.rooms = d.mapView.rooms;
+		Controls.mapView.roomsLocations = d.mapView.roomsLocations;
+		Controls.showX = d.showX;
+		Controls.showY = d.showY;
+		Controls.rooms = d.rooms;
+		Controls.thisRoom = d.thisRoom;
+		Controls.mapView.revalidate();
+		Controls.mapView.repaint();
+		Controls.mapView.setVisible(true);
+		showRoom();
 	}
 
 	public Controls() {
@@ -103,7 +112,7 @@ public class Controls extends JFrame {
 		menuBar.add(file);
 
 		Save = new JMenuItem("Save");
-		Save.addActionListener(Dungeon::save);
+		Save.addActionListener(new Dungeon()::save);
 		file.add(Save);
 
 		load = new JMenuItem("Load");
@@ -153,8 +162,6 @@ public class Controls extends JFrame {
 			showRoom();
 		});
 		contentPane.add(northButton, BorderLayout.NORTH);
-
-		;
 		eastButton.addActionListener(e -> {
 			hideRoom();
 			showX++;

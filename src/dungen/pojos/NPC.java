@@ -1,8 +1,11 @@
-package dungen.mobs;
+package dungen.pojos;
+
+import java.io.Serializable;
 
 import dungen.generators.Tables;
 
-public class NPC {
+public class NPC implements Serializable {
+	private static final long serialVersionUID = 2954732759119047136L;
 	public String alignment = Tables.getAlignment();
 	public String npcClass = Tables.getNpcClass();
 	public int lvl = 0;

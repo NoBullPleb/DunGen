@@ -3,31 +3,44 @@ package dungen.ui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
 import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+
+import dungen.pojos.Dungeon;
 
 public class Controls extends JFrame {
 
 	private static final long serialVersionUID = 7985611292217902489L;
-	static JButton southButton, eastButton, westButton, northButton;
+	transient final static JButton southButton = new JButton("Go South"),
+			eastButton = new JButton("Go East"), westButton = new JButton(
+					"Go West"), northButton = new JButton("Go North");
 	// used to track where rooms are. If one is already at that location, we can
 	// load it.
-	HashMap<Point, Room> rooms = new HashMap<>();
-	private static Room thisRoom = new Room();
-	private static int showX = 0, showY = 0;
+	public static HashMap<Point, Room> rooms = new HashMap<>();
+	public static Room thisRoom = new Room();
+	public static int showX = 0, showY = 0;
 	{
 		rooms.put(new Point(showX, showY), thisRoom);
 	}
-	private final static Map mapView = new Map(false);
-	private final static JPanel contentPane = new JPanel();;
+	public static Map mapView = new Map();
+	private final static JPanel contentPane = new JPanel();
+	private transient JMenuBar menuBar;
+	private transient JMenu file;
+	private transient JMenuItem Save;
+	private transient JMenuItem load;;
+	public static Controls controls = new Controls();
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 			try {
-				Controls controls = new Controls();
+
 				controls.setVisible(true);
 				mapView.setLocation(controls.getX() + controls.getWidth(),
 						controls.getY());
@@ -67,16 +80,39 @@ public class Controls extends JFrame {
 		southButton.setEnabled(thisRoom.south);
 	}
 
+	public static void load(ActionEvent e) {
+		Dungeon.load();
+		Controls.mapView = Dungeon.mapView;
+		Controls.showX = Dungeon.showX;
+		Controls.showY = Dungeon.showY;
+		Controls.rooms = Dungeon.rooms;
+		Controls.thisRoom = Dungeon.thisRoom;
+		Dungeon.dump();
+	}
+
 	public Controls() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("X: " + showX + " Y: " + showY);
 		setResizable(false);
-		setBounds(50, 50, 183, 110);
+		setBounds(50, 50, 183, 137);
+
+		menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+
+		file = new JMenu("File");
+		menuBar.add(file);
+
+		Save = new JMenuItem("Save");
+		Save.addActionListener(Dungeon::save);
+		file.add(Save);
+
+		load = new JMenuItem("Load");
+		load.addActionListener(Controls::load);
+		file.add(load);
 
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		westButton = new JButton("Go West");
 		westButton.addActionListener(e -> {
 			hideRoom();
 			showX--;
@@ -97,7 +133,6 @@ public class Controls extends JFrame {
 			showRoom();
 		});
 		contentPane.add(westButton, BorderLayout.WEST);
-		northButton = new JButton("Go North");
 		northButton.addActionListener(e -> {
 			hideRoom();
 			showY++;
@@ -119,7 +154,7 @@ public class Controls extends JFrame {
 		});
 		contentPane.add(northButton, BorderLayout.NORTH);
 
-		eastButton = new JButton("Go East");
+		;
 		eastButton.addActionListener(e -> {
 			hideRoom();
 			showX++;
@@ -139,7 +174,6 @@ public class Controls extends JFrame {
 			showRoom();
 		});
 		contentPane.add(eastButton, BorderLayout.EAST);
-		southButton = new JButton("Go South");
 		southButton.addActionListener(e -> {
 			hideRoom();
 			showY--;

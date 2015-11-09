@@ -9,7 +9,7 @@ import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 
 import dungen.generators.Tables;
-import dungen.mobs.NPC;
+import dungen.pojos.NPC;
 
 public class Room extends JFrame {
 	private static final long serialVersionUID = 2020213751688226679L;
@@ -64,7 +64,7 @@ public class Room extends JFrame {
 		positionLbl.setLocation(0, 0);
 		positionLbl.setSize(200, 200);
 		final StringBuilder sb = new StringBuilder();
-		sb.append("\nSize of room: ").append(
+		sb.append("Size of room: ").append(
 				(int) Math.max(30 * Math.random(), 5));
 		party.forEach(e -> sb.append("\n NPC: " + e.getAlignment() + " class: "
 				+ e.getNpcClass() + " lvl: " + e.getLvl()));

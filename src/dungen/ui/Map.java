@@ -78,14 +78,10 @@ public class Map extends JFrame {
 		contentPane.repaint();
 	}
 
-	public Map(boolean example) {
+	public Map() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 450);
-		if (example)
-			for (int x = -5; x < 5; x++)
-				for (int y = -5; y < 5; y++)
-					addRoom(x, y);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 	}

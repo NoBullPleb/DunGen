@@ -10,15 +10,20 @@ import javax.swing.border.EmptyBorder;
 
 import dungen.mobs.NPC;
 
+@SuppressWarnings("serial")
 public class Room extends JFrame {
 	public static int floor = 1;
-	private static int numRooms = 0;
+	private static int neverTellMeTheOdds = 70;
 	public boolean drawn = false;
-	private int neverTellMeTheOdds = 70 - (5 * (numRooms / 2));
-	private static final long serialVersionUID = -2853163315903184535L;
 	private JPanel contentPane;
-	private ArrayList<NPC> party = new ArrayList<>();
-	int numdoors = 0;
+	private boolean hasNPCs = Math.random() * 10 > 9.5; // 5% ODDS OF NPCS
+	private ArrayList<NPC> party = new ArrayList<NPC>();
+	{ // If it has NPCs, generate the party. 1-3 adventurers.
+		if (hasNPCs) {
+			for (int i = 0; i < (Math.random() * 3); i++)
+				party.add(new NPC());
+		}
+	}
 	public Boolean north = (Math.random() * 100) > 100 - neverTellMeTheOdds,
 			south = (Math.random() * 100) > 100 - neverTellMeTheOdds,
 			east = (Math.random() * 100) > 100 - neverTellMeTheOdds,
@@ -40,17 +45,14 @@ public class Room extends JFrame {
 	}
 
 	public Room(boolean exit, String... directions) {
-		numRooms++;
-		for (int i = 0; i < (Math.random() * 3); i++)
-			party.add(new NPC());
+		neverTellMeTheOdds -= 3;
 		for (String direction : directions)
 			addDoor(direction);
 		if (exit)
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		else
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-		setBounds(200, 100, 200, 200);
+		setBounds(200, 100, 183, 200);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -60,7 +62,6 @@ public class Room extends JFrame {
 		positionLbl.setLocation(0, 0);
 		positionLbl.setSize(200, 200);
 		final StringBuilder sb = new StringBuilder();
-		sb.append("Room Number: " + numRooms);
 		sb.append("\nSize of room: ").append(
 				(int) Math.max(30 * Math.random(), 5));
 		party.forEach(e -> sb.append("\n NPC: " + e.getAlignment() + " class: "

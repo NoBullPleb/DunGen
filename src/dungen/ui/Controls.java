@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 
 @SuppressWarnings("serial")
@@ -29,8 +28,8 @@ public class Controls extends JFrame {
 			try {
 				Controls controls = new Controls();
 				controls.setVisible(true);
-				mapView.setLocation(controls.getX(),
-						controls.getY() + controls.getHeight());
+				mapView.setLocation(controls.getX() + controls.getWidth(),
+						controls.getY());
 				mapView.setVisible(true);
 				controls.showRoom();
 			} catch (Exception e) {
@@ -45,7 +44,7 @@ public class Controls extends JFrame {
 	}
 
 	private void showRoom() {
-		thisRoom.setLocation(this.getX() + this.getWidth(), this.getY());
+		thisRoom.setLocation(this.getX(), this.getY() + this.getHeight());
 		thisRoom.setVisible(true);
 
 		this.setTitle("X: " + showX + " Y: " + showY);
@@ -76,9 +75,8 @@ public class Controls extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("X: " + showX + " Y: " + showY);
 		setResizable(false);
-		setBounds(50, 50, 200, 200);
+		setBounds(50, 50, 183, 110);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
@@ -90,14 +88,16 @@ public class Controls extends JFrame {
 				Point p = new Point(showX, showY);
 				if (rooms.containsKey(p)) {
 					thisRoom.westRoom = rooms.get(p);
+					mapView.addHall(showX, showY, "east");
 				} else {
 					thisRoom.westRoom = new Room(false);
 				}
 				thisRoom.westRoom.eastRoom = thisRoom;
+				thisRoom.westRoom.addDoor("east");
 				rooms.put(p, thisRoom.westRoom);
 			}
 			thisRoom = thisRoom.westRoom;
-			thisRoom.addDoor("east");
+
 			showRoom();
 		});
 		contentPane.add(westButton, BorderLayout.WEST);
@@ -110,15 +110,15 @@ public class Controls extends JFrame {
 				Point p = new Point(showX, showY);
 				if (rooms.containsKey(p)) {
 					thisRoom.northRoom = rooms.get(p);
+					mapView.addHall(showX, showY, "south");
 				} else {
 					thisRoom.northRoom = new Room(false);
 				}
 				thisRoom.northRoom.southRoom = thisRoom;
+				thisRoom.northRoom.addDoor("south");
 				rooms.put(p, thisRoom.northRoom);
 			}
-
 			thisRoom = thisRoom.northRoom;
-			thisRoom.addDoor("south");
 			showRoom();
 		});
 		contentPane.add(northButton, BorderLayout.NORTH);
@@ -131,15 +131,17 @@ public class Controls extends JFrame {
 				Point p = new Point(showX, showY);
 				if (rooms.containsKey(p)) {
 					thisRoom.eastRoom = rooms.get(p);
+					mapView.addHall(showX, showY, "west");
 				} else {
 					thisRoom.eastRoom = new Room(false);
 				}
 				thisRoom.eastRoom.westRoom = thisRoom;
 				rooms.put(p, thisRoom.eastRoom);
+				thisRoom.eastRoom.addDoor("west");
 			}
 
 			thisRoom = thisRoom.eastRoom;
-			thisRoom.addDoor("west");
+
 			showRoom();
 		});
 		contentPane.add(eastButton, BorderLayout.EAST);
@@ -151,6 +153,7 @@ public class Controls extends JFrame {
 				Point p = new Point(showX, showY);
 				if (rooms.containsKey(p)) {
 					thisRoom.southRoom = rooms.get(p);
+					mapView.addHall(showX, showY, "north");
 				} else {
 					thisRoom.southRoom = new Room(false);
 				}

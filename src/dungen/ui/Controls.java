@@ -25,6 +25,7 @@ public class Controls extends JFrame {
 	public static Room thisRoom = new Room();
 	public static int showX = 0, showY = 0;
 	{
+		thisRoom.north = true;
 		rooms.put(new Point(showX, showY), thisRoom);
 	}
 	public static Map mapView = new Map();
@@ -41,7 +42,9 @@ public class Controls extends JFrame {
 				controls.setVisible(true);
 				mapView.setLocation(controls.getX() + controls.getWidth(),
 						controls.getY());
+				mapView.setTitle("Dungeon Map");
 				mapView.setVisible(true);
+
 				Controls.showRoom();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -58,7 +61,7 @@ public class Controls extends JFrame {
 		thisRoom.setLocation(controls.getX(),
 				controls.getY() + controls.getHeight());
 		thisRoom.setVisible(true);
-		controls.setTitle("X: " + showX + " Y: " + showY);
+		controls.setTitle("DunGen v" + version);
 		if (!thisRoom.drawn) {
 			mapView.addRoom(showX, showY, thisRoom.encounter, thisRoom.hasNPCs);
 			if (thisRoom.north)

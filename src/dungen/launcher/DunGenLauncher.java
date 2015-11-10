@@ -36,7 +36,7 @@ public final class DunGenLauncher {
 			currentVersion = getCurrentVersion();
 
 			if (!currentVersion.equals(version)) {
-				jd.setTitle("Poke v" + version);
+				jd.setTitle("DunGen v" + version);
 				jd.setLocationRelativeTo(null);
 				jd.setResizable(false);
 				jd.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,12 +76,13 @@ public final class DunGenLauncher {
 			jd.revalidate();
 			jd.repaint();
 		} catch (Exception err) {
-			jd.setTitle("Sorry - cannot write file");
+			jd.setTitle("Did not update.");
 			jd.remove(waitMessage);
 			jd.add(new JLabel("Unable to update."), BorderLayout.CENTER);
 			err.printStackTrace();
 			jd.revalidate();
 			jd.repaint();
+			Controls.main(new String[0]);
 		}
 
 	}

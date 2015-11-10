@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,20 +18,13 @@ public class Map extends JFrame {
 	public ArrayList<JLabel> encounters = new ArrayList<>();
 
 	public JLabel star = new JLabel();
-	private transient final static ImageIcon roomImage = new ImageIcon(
-			"Resources/Room.png");
-	private transient final static ImageIcon trapImage = new ImageIcon(
-			"Resources/Trap.png");
-	private transient final static ImageIcon hallImage = new ImageIcon(
-			"Resources/Hall.png");
-	private transient final static ImageIcon hallImage2 = new ImageIcon(
-			"Resources/Hall2.png");
-	private transient final static ImageIcon partyImage = new ImageIcon(
-			"Resources/Party.png");
-	private transient final static ImageIcon encounterImage = new ImageIcon(
-			"Resources/Encounter.png");
-	private transient final static ImageIcon otherPartyImage = new ImageIcon(
-			"Resources/otherParty.png");
+	private transient ImageIcon roomImage = getImage("Room.png");
+	private transient ImageIcon trapImage = getImage("Trap.png");
+	private transient ImageIcon hallImage = getImage("Hall.png");
+	private transient ImageIcon hallImage2 = getImage("Hall2.png");
+	private transient ImageIcon partyImage = getImage("Party.png");
+	private transient ImageIcon encounterImage = getImage("Encounter.png");
+	private transient ImageIcon otherPartyImage = getImage("otherParty.png");
 	public transient JLayeredPane contentPane = new JLayeredPane();
 	private transient static final Font font = new Font(Font.MONOSPACED, 0, 9);
 	{
@@ -40,6 +32,16 @@ public class Map extends JFrame {
 		star.setSize(15, 15);
 		star.setIcon(partyImage);
 		star.setFont(font);
+	}
+
+	private ImageIcon getImage(String path) {
+		try {
+			return new ImageIcon(Map.class.getClassLoader().getResource(
+					"images/" + path));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public void redraw() {

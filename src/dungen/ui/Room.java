@@ -5,15 +5,21 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextPane;
+import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 import dungen.generators.Tables;
 import dungen.pojos.NPC;
+import javax.swing.JScrollPane;
 
 public class Room extends JFrame {
 	private static final long serialVersionUID = 2020213751688226679L;
 	public static int floor = 1;
+	private static int numRooms = 0;
+	{
+		numRooms++;
+	}
+	public int room = numRooms;
 	private static int neverTellMeTheOdds = 70;
 	public boolean drawn = false;
 	private JPanel contentPane;
@@ -62,16 +68,20 @@ public class Room extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		JTextPane positionLbl = new JTextPane();
-
-		positionLbl.setLocation(0, 0);
-		positionLbl.setSize(200, 200);
 		final StringBuilder sb = new StringBuilder();
 		sb.append("Size of room: ").append(
 				(int) Math.max(30 * Math.random(), 5));
 		sb.append("\n" + encounter);
+		setTitle("Room : " + numRooms);
+
+		JScrollPane scrollPane = new JScrollPane();
+		contentPane.add(scrollPane, BorderLayout.CENTER);
+		JTextArea positionLbl = new JTextArea();
+		scrollPane.setViewportView(positionLbl);
+
+		positionLbl.setLocation(0, 0);
+		positionLbl.setSize(200, 200);
 		positionLbl.setText(sb.toString());
-		contentPane.add(positionLbl, BorderLayout.NORTH);
 
 	}
 }

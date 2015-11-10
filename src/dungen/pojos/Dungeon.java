@@ -21,7 +21,7 @@ public class Dungeon implements Serializable {
 	public Room thisRoom = null;
 	public int showX = 0, showY = 0;
 	public Map mapView = null;
- Controls c = null;
+
 	public Dungeon() {
 		rooms = Controls.rooms;
 		showX = Controls.showX;

@@ -15,7 +15,7 @@ import javax.swing.JMenuItem;
 import dungen.pojos.Dungeon;
 
 public class Controls extends JFrame {
-
+	public static String version = "1.0.0";
 	private static final long serialVersionUID = 7985611292217902489L;
 	transient final static JButton southButton = new JButton("Go South"),
 			eastButton = new JButton("Go East"), westButton = new JButton(
@@ -92,7 +92,6 @@ public class Controls extends JFrame {
 		Controls.rooms = d.rooms;
 		Controls.thisRoom = d.thisRoom;
 		Controls.mapView.redraw();
-
 		showRoom();
 	}
 

@@ -10,6 +10,9 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import dungen.ui.Controls;
 import dungen.ui.Map;
 import dungen.ui.Room;
@@ -39,10 +42,28 @@ public class Dungeon implements Serializable {
 		return sb.toString();
 	}
 
+	public static File getFile() {
+		try {
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("dgn",
+					"dgn");
+			fileChooser.setAcceptAllFileFilterUsed(false);
+			fileChooser.addChoosableFileFilter(filter);
+			fileChooser.showSaveDialog(null);
+
+			File file = fileChooser.getSelectedFile();
+			return file;
+		} catch (Exception err) {
+			err.printStackTrace();
+			return null;
+		}
+	}
+
 	public static Dungeon load() {
 		Dungeon returnable = null;
 		try {
-			File f = new File("test.dgn");
+			File f = getFile();
 			FileInputStream fileIn = new FileInputStream(f);
 			ObjectInputStream in = new ObjectInputStream(fileIn);
 			returnable = (Dungeon) in.readObject();
@@ -56,7 +77,7 @@ public class Dungeon implements Serializable {
 
 	public void save(ActionEvent e) {
 		try {
-			File f = new File("test.dgn");
+			File f = getFile();
 			f.delete();
 			f.createNewFile();
 			FileOutputStream fileOut = new FileOutputStream(f);

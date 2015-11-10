@@ -11,7 +11,6 @@ import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-
 import dungen.pojos.Dungeon;
 
 public class Controls extends JFrame {

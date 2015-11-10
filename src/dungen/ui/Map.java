@@ -68,18 +68,12 @@ public class Map extends JFrame {
 	}
 
 	public void addHall(Integer x, Integer y, String direction) {
-		addHall(x, y, direction, false);
-	}
-
-	public void addHall(Integer x, Integer y, String direction, boolean hidden) {
 		Point p = new Point((this.getWidth() / 2) + x * 30,
 				(this.getHeight() / 2) - y * 30);
 		int modX = 0, modY = 0;
 		JLabel room = rooms.get(roomsLocations.indexOf(p));
 		JLabel hall = new JLabel();
-		if (hidden) {
-			hall.setText("S");
-		} else if (direction.equalsIgnoreCase("north")
+		if (direction.equalsIgnoreCase("north")
 				|| direction.equalsIgnoreCase("south")) {
 			hall.setIcon(hallImage);
 		} else {

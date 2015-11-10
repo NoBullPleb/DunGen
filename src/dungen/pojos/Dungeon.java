@@ -42,17 +42,22 @@ public class Dungeon implements Serializable {
 		return sb.toString();
 	}
 
-	public static File getFile() {
+	public static File getFile(Boolean isSaving) {
 		try {
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("dgn",
-					"dgn");
+			FileNameExtensionFilter filter = new FileNameExtensionFilter(
+					"Dungeon Files", "dgn", "*.dgn");
 			fileChooser.setAcceptAllFileFilterUsed(false);
 			fileChooser.addChoosableFileFilter(filter);
-			fileChooser.showSaveDialog(null);
+			if (isSaving)
+				fileChooser.showSaveDialog(null);
+			else
+				fileChooser.showOpenDialog(null);
 
 			File file = fileChooser.getSelectedFile();
+			if (!file.getName().endsWith("dgn"))
+				file = new File(file.getAbsolutePath() + ".dgn");
 			return file;
 		} catch (Exception err) {
 			err.printStackTrace();
@@ -63,7 +68,7 @@ public class Dungeon implements Serializable {
 	public static Dungeon load() {
 		Dungeon returnable = null;
 		try {
-			File f = getFile();
+			File f = getFile(false);
 			FileInputStream fileIn = new FileInputStream(f);
 			ObjectInputStream in = new ObjectInputStream(fileIn);
 			returnable = (Dungeon) in.readObject();
@@ -77,7 +82,7 @@ public class Dungeon implements Serializable {
 
 	public void save(ActionEvent e) {
 		try {
-			File f = getFile();
+			File f = getFile(true);
 			f.delete();
 			f.createNewFile();
 			FileOutputStream fileOut = new FileOutputStream(f);

@@ -123,7 +123,7 @@ public class Controls extends JFrame {
 				Point p = new Point(showX, showY);
 				if (rooms.containsKey(p)) {
 					thisRoom.eastRoom = rooms.get(p);
-					mapView.addHall(showX, showY, "west", true);
+					mapView.addHall(showX, showY, "west");
 				} else {
 					thisRoom.eastRoom = new Room();
 				}
@@ -141,7 +141,7 @@ public class Controls extends JFrame {
 				Point p = new Point(showX, showY);
 				if (rooms.containsKey(p)) {
 					thisRoom.westRoom = rooms.get(p);
-					mapView.addHall(showX, showY, "east", true);
+					mapView.addHall(showX, showY, "east");
 				} else {
 					thisRoom.westRoom = new Room();
 				}
@@ -161,7 +161,7 @@ public class Controls extends JFrame {
 				Point p = new Point(showX, showY);
 				if (rooms.containsKey(p)) {
 					thisRoom.northRoom = rooms.get(p);
-					mapView.addHall(showX, showY, "south", true);
+					mapView.addHall(showX, showY, "south");
 				} else {
 					thisRoom.northRoom = new Room();
 				}
@@ -179,7 +179,7 @@ public class Controls extends JFrame {
 				Point p = new Point(showX, showY);
 				if (rooms.containsKey(p)) {
 					thisRoom.southRoom = rooms.get(p);
-					mapView.addHall(showX, showY, "north", true);
+					mapView.addHall(showX, showY, "north");
 				} else {
 					thisRoom.southRoom = new Room("north");
 				}

@@ -54,6 +54,7 @@ public class Controls extends JFrame {
 	}
 
 	private static void hideRoom() {
+		thisRoom.encounter = thisRoom.roomDetails.getText();
 		thisRoom.setVisible(false);
 	}
 

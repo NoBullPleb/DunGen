@@ -23,6 +23,7 @@ public class Room extends JFrame {
 	private static int neverTellMeTheOdds = 70;
 	public boolean drawn = false;
 	private JPanel contentPane;
+	public JTextArea roomDetails = new JTextArea();
 	public boolean hasNPCs = Math.random() * 100 > 98; // 2% ODDS OF NPCS
 	private ArrayList<NPC> party = new ArrayList<NPC>();
 	public String encounter = "";
@@ -72,7 +73,7 @@ public class Room extends JFrame {
 		sb.append("Size of room: ").append(
 				(int) Math.max(30 * Math.random(), 5));
 		sb.append("\n" + encounter);
-		setTitle("Room : " + numRooms);
+		setTitle("Room Notes : " + numRooms);
 
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, BorderLayout.CENTER);

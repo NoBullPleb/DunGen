@@ -17,13 +17,16 @@ public class Room extends JFrame {
 	private static int neverTellMeTheOdds = 70;
 	public boolean drawn = false;
 	private JPanel contentPane;
-	private boolean hasNPCs = Math.random() * 10 > 9.5; // 5% ODDS OF NPCS
+	public boolean hasNPCs = Math.random() * 100 > 98; // 2% ODDS OF NPCS
 	private ArrayList<NPC> party = new ArrayList<NPC>();
 	public String encounter = "";
 	{ // If it has NPCs, generate the party. 1-3 adventurers.
 		if (hasNPCs) {
-			for (int i = 0; i < (Math.random() * 3); i++)
+			for (int i = 0; i < (Math.random() * 3); i++) {
 				party.add(new NPC());
+				encounter += "\n" + party.get(i).alignment + " "
+						+ party.get(i).npcClass;
+			}
 		} else {
 			encounter = Tables.getEncounter();
 		}
@@ -66,8 +69,6 @@ public class Room extends JFrame {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("Size of room: ").append(
 				(int) Math.max(30 * Math.random(), 5));
-		party.forEach(e -> sb.append("\n NPC: " + e.getAlignment() + " class: "
-				+ e.getNpcClass() + " lvl: " + e.getLvl()));
 		sb.append("\n" + encounter);
 		positionLbl.setText(sb.toString());
 		contentPane.add(positionLbl, BorderLayout.NORTH);

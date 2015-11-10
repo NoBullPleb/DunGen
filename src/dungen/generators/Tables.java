@@ -60,15 +60,18 @@ public class Tables {
 
 	public static String getEncounter() {
 		String encounter = "";
-		int result = Dice.custom(10);
-
-		if (result == 10)
-			encounter = "Overpowering or Boss";
-		else if (result == 9)
-			encounter = "Challenging encounter";
-		else if (result >= 7)
-			encounter = "Moderate Encounter";
-
+		int result = Dice.custom(100);
+		if (result > 60) { // 30% of rooms will have an encounter
+			result = Dice.custom(10); // roll for type of encounter
+			if (result > 9)
+				encounter = "Overpowering or Boss";
+			else if (result > 7)
+				encounter = "Challenging encounter";
+			else if (result >= 4)
+				encounter = "Moderate Encounter";
+			else
+				encounter = "Trap!";
+		}
 		return encounter;
 	}
 }

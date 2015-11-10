@@ -49,7 +49,7 @@ public final class DunGenLauncher {
 				Controls.main(new String[0]);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.err.println("Unable to find DunGen Version.");
 			Controls.main(new String[0]);
 		}
 	}

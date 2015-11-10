@@ -1,5 +1,7 @@
 package dungen.ui;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -14,9 +16,14 @@ public class Map extends JFrame {
 	public ArrayList<Point> roomsLocations = new ArrayList<>();
 	public ArrayList<JLabel> rooms = new ArrayList<>();
 	public ArrayList<JLabel> halls = new ArrayList<>();
-	public JLabel star = new JLabel("*");
+	public Component star = new JLabel("*");
 	public transient JPanel contentPane = new JPanel();
 	private transient static final Font font = new Font(Font.MONOSPACED, 0, 9);
+	{
+		contentPane.setBackground(Color.WHITE);
+		star.setSize(5, 5);
+		star.setFont(font);
+	}
 
 	public void redraw() {
 		contentPane.removeAll();
@@ -51,11 +58,6 @@ public class Map extends JFrame {
 		star.setVisible(true);
 		contentPane.add(star);
 		star.repaint();
-	}
-
-	{
-		star.setSize(5, 5);
-		star.setFont(font);
 	}
 
 	public void addHall(Integer x, Integer y, String direction) {

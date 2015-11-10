@@ -16,18 +16,25 @@ public class Map extends JFrame {
 	public ArrayList<Point> roomsLocations = new ArrayList<>();
 	public ArrayList<JLabel> rooms = new ArrayList<>();
 	public ArrayList<JLabel> halls = new ArrayList<>();
-	public JLabel star = new JLabel("*");
+	public ArrayList<JLabel> encounters = new ArrayList<>();
+
+	public JLabel star = new JLabel();
 	private transient final static ImageIcon roomImage = new ImageIcon(
 			"Resources/Room.png");
 	private transient final static ImageIcon hallImage = new ImageIcon(
 			"Resources/Hall.png");
 	private transient final static ImageIcon hallImage2 = new ImageIcon(
 			"Resources/Hall2.png");
+	private transient final static ImageIcon partyImage = new ImageIcon(
+			"Resources/Party.png");
+	private transient final static ImageIcon encounterImage = new ImageIcon(
+			"Resources/Encounter.png");
 	public transient JLayeredPane contentPane = new JLayeredPane();
 	private transient static final Font font = new Font(Font.MONOSPACED, 0, 9);
 	{
 		this.setBackground(Color.BLACK);
-		star.setSize(5, 5);
+		star.setSize(15, 15);
+		star.setIcon(partyImage);
 		star.setFont(font);
 	}
 
@@ -35,12 +42,27 @@ public class Map extends JFrame {
 		contentPane.removeAll();
 		rooms.forEach(contentPane::add);
 		halls.forEach(contentPane::add);
+		encounters.forEach(contentPane::add);
 		contentPane.add(star);
 		contentPane.revalidate();
 		contentPane.repaint();
 	}
 
-	public void addRoom(Integer x, Integer y) {
+	public void addEncounterOnRoom(int x, int y) {
+		Point p = new Point((contentPane.getWidth() / 2) + x * 30,
+				this.getHeight() / 2 - y * 30);
+		JLabel encounter = new JLabel();
+		encounter.setIcon(encounterImage);
+		encounter.setSize(15, 15);
+		encounter.setLocation((int) p.getX(), (int) p.getY());
+		encounter.setFont(font);
+		encounter.setVisible(true);
+		contentPane.add(encounter, contentPane.highestLayer());
+		encounters.add(encounter);
+		contentPane.repaint();
+	}
+
+	public void addRoom(Integer x, Integer y, boolean hasEncounter) {
 		Point p = new Point((contentPane.getWidth() / 2) + x * 30,
 				this.getHeight() / 2 - y * 30);
 		if (roomsLocations != null && !roomsLocations.contains(p)) {
@@ -53,14 +75,16 @@ public class Map extends JFrame {
 			contentPane.add(room);
 			rooms.add(room);
 			roomsLocations.add(p);
+			if (hasEncounter)
+				addEncounterOnRoom(x, y);
 		}
 		contentPane.repaint();
 
 	}
 
 	public void moveStar(int x, int y) {
-		Point p = new Point((this.getWidth() / 2) + (x * 30) + 5,
-				(this.getHeight() / 2) - (y * 30) + 5);
+		Point p = new Point((this.getWidth() / 2) + (x * 30),
+				(this.getHeight() / 2) - (y * 30));
 		star.setLocation(p);
 		star.setVisible(true);
 		contentPane.add(star, contentPane.highestLayer());

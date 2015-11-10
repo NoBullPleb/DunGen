@@ -19,7 +19,7 @@ public class Room extends JFrame {
 	private JPanel contentPane;
 	private boolean hasNPCs = Math.random() * 10 > 9.5; // 5% ODDS OF NPCS
 	private ArrayList<NPC> party = new ArrayList<NPC>();
-	private String encounter = "";
+	public String encounter = "";
 	{ // If it has NPCs, generate the party. 1-3 adventurers.
 		if (hasNPCs) {
 			for (int i = 0; i < (Math.random() * 3); i++)

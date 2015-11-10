@@ -60,7 +60,7 @@ public class Controls extends JFrame {
 		thisRoom.setVisible(true);
 		controls.setTitle("X: " + showX + " Y: " + showY);
 		if (!thisRoom.drawn) {
-			mapView.addRoom(showX, showY);
+			mapView.addRoom(showX, showY, !thisRoom.encounter.isEmpty());
 			if (thisRoom.north)
 				mapView.addHall(showX, showY, "north");
 			if (thisRoom.south)

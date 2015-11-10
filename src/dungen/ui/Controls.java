@@ -5,7 +5,6 @@ import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -30,12 +29,12 @@ public class Controls extends JFrame {
 		rooms.put(new Point(showX, showY), thisRoom);
 	}
 	public static Map mapView = new Map();
-	private final static JPanel contentPane = new JPanel();
+	private transient final static JPanel contentPane = new JPanel();
 	private transient JMenuBar menuBar;
 	private transient JMenu file;
 	private transient JMenuItem Save;
-	private transient JMenuItem load;;
-	public static Controls controls = new Controls();
+	private transient JMenuItem load;
+	private static Controls controls = new Controls();
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
@@ -83,19 +82,17 @@ public class Controls extends JFrame {
 	public static void load(ActionEvent e) {
 		Dungeon d = Dungeon.load();
 		hideRoom();
-		Controls.mapView.setVisible(false);
-		Controls.mapView = d.mapView;
+		Controls.mapView.star = d.mapView.star;
 		Controls.mapView.roomsLocations = d.mapView.roomsLocations;
 		Controls.mapView.halls = d.mapView.halls;
 		Controls.mapView.rooms = d.mapView.rooms;
-		Controls.mapView.roomsLocations = d.mapView.roomsLocations;
+
 		Controls.showX = d.showX;
 		Controls.showY = d.showY;
 		Controls.rooms = d.rooms;
 		Controls.thisRoom = d.thisRoom;
-		Controls.mapView.revalidate();
-		Controls.mapView.repaint();
-		Controls.mapView.setVisible(true);
+		Controls.mapView.redraw();
+
 		showRoom();
 	}
 
@@ -121,7 +118,24 @@ public class Controls extends JFrame {
 
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-
+		eastButton.addActionListener(e -> {
+			hideRoom();
+			showX++;
+			if (thisRoom.eastRoom == null) {
+				Point p = new Point(showX, showY);
+				if (rooms.containsKey(p)) {
+					thisRoom.eastRoom = rooms.get(p);
+					mapView.addHall(showX, showY, "west", true);
+				} else {
+					thisRoom.eastRoom = new Room();
+				}
+				thisRoom.eastRoom.westRoom = thisRoom;
+				rooms.put(p, thisRoom.eastRoom);
+				thisRoom.eastRoom.addDoor("west");
+			}
+			thisRoom = thisRoom.eastRoom;
+			showRoom();
+		});
 		westButton.addActionListener(e -> {
 			hideRoom();
 			showX--;
@@ -129,7 +143,7 @@ public class Controls extends JFrame {
 				Point p = new Point(showX, showY);
 				if (rooms.containsKey(p)) {
 					thisRoom.westRoom = rooms.get(p);
-					mapView.addHall(showX, showY, "east");
+					mapView.addHall(showX, showY, "east", true);
 				} else {
 					thisRoom.westRoom = new Room();
 				}
@@ -141,7 +155,6 @@ public class Controls extends JFrame {
 
 			showRoom();
 		});
-		contentPane.add(westButton, BorderLayout.WEST);
 		northButton.addActionListener(e -> {
 			hideRoom();
 			showY++;
@@ -150,7 +163,7 @@ public class Controls extends JFrame {
 				Point p = new Point(showX, showY);
 				if (rooms.containsKey(p)) {
 					thisRoom.northRoom = rooms.get(p);
-					mapView.addHall(showX, showY, "south");
+					mapView.addHall(showX, showY, "south", true);
 				} else {
 					thisRoom.northRoom = new Room();
 				}
@@ -161,26 +174,6 @@ public class Controls extends JFrame {
 			thisRoom = thisRoom.northRoom;
 			showRoom();
 		});
-		contentPane.add(northButton, BorderLayout.NORTH);
-		eastButton.addActionListener(e -> {
-			hideRoom();
-			showX++;
-			if (thisRoom.eastRoom == null) {
-				Point p = new Point(showX, showY);
-				if (rooms.containsKey(p)) {
-					thisRoom.eastRoom = rooms.get(p);
-					mapView.addHall(showX, showY, "west");
-				} else {
-					thisRoom.eastRoom = new Room();
-				}
-				thisRoom.eastRoom.westRoom = thisRoom;
-				rooms.put(p, thisRoom.eastRoom);
-				thisRoom.eastRoom.addDoor("west");
-			}
-			thisRoom = thisRoom.eastRoom;
-			showRoom();
-		});
-		contentPane.add(eastButton, BorderLayout.EAST);
 		southButton.addActionListener(e -> {
 			hideRoom();
 			showY--;
@@ -188,7 +181,7 @@ public class Controls extends JFrame {
 				Point p = new Point(showX, showY);
 				if (rooms.containsKey(p)) {
 					thisRoom.southRoom = rooms.get(p);
-					mapView.addHall(showX, showY, "north");
+					mapView.addHall(showX, showY, "north", true);
 				} else {
 					thisRoom.southRoom = new Room("north");
 				}
@@ -199,6 +192,9 @@ public class Controls extends JFrame {
 			thisRoom = thisRoom.southRoom;
 			showRoom();
 		});
+		contentPane.add(westButton, BorderLayout.WEST);
+		contentPane.add(northButton, BorderLayout.NORTH);
+		contentPane.add(eastButton, BorderLayout.EAST);
 		contentPane.add(southButton, BorderLayout.SOUTH);
 	}
 

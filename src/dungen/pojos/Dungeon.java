@@ -21,7 +21,7 @@ public class Dungeon implements Serializable {
 	public Room thisRoom = null;
 	public int showX = 0, showY = 0;
 	public Map mapView = null;
-
+ Controls c = null;
 	public Dungeon() {
 		rooms = Controls.rooms;
 		showX = Controls.showX;
@@ -36,7 +36,6 @@ public class Dungeon implements Serializable {
 		sb.append("rooms=").append("" + rooms).append("showX=").append(showX)
 				.append("\n").append("Mapview: " + mapView + "\n\n")
 				.append("RoomLocations: " + mapView.roomsLocations);
-
 		return sb.toString();
 	}
 
@@ -56,10 +55,8 @@ public class Dungeon implements Serializable {
 	}
 
 	public void save(ActionEvent e) {
-		System.out.println("SAVING: " + this);
 		try {
 			File f = new File("test.dgn");
-			System.out.println("WRITING: " + f.getAbsolutePath());
 			f.delete();
 			f.createNewFile();
 			FileOutputStream fileOut = new FileOutputStream(f);

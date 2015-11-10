@@ -14,8 +14,18 @@ public class Map extends JFrame {
 	public ArrayList<Point> roomsLocations = new ArrayList<>();
 	public ArrayList<JLabel> rooms = new ArrayList<>();
 	public ArrayList<JLabel> halls = new ArrayList<>();
-	private static final JPanel contentPane = new JPanel();
-	private static final Font font = new Font(Font.MONOSPACED, 0, 9);
+	public JLabel star = new JLabel("*");
+	public transient JPanel contentPane = new JPanel();
+	private transient static final Font font = new Font(Font.MONOSPACED, 0, 9);
+
+	public void redraw() {
+		contentPane.removeAll();
+		rooms.forEach(contentPane::add);
+		halls.forEach(contentPane::add);
+		contentPane.add(star);
+		contentPane.revalidate();
+		contentPane.repaint();
+	}
 
 	public void addRoom(Integer x, Integer y) {
 		Point p = new Point((contentPane.getWidth() / 2) + x * 20,
@@ -43,18 +53,23 @@ public class Map extends JFrame {
 		star.repaint();
 	}
 
-	private static JLabel star = new JLabel("*");
-	static {
+	{
 		star.setSize(5, 5);
 		star.setFont(font);
 	}
 
 	public void addHall(Integer x, Integer y, String direction) {
+		addHall(x, y, direction, false);
+	}
+
+	public void addHall(Integer x, Integer y, String direction, boolean hidden) {
 		Point p = new Point((this.getWidth() / 2) + x * 20,
 				(this.getHeight() / 2) - y * 20);
 		int modX = 0, modY = 0;
 		JLabel room = rooms.get(roomsLocations.indexOf(p));
 		JLabel hall = new JLabel("+");
+		if (hidden)
+			hall.setText("S");
 		hall.setFont(font);
 		hall.setSize(10, 10);
 		if (direction.equalsIgnoreCase("north")) {

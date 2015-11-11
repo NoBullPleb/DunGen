@@ -27,16 +27,19 @@ public class Room extends JFrame {
 	public boolean hasNPCs = Math.random() * 100 > 98; // 2% ODDS OF NPCS
 	private ArrayList<NPC> party = new ArrayList<NPC>();
 	public String encounter = "";
-	{ // If it has NPCs, generate the party. 1-3 adventurers.
-		if (hasNPCs) {
-			for (int i = 0; i < (Math.random() * 3); i++) {
-				party.add(new NPC());
-				encounter += "\n" + party.get(i).alignment + " "
-						+ party.get(i).npcClass;
+
+	{ // first room should never have encounter
+		if (room > 1)
+			// If it has NPCs, generate the party. 1-3 adventurers.
+			if (hasNPCs) {
+				for (int i = 0; i < (Math.random() * 3); i++) {
+					party.add(new NPC());
+					encounter += "\n" + party.get(i).alignment + " "
+							+ party.get(i).npcClass;
+				}
+			} else {
+				encounter = Tables.getEncounter();
 			}
-		} else {
-			encounter = Tables.getEncounter();
-		}
 	}
 	public Boolean north = (Math.random() * 100) > 100 - neverTellMeTheOdds,
 			south = (Math.random() * 100) > 100 - neverTellMeTheOdds,

@@ -58,6 +58,19 @@ public class Tables {
 		return alignments.get(Dice.d20());
 	}
 
+	private static final String[] traps = { "Spiked pit", "Wall Scythe",
+			"bear traps", "Magic trap" };
+	private static final String[] conditions = { "Hidden", "Poisoned",
+			"Magically hidden", "Disabled" };
+
+	public static String getTrap() {
+		String trap = "";
+		int trapInt = Dice.custom(traps.length) - 1, conditionInt = Dice
+				.custom(conditions.length) - 1;
+		trap = conditions[conditionInt] + " " + traps[trapInt];
+		return trap;
+	}
+
 	public static String getEncounter() {
 		String encounter = "";
 		int result = Dice.custom(100);
@@ -70,7 +83,7 @@ public class Tables {
 			else if (result >= 4)
 				encounter = "Moderate Encounter";
 			else
-				encounter = "Trap!";
+				encounter = "Trap!\n" + getTrap();
 		}
 		return encounter;
 	}

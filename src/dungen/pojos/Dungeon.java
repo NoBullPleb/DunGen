@@ -33,15 +33,6 @@ public class Dungeon implements Serializable {
 		mapView = Controls.mapView;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("rooms=").append("" + rooms).append("showX=").append(showX)
-				.append("\n").append("Mapview: " + mapView + "\n\n")
-				.append("RoomLocations: " + mapView.roomsLocations);
-		return sb.toString();
-	}
-
 	public static File getFile(Boolean isSaving) {
 		try {
 			JFileChooser fileChooser = new JFileChooser();

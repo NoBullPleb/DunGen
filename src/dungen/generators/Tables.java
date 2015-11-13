@@ -1,8 +1,61 @@
 package dungen.generators;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.HashMap;
+import java.util.List;
+
+import dungen.ui.Map;
 
 public class Tables {
+	public static void main(String[] args) {
+		System.out.println(getMagicItemA());
+		System.out.println(getMagicItemB());
+	}
+
+	private static List<String> getTable(String path) {
+		try {
+			return Files.readAllLines(new File(Map.class.getClassLoader()
+					.getResource("tables/" + path).getPath()
+					.replaceAll("%20", " ")).toPath());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private static List<String> magicItemA = getTable("Magic Item Table A.txt");
+	private static List<String> magicItemB = getTable("Magic Item Table B.txt");
+
+	public static String getMagicItemB() {
+		final int result = Dice.custom(100);
+		return getResultFromTable(result, magicItemB).trim();
+	}
+
+	public static String getMagicItemA() {
+		final int result = Dice.custom(100);
+		return getResultFromTable(result, magicItemA).trim();
+	}
+
+	private static String getResultFromTable(int result, List<String> table) {
+		final StringBuilder items = new StringBuilder();
+		try {
+			table.parallelStream()
+					.map(e -> e.split(","))
+					.filter(e -> e.length > 2)
+					.filter(e -> {
+						Integer min = new Integer(e[0].trim()), max = new Integer(
+								e[1].trim());
+						return result >= min && result <= max;
+					}).forEach(e -> items.append(e[e.length - 1]));
+			return items.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+
 	private static HashMap<Integer, String> alignments = new HashMap<>();
 	static {
 		alignments.put(1, "LN");

@@ -1,7 +1,6 @@
 package dungen.ui;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
@@ -26,12 +25,10 @@ public class Map extends JFrame {
 	private transient ImageIcon encounterImage = getImage("Encounter.png");
 	private transient ImageIcon otherPartyImage = getImage("otherParty.png");
 	public transient JLayeredPane contentPane = new JLayeredPane();
-	private transient static final Font font = new Font(Font.MONOSPACED, 0, 9);
 	{
 		this.setBackground(Color.BLACK);
 		star.setSize(15, 15);
 		star.setIcon(partyImage);
-		star.setFont(font);
 	}
 
 	private ImageIcon getImage(String path) {
@@ -56,8 +53,7 @@ public class Map extends JFrame {
 
 	public void addEncounterOnRoom(int x, int y, String encounter,
 			boolean hasParty) {
-		Point p = new Point((contentPane.getWidth() / 2) + x * 30,
-				this.getHeight() / 2 - y * 30);
+		Point p = getPosition(x, y);
 		JLabel encounterLbl = new JLabel();
 
 		if (encounter.contains("Trap"))
@@ -68,7 +64,6 @@ public class Map extends JFrame {
 			encounterLbl.setIcon(encounterImage);
 		encounterLbl.setSize(15, 15);
 		encounterLbl.setLocation((int) p.getX(), (int) p.getY());
-		encounterLbl.setFont(font);
 		encounterLbl.setVisible(true);
 		contentPane.add(encounterLbl, contentPane.highestLayer());
 		encounters.add(encounterLbl);
@@ -77,14 +72,12 @@ public class Map extends JFrame {
 
 	public void addRoom(Integer x, Integer y, String hasEncounter,
 			boolean hasParty) {
-		Point p = new Point((contentPane.getWidth() / 2) + x * 30,
-				this.getHeight() / 2 - y * 30);
+		Point p = getPosition(x, y);
 		if (roomsLocations != null && !roomsLocations.contains(p)) {
 			JLabel room = new JLabel();
 			room.setIcon(roomImage);
 			room.setSize(15, 15);
 			room.setLocation((int) p.getX(), (int) p.getY());
-			room.setFont(font);
 			room.setVisible(true);
 			contentPane.add(room);
 			rooms.add(room);
@@ -97,17 +90,18 @@ public class Map extends JFrame {
 	}
 
 	public void moveStar(int x, int y) {
-		Point p = new Point((this.getWidth() / 2) + (x * 30),
-				(this.getHeight() / 2) - (y * 30));
+		Point p = getPosition(x, y);
 		star.setLocation(p);
 		star.setVisible(true);
 		contentPane.add(star, contentPane.highestLayer());
 		star.repaint();
 	}
-
+	private Point getPosition(int x, int y){
+		return new Point((this.getWidth() / 2) + x * 30,
+				(this.getHeight()-45) - y * 30);
+	}
 	public void addHall(Integer x, Integer y, String direction) {
-		Point p = new Point((this.getWidth() / 2) + x * 30,
-				(this.getHeight() / 2) - y * 30);
+		Point p = getPosition(x, y);
 		int modX = 0, modY = 0;
 		JLabel room = rooms.get(roomsLocations.indexOf(p));
 		JLabel hall = new JLabel();
@@ -117,7 +111,6 @@ public class Map extends JFrame {
 		} else {
 			hall.setIcon(hallImage2);
 		}
-		hall.setFont(font);
 		hall.setSize(15, 15);
 		if (direction.equalsIgnoreCase("north")) {
 			modX = room.getX();

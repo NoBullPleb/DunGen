@@ -26,6 +26,8 @@ public class Controls extends JFrame {
 	public static int showX = 0, showY = 0;
 	{
 		thisRoom.north = true;
+		thisRoom.south = false;
+		thisRoom.encounter="This is the room where it all began... ";
 		rooms.put(new Point(showX, showY), thisRoom);
 	}
 	public static Map mapView = new Map();
@@ -132,8 +134,10 @@ public class Controls extends JFrame {
 					thisRoom.eastRoom = new Room();
 				}
 				thisRoom.eastRoom.westRoom = thisRoom;
-				rooms.put(p, thisRoom.eastRoom);
+				if (showY<=0)
+					thisRoom.eastRoom.south=false;
 				thisRoom.eastRoom.addDoor("west");
+				rooms.put(p, thisRoom.eastRoom);
 			}
 			thisRoom = thisRoom.eastRoom;
 			showRoom();
@@ -151,7 +155,10 @@ public class Controls extends JFrame {
 				}
 				thisRoom.westRoom.eastRoom = thisRoom;
 				thisRoom.westRoom.addDoor("east");
+				if (showY<=0)
+					thisRoom.westRoom.south=false;
 				rooms.put(p, thisRoom.westRoom);
+				
 			}
 			thisRoom = thisRoom.westRoom;
 
@@ -188,8 +195,11 @@ public class Controls extends JFrame {
 					thisRoom.southRoom = new Room("north");
 				}
 				thisRoom.southRoom.northRoom = thisRoom;
+				
 				rooms.put(p, thisRoom.southRoom);
-				thisRoom.southRoom.addDoor("north");
+				thisRoom.southRoom.north=true;
+				if (showY<=0)
+					thisRoom.southRoom.south=false;
 			}
 			thisRoom = thisRoom.southRoom;
 			showRoom();

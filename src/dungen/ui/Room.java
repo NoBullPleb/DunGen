@@ -10,17 +10,17 @@ import javax.swing.border.EmptyBorder;
 
 import dungen.generators.Tables;
 import dungen.pojos.NPC;
+
 import javax.swing.JScrollPane;
 
 public class Room extends JFrame {
 	private static final long serialVersionUID = 2020213751688226679L;
-	public static int floor = 1;
 	private static int numRooms = 0;
 	{
 		numRooms++;
 	}
 	public int room = numRooms;
-	private static int neverTellMeTheOdds = 70;
+	private static int neverTellMeTheOdds = 90;
 	public boolean drawn = false;
 	private JPanel contentPane;
 	public JTextArea roomDetails = new JTextArea();
@@ -28,7 +28,7 @@ public class Room extends JFrame {
 	private ArrayList<NPC> party = new ArrayList<NPC>();
 	public String encounter = "";
 
-	{ // first room should never have encounter
+	{
 		if (room > 1)
 			// If it has NPCs, generate the party. 1-3 adventurers.
 			if (hasNPCs) {
@@ -38,8 +38,10 @@ public class Room extends JFrame {
 							+ party.get(i).npcClass;
 				}
 			} else {
-				encounter = Tables.getEncounter();
+				encounter = Tables.getEvent();
 			}
+		else 
+			encounter="This is the room where it all began... ";
 	}
 	public Boolean north = (Math.random() * 100) > 100 - neverTellMeTheOdds,
 			south = (Math.random() * 100) > 100 - neverTellMeTheOdds,

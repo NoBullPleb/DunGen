@@ -2,17 +2,15 @@ package dungen.generators;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import dungen.ui.Map;
 
 public class Tables {
 	public static void main(String[] args) {
-		System.out.println(getMagicItemA());
-		System.out.println(getMagicItemB());
-
-		System.err.println(getTrapSeverity());
-		System.err.println(getTrapTrigger());
+		System.out.println(getEvent());
 	}
 
 	private static List<String> getTable(String path) {
@@ -81,20 +79,62 @@ public class Tables {
 				+ getTrapTrigger();
 	}
 
-	public static String getEncounter() {
-		String encounter = "";
+	private static int challenge = 30; // this will be used to slowly increase
+										// difficulty.
+
+	public static String getEvent() {
+		String event = "";
 		int result = Dice.custom(100);
-		if (result > 60) { // 30% of rooms will have an encounter
-			result = Dice.custom(10); // roll for type of encounter
-			if (result > 9)
-				encounter = "Overpowering or Boss";
-			else if (result > 7)
-				encounter = "Challenging encounter";
-			else if (result >= 4)
-				encounter = "Moderate Encounter";
+		if (result > 0) { // 40% of rooms will have an event
+			result = Dice.custom(challenge); // roll for type of encounter
+			if (result > 90)
+				event = "Deadly Encounter: " + getEncounter(deadlyTable);
+			else if (result > 70)
+				event = "Hard Encounter: " + getEncounter(hardTable);
+			else if (result >= 30)
+				event = "Medium Encounter: " + getEncounter(mediumTable);
+			else if (result >= 20)
+				event = "Easy Encounter: " + getEncounter(easyTable);
 			else
-				encounter = "Trap!\n" + getTrap();
+				event = "Trap!\n" + getTrap();
 		}
-		return encounter;
+		challenge += 5;
+		return event;
+	}
+
+	private static String[][] easyTable = getEncounterTable("Easy.txt");
+	private static String[][] mediumTable = getEncounterTable("Medium.txt");
+	private static String[][] hardTable = getEncounterTable("Hard.txt");
+	private static String[][] deadlyTable = getEncounterTable("Deadly.txt");
+
+	private static String[][] getEncounterTable(String path) {
+		List<String> table = getTable(path);
+		String[][] result = new String[table.size()][];
+		AtomicInteger ai = new AtomicInteger(0);
+		table.forEach(e -> result[ai.getAndIncrement()] = e.split(","));
+		return result;
+	}
+
+	private static String[] CRs = "LEVEL / CR,0,1/8,1/4,1/2,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20"
+			.split(",");
+
+	private static String[][] monsters = getEncounterTable("MonsterList.txt");
+
+	private static String getEncounter(String[][] table) {
+		int partylevel = 1;
+		StringBuilder encounter = new StringBuilder("");
+		int result = Dice.custom(table[partylevel].length - 2) + 1;
+		encounter.append(table[partylevel][result].trim());
+		encounter.append(" CR:" + CRs[result]);
+		encounter.append("\nPossible Monsters:");
+		Arrays.stream(monsters)
+				.parallel()
+				.filter(e -> e[0].equals(CRs[result]))
+				.forEach(
+						e -> {
+							encounter.append("\n" + e[1] + " Size: " + e[3]
+									+ " XP: " + e[2] + " Book: " + e[7]);
+						});
+		return encounter.toString();
 	}
 }

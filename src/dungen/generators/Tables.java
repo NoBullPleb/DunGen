@@ -133,7 +133,7 @@ public class Tables {
 				.forEach(
 						e -> {
 							encounter.append("\n" + e[1] + " Size: " + e[3]
-									+ " XP: " + e[2] + " Book: " + e[7]);
+									+ " XP: " + e[2] + " Book: " + e[6]);
 						});
 		return encounter.toString();
 	}

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import dungen.ui.InfoPanel;
 import dungen.ui.Map;
 
 public class Tables {
@@ -79,13 +80,13 @@ public class Tables {
 				+ getTrapTrigger();
 	}
 
-	private static int challenge = 30; // this will be used to slowly increase
+	private static int challenge = 40; // this will be used to slowly increase
 										// difficulty.
 
 	public static String getEvent() {
 		String event = "";
 		int result = Dice.custom(100);
-		if (result > 0) { // 40% of rooms will have an event
+		if (result > 60) { // 40% of rooms will have an event
 			result = Dice.custom(challenge); // roll for type of encounter
 			if (result > 90)
 				event = "Deadly Encounter: " + getEncounter(deadlyTable);
@@ -121,10 +122,10 @@ public class Tables {
 	private static String[][] monsters = getEncounterTable("MonsterList.txt");
 
 	private static String getEncounter(String[][] table) {
-		int partylevel = 1;
+		
 		StringBuilder encounter = new StringBuilder("");
-		int result = Dice.custom(table[partylevel].length - 2) + 1;
-		encounter.append(table[partylevel][result].trim());
+		int result = Dice.custom(table[InfoPanel.partyLevel].length - 2) + 1;
+		encounter.append(table[InfoPanel.partyLevel][result].trim());
 		encounter.append(" CR:" + CRs[result]);
 		encounter.append("\nPossible Monsters:");
 		Arrays.stream(monsters)

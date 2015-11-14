@@ -14,6 +14,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import dungen.ui.Controls;
+import dungen.ui.InfoPanel;
 import dungen.ui.Map;
 import dungen.ui.Room;
 
@@ -23,6 +24,7 @@ public class Dungeon implements Serializable {
 	public HashMap<Point, Room> rooms = null;
 	public Room thisRoom = null;
 	public int showX = 0, showY = 0;
+	public int partyLevel = 1;
 	public Map mapView = null;
 
 	public Dungeon() {
@@ -31,6 +33,7 @@ public class Dungeon implements Serializable {
 		showY = Controls.showY;
 		thisRoom = Controls.thisRoom;
 		mapView = Controls.mapView;
+		partyLevel = InfoPanel.partyLevel;
 	}
 
 	public static File getFile(Boolean isSaving) {

@@ -51,7 +51,7 @@ public class Map extends JFrame {
 		contentPane.repaint();
 	}
 
-	public void addEncounterOnRoom(int x, int y, String encounter,
+	public void addEventOnRoom(int x, int y, String encounter,
 			boolean hasParty) {
 		Point p = getPosition(x, y);
 		JLabel encounterLbl = new JLabel();
@@ -82,8 +82,8 @@ public class Map extends JFrame {
 			contentPane.add(room);
 			rooms.add(room);
 			roomsLocations.add(p);
-			if (!hasEncounter.isEmpty())
-				addEncounterOnRoom(x, y, hasEncounter, hasParty);
+			if (!hasEncounter.isEmpty() && !hasEncounter.contains("began"))
+				addEventOnRoom(x, y, hasEncounter, hasParty);
 		}
 		contentPane.repaint();
 

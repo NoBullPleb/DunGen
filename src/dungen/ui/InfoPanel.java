@@ -36,6 +36,10 @@ public class InfoPanel extends JFrame {
 		return types[i].isSelected();
 	}
 
+	public static void setTruth(int i, boolean truth) {
+		types[i].setSelected(truth);
+	}
+
 	public InfoPanel() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(683, 50);

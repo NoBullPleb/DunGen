@@ -98,7 +98,9 @@ public class Controls extends JFrame {
 		Controls.rooms = d.rooms;
 		Controls.thisRoom = d.thisRoom;
 		Controls.mapView.redraw();
-
+		for (int i = 0; i < d.types.size(); i++) {
+			InfoPanel.setTruth(i, d.types.get(i));
+		}
 		showRoom();
 	}
 

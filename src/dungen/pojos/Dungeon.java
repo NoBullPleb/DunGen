@@ -8,11 +8,13 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import dungen.generators.Tables;
 import dungen.ui.Controls;
 import dungen.ui.InfoPanel;
 import dungen.ui.Map;
@@ -26,6 +28,7 @@ public class Dungeon implements Serializable {
 	public int showX = 0, showY = 0;
 	public int partyLevel = 1;
 	public Map mapView = null;
+	public ArrayList<Boolean> types = new ArrayList<Boolean>();
 
 	public Dungeon() {
 		rooms = Controls.rooms;
@@ -34,6 +37,11 @@ public class Dungeon implements Serializable {
 		thisRoom = Controls.thisRoom;
 		mapView = Controls.mapView;
 		partyLevel = InfoPanel.partyLevel;
+		for (int i = 0; i < Tables.monsterTypes.length; i++) {
+			types.add(InfoPanel.getTruth(i));
+			System.out.println(types.get(i));
+		}
+
 	}
 
 	public static File getFile(Boolean isSaving) {

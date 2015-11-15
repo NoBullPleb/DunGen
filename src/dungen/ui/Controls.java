@@ -31,6 +31,7 @@ public class Controls extends JFrame {
 		rooms.put(new Point(showX, showY), thisRoom);
 	}
 	public static Map mapView = new Map();
+	public static InfoPanel ip = new InfoPanel();
 	private transient final static JPanel contentPane = new JPanel();
 	private transient JMenuBar menuBar;
 	private transient JMenu file;
@@ -158,10 +159,8 @@ public class Controls extends JFrame {
 				if (showY <= 0)
 					thisRoom.westRoom.south = false;
 				rooms.put(p, thisRoom.westRoom);
-
 			}
 			thisRoom = thisRoom.westRoom;
-
 			showRoom();
 		});
 		northButton.addActionListener(e -> {

@@ -10,9 +10,6 @@ import dungen.ui.InfoPanel;
 import dungen.ui.Map;
 
 public class Tables {
-	public static void main(String[] args) {
-		System.out.println(getEvent());
-	}
 
 	private static List<String> getTable(String path) {
 		try {
@@ -122,7 +119,7 @@ public class Tables {
 	private static String[][] monsters = getEncounterTable("MonsterList.txt");
 
 	private static String getEncounter(String[][] table) {
-		
+
 		StringBuilder encounter = new StringBuilder("");
 		int result = Dice.custom(table[InfoPanel.partyLevel].length - 2) + 1;
 		encounter.append(table[InfoPanel.partyLevel][result].trim());

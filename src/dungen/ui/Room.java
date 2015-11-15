@@ -69,7 +69,7 @@ public class Room extends JFrame {
 		for (String direction : directions)
 			addDoor(direction);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(200, 100, 183, 200);
+		setBounds(200, 100, 183, 310);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));

@@ -76,6 +76,7 @@ public class Dungeon implements Serializable {
 
 	public void save(ActionEvent e) {
 		try {
+			System.out.println("Trying to save...");
 			File f = getFile(true);
 			f.delete();
 			f.createNewFile();

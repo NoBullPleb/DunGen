@@ -1,8 +1,10 @@
 package dungen.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,24 +19,28 @@ public class Map extends JFrame {
 	public ArrayList<JLabel> encounters = new ArrayList<>();
 
 	public JLabel star = new JLabel();
-	private transient ImageIcon roomImage = getImage("Room.png");
-	private transient ImageIcon trapImage = getImage("Trap.png");
-	private transient ImageIcon hallImage = getImage("Hall.png");
-	private transient ImageIcon hallImage2 = getImage("Hall2.png");
-	private transient ImageIcon partyImage = getImage("Party.png");
-	private transient ImageIcon encounterImage = getImage("Encounter.png");
-	private transient ImageIcon otherPartyImage = getImage("otherParty.png");
+	private transient static ImageIcon roomImage = getImage("Room.png");
+	private transient static ImageIcon trapImage = getImage("Trap.png");
+	private transient static ImageIcon hallImage = getImage("Hall.png");
+	private transient static ImageIcon hallImage2 = getImage("Hall2.png");
+	private transient static ImageIcon partyImage = getImage("Party.png");
+	private transient static ImageIcon encounterImage = getImage("Encounter.png");
+	private transient static ImageIcon otherPartyImage = getImage("otherParty.png");
 	public transient JLayeredPane contentPane = new JLayeredPane();
+	private static Dimension imagesize = new Dimension(20, 20);
 	{
 		this.setBackground(Color.BLACK);
-		star.setSize(15, 15);
+		star.setSize(imagesize);
 		star.setIcon(partyImage);
 	}
 
-	private ImageIcon getImage(String path) {
+	private static ImageIcon getImage(String path) {
 		try {
-			return new ImageIcon(Map.class.getClassLoader().getResource(
+
+			ImageIcon i = new ImageIcon(Map.class.getClassLoader().getResource(
 					"images/" + path));
+			
+			return i;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -51,8 +57,7 @@ public class Map extends JFrame {
 		contentPane.repaint();
 	}
 
-	public void addEventOnRoom(int x, int y, String encounter,
-			boolean hasParty) {
+	public void addEventOnRoom(int x, int y, String encounter, boolean hasParty) {
 		Point p = getPosition(x, y);
 		JLabel encounterLbl = new JLabel();
 
@@ -62,7 +67,7 @@ public class Map extends JFrame {
 			encounterLbl.setIcon(otherPartyImage);
 		else
 			encounterLbl.setIcon(encounterImage);
-		encounterLbl.setSize(15, 15);
+		encounterLbl.setSize(imagesize);
 		encounterLbl.setLocation((int) p.getX(), (int) p.getY());
 		encounterLbl.setVisible(true);
 		contentPane.add(encounterLbl, contentPane.highestLayer());
@@ -76,7 +81,7 @@ public class Map extends JFrame {
 		if (roomsLocations != null && !roomsLocations.contains(p)) {
 			JLabel room = new JLabel();
 			room.setIcon(roomImage);
-			room.setSize(15, 15);
+			room.setSize(imagesize);
 			room.setLocation((int) p.getX(), (int) p.getY());
 			room.setVisible(true);
 			contentPane.add(room);
@@ -96,10 +101,13 @@ public class Map extends JFrame {
 		contentPane.add(star, contentPane.highestLayer());
 		star.repaint();
 	}
-	private Point getPosition(int x, int y){
-		return new Point((this.getWidth() / 2) + x * 30,
-				(this.getHeight()-45) - y * 30);
+
+	private Point getPosition(int x, int y) {
+		return new Point((this.getWidth() / 2) + x
+				* ((int) imagesize.getWidth() * 2), (this.getHeight() - 45) - y
+				* ((int) imagesize.getHeight() * 2));
 	}
+
 	public void addHall(Integer x, Integer y, String direction) {
 		Point p = getPosition(x, y);
 		int modX = 0, modY = 0;
@@ -111,7 +119,7 @@ public class Map extends JFrame {
 		} else {
 			hall.setIcon(hallImage2);
 		}
-		hall.setSize(15, 15);
+		hall.setSize(imagesize);
 		if (direction.equalsIgnoreCase("north")) {
 			modX = room.getX();
 			modY = room.getY() - room.getHeight();

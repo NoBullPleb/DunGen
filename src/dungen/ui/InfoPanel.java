@@ -1,12 +1,8 @@
 package dungen.ui;
 
-import java.awt.EventQueue;
-import java.awt.ScrollPane;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SpringLayout.Constraints;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -25,27 +21,13 @@ public class InfoPanel extends JFrame {
 			levels.addElement(i);
 	}
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InfoPanel frame = new InfoPanel();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public static int partyLevel = 1;
 
 	public InfoPanel() {
+		System.out.println("InfoPanel Loaded");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setLocation(683, 50);
+		setSize(183, 137);
 
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -65,5 +47,6 @@ public class InfoPanel extends JFrame {
 		scrollPane = new JScrollPane(partyLevelList);
 		scrollPane.setBounds(partyLevelList.getBounds());
 		contentPane.add(scrollPane);
+		this.setVisible(true);
 	}
 }

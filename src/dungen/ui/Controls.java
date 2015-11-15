@@ -88,16 +88,17 @@ public class Controls extends JFrame {
 	public static void load(ActionEvent e) {
 		Dungeon d = Dungeon.load();
 		hideRoom();
+		InfoPanel.setLevel(d.partyLevel);
 		Controls.mapView.star = d.mapView.star;
 		Controls.mapView.roomsLocations = d.mapView.roomsLocations;
 		Controls.mapView.halls = d.mapView.halls;
 		Controls.mapView.rooms = d.mapView.rooms;
-
 		Controls.showX = d.showX;
 		Controls.showY = d.showY;
 		Controls.rooms = d.rooms;
 		Controls.thisRoom = d.thisRoom;
 		Controls.mapView.redraw();
+
 		showRoom();
 	}
 

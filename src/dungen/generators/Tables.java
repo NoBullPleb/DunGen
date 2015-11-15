@@ -2,9 +2,12 @@ package dungen.generators;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import dungen.ui.InfoPanel;
 import dungen.ui.Map;
@@ -115,24 +118,38 @@ public class Tables {
 
 	private static String[] CRs = "LEVEL / CR,0,1/8,1/4,1/2,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20"
 			.split(",");
+	public static String[] monsterTypes = "Beast,Plant,Undead,Construct,Fiend,Aberration,Humanoid,Fey,Elemental,Dragon,Monstrosity,Ooze,Giant,Celestial"
+			.split(",");
+	private static HashMap<String, Integer> indexes = new HashMap<String, Integer>();
 
+	static {
+		for (int i = 0; i < monsterTypes.length; i++)
+			indexes.put(monsterTypes[i], i);
+	}
 	private static String[][] monsters = getEncounterTable("MonsterList.txt");
 
 	private static String getEncounter(String[][] table) {
-
+		List<String[]> mobs = new ArrayList<>();
 		StringBuilder encounter = new StringBuilder("");
-		int result = Dice.custom(table[InfoPanel.partyLevel].length - 2) + 1;
-		encounter.append(table[InfoPanel.partyLevel][result].trim());
-		encounter.append(" CR:" + CRs[result]);
-		encounter.append("\nPossible Monsters:");
-		Arrays.stream(monsters)
-				.parallel()
-				.filter(e -> e[0].equals(CRs[result]))
-				.forEach(
-						e -> {
-							encounter.append("\n" + e[1] + " Size: " + e[3]
-									+ " XP: " + e[2] + " Book: " + e[6]);
-						});
+		int attempts = 0;
+		while (mobs.isEmpty() && attempts < 10) {
+			encounter.delete(0, encounter.length());
+			int result = Dice.custom(table[InfoPanel.partyLevel].length - 2) + 1;
+			encounter.append(table[InfoPanel.partyLevel][result].trim());
+			encounter.append(" CR:" + CRs[result]);
+			encounter.append("\nPossible Monsters:");
+			mobs = Arrays.stream(monsters).parallel()
+					// grab only the appropriate CR
+					.filter(e -> e[0].equals(CRs[result]))
+					// and only those matching the type
+					.filter(e -> InfoPanel.getTruth(indexes.get(e[4])))
+					.collect(Collectors.toList());
+			mobs.forEach(e -> {
+				encounter.append("\n" + e[1] + " Size: " + e[3] + " XP: "
+						+ e[2] + " Book: " + e[6]);
+			});
+			attempts++;
+		}
 		return encounter.toString();
 	}
 }

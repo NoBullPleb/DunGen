@@ -76,7 +76,7 @@ public class Room extends JFrame {
 		setContentPane(contentPane);
 		final StringBuilder sb = new StringBuilder();
 		sb.append("Size of room: ").append(
-				(int) Math.max(30 * Math.random(), 5));
+				(int) Math.max(20 * Math.random(), 5));
 		sb.append("\n" + encounter);
 		setTitle("Room Notes : " + numRooms);
 

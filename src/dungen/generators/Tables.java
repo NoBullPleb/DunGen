@@ -7,11 +7,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import dungen.ui.InfoPanel;
 import dungen.ui.Map;
 
+@SuppressWarnings("unchecked")
 public class Tables {
 
 	private static List<String> getTable(String path) {
@@ -27,6 +29,12 @@ public class Tables {
 
 	private final static List<String> magicItemA = getTable("Magic Item Table A.txt");
 	private final static List<String> magicItemB = getTable("Magic Item Table B.txt");
+	private final static List<String> magicItemC = getTable("Magic Item Table C.txt");
+	private final static List<String> magicItemD = getTable("Magic Item Table D.txt");
+	private final static List<String> magicItemE = getTable("Magic Item Table E.txt");
+	private final static List<String> magicItemF = getTable("Magic Item Table F.txt");
+	private final static List<String> magicItemG = getTable("Magic Item Table G.txt");
+
 	private final static List<String> trapSeverity = getTable("Trap Severity.txt");
 	private final static List<String> trapTriggers = getTable("Trap Triggers.txt");
 	private final static List<String> alignments = getTable("Alignments.txt");
@@ -44,12 +52,11 @@ public class Tables {
 		return getResultFromTable(Dice.custom(6), trapSeverity);
 	}
 
-	public static String getMagicItemB() {
-		return getResultFromTable(Dice.custom(100), magicItemB);
-	}
-
-	public static String getMagicItemA() {
-		return getResultFromTable(Dice.custom(100), magicItemA);
+	public static String getMagicItem(int number, List<String> table) {
+		StringBuilder result = new StringBuilder();
+		for (int i = 0; i < number; i++)
+			result.append(getResultFromTable(Dice.custom(100), table) + " ");
+		return result.toString();
 	}
 
 	public static String getAlignment() {
@@ -59,14 +66,12 @@ public class Tables {
 	private static String getResultFromTable(int result, List<String> table) {
 		final StringBuilder items = new StringBuilder();
 		try {
-			table.parallelStream()
-					.map(e -> e.split(","))
-					.filter(e -> e.length > 2)
-					.filter(e -> {
-						Integer min = new Integer(e[0].trim()), max = new Integer(
-								e[1].trim());
-						return result >= min && result <= max;
-					}).forEach(e -> items.append(e[e.length - 1]));
+			table.parallelStream().map(e -> e.split(","))
+					.filter(e -> e.length > 1).filter(e -> {
+						Integer max = new Integer(e[0].trim());
+						return result <= max;
+					}).findFirst()
+					.ifPresent(e -> items.append(e[e.length - 1]));
 			return items.toString().trim();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,7 +93,7 @@ public class Tables {
 		int result = Dice.custom(100);
 		if (result > 60) { // 40% of rooms will have an event
 			result = Dice.custom(challenge); // roll for type of encounter
-			if (result > 90)
+			if (result > 10)
 				event = "Deadly Encounter: " + getEncounter(deadlyTable);
 			else if (result > 70)
 				event = "Hard Encounter: " + getEncounter(hardTable);
@@ -127,6 +132,86 @@ public class Tables {
 			indexes.put(monsterTypes[i], i);
 	}
 	private static String[][] monsters = getEncounterTable("MonsterList.txt");
+	private static Supplier<String>[][] iTreasureByCR = new Supplier[4][];
+	static {
+		iTreasureByCR[0] = new Supplier[5];
+		iTreasureByCR[0][0] = () -> Dice.custom(5, 6) + " CP";
+		iTreasureByCR[0][1] = () -> Dice.custom(4, 6) + " SP";
+		iTreasureByCR[0][2] = () -> Dice.custom(3, 6) + " EP";
+		iTreasureByCR[0][3] = () -> Dice.custom(3, 6) + " GP";
+		iTreasureByCR[0][4] = () -> Dice.custom(6) + " PP";
+
+		iTreasureByCR[1] = new Supplier[5];
+		iTreasureByCR[1][0] = () -> Dice.custom(4, 6) * 100 + " CP "
+				+ Dice.custom(6) * 10 + " EP";
+		iTreasureByCR[1][1] = () -> Dice.custom(6, 6) * 10 + " SP "
+				+ Dice.custom(2, 6) * 10 + " GP";
+		iTreasureByCR[1][2] = () -> Dice.custom(3, 6) * 10 + " EP "
+				+ Dice.custom(2, 6) + " GP";
+		iTreasureByCR[1][3] = () -> Dice.custom(4, 6) * 10 + " GP";
+		iTreasureByCR[1][4] = () -> Dice.custom(2, 6) * 10 + " GP "
+				+ Dice.custom(3, 6) + " PP";
+
+		iTreasureByCR[2] = new Supplier[4];
+		iTreasureByCR[2][0] = () -> Dice.custom(4, 6) * 100 + " SP "
+				+ Dice.custom(6) * 100 + " GP";
+		iTreasureByCR[2][1] = () -> Dice.custom(6) * 100 + " EP "
+				+ Dice.custom(6) * 100 + " GP";
+		iTreasureByCR[2][2] = () -> Dice.custom(2, 6) * 100 + " GP "
+				+ Dice.custom(6) * 10 + " PP";
+		iTreasureByCR[2][3] = () -> Dice.custom(2, 6) * 100 + " GP "
+				+ Dice.custom(2, 6) * 10 + " PP";
+
+		iTreasureByCR[3] = new Supplier[3];
+		iTreasureByCR[3][0] = () -> Dice.custom(2, 6) * 1000 + " EP "
+				+ Dice.custom(8, 6) * 100 + " GP";
+		iTreasureByCR[3][1] = () -> Dice.custom(6) * 1000 + " GP "
+				+ Dice.custom(6) * 100 + " PP";
+		iTreasureByCR[3][2] = () -> Dice.custom(6) * 1000 + " GP "
+				+ Dice.custom(2, 6) * 100 + " PP";
+
+	}
+
+	private static int whichTreasureCR(int result) {
+		if (result <= 8)
+			return 0;
+		else if (result <= 14)
+			return 1;
+		else if (result <= 20)
+			return 2;
+		else
+			return 3;
+	}
+
+	private static int whichTreasureSize(int CR) {
+		int result = Dice.custom(100);
+		if (CR <= 1) {
+			if (result <= 30)
+				return 0;
+			if (result <= 60)
+				return 1;
+			if (result <= 70)
+				return 2;
+			if (result <= 95)
+				return 3;
+			return 4;
+
+		} else if (CR == 2) {
+			if (result <= 20)
+				return 0;
+			if (result <= 35)
+				return 1;
+			if (result < 75)
+				return 2;
+			return 3;
+		} else {
+			if (result <= 15)
+				return 0;
+			if (result <= 55)
+				return 1;
+			return 2;
+		}
+	}
 
 	private static String getEncounter(String[][] table) {
 		List<String[]> mobs = new ArrayList<>();
@@ -137,6 +222,15 @@ public class Tables {
 			int result = Dice.custom(table[InfoPanel.partyLevel].length - 2) + 1;
 			encounter.append(table[InfoPanel.partyLevel][result].trim());
 			encounter.append(" CR:" + CRs[result]);
+			int treasureCR = whichTreasureCR(result);
+			encounter
+					.append("\nIndividual Treasure: "
+							+ iTreasureByCR[whichTreasureCR(result)][whichTreasureSize(treasureCR)]
+									.get());
+			// if it's hard or deadly, add a treasure hoard
+			if (table.equals(hardTable) || table.equals(deadlyTable)) {
+				encounter.append("\nHoard: " + getHoard(treasureCR));
+			}
 			encounter.append("\nPossible Monsters:");
 			mobs = Arrays.stream(monsters).parallel()
 					// grab only the appropriate CR
@@ -151,5 +245,69 @@ public class Tables {
 			attempts++;
 		}
 		return encounter.toString();
+	}
+
+	private static Supplier<String>[][] iHoardByCR = new Supplier[4][];
+	static {
+		iHoardByCR[0] = new Supplier[17];
+		// No magic items
+		iHoardByCR[0][0] = () -> hoardC0();
+		iHoardByCR[0][1] = () -> hoardC0() + Dice.custom(2, 6) + " 10gpgems ";
+		iHoardByCR[0][2] = () -> hoardC0() + Dice.custom(2, 4)
+				+ " 25 gp art objects";
+		iHoardByCR[0][3] = () -> hoardC0() + Dice.custom(2, 6) + " 50 gp gems ";
+		// A prizes
+		iHoardByCR[0][4] = () -> hoardC0() + Dice.custom(2, 6) + " 10 gp gem "
+				+ getMagicItem(Dice.custom(6), magicItemA);
+		iHoardByCR[0][5] = () -> hoardC0() + Dice.custom(2, 4)
+				+ " 25 gp art objects "
+				+ getMagicItem(Dice.custom(6), magicItemA);
+		iHoardByCR[0][6] = () -> hoardC0() + Dice.custom(2, 6) + " 50 gp gems "
+				+ getMagicItem(Dice.custom(6), magicItemA);
+		// B prizes
+		iHoardByCR[0][7] = () -> hoardC0() + Dice.custom(2, 6) + " 10 gp gems "
+				+ getMagicItem(Dice.custom(4), magicItemB);
+		iHoardByCR[0][8] = () -> hoardC0() + Dice.custom(2, 4)
+				+ " 25 gp art objects "
+				+ getMagicItem(Dice.custom(4), magicItemB);
+		iHoardByCR[0][9] = () -> hoardC0() + Dice.custom(2, 6) + " 50 gp gems "
+				+ getMagicItem(Dice.custom(4), magicItemB);
+		// C prizes
+		iHoardByCR[0][10] = () -> hoardC0() + Dice.custom(2, 6)
+				+ " 10 gp gems " + getMagicItem(Dice.custom(1, 4), magicItemC);
+		iHoardByCR[0][11] = () -> hoardC0() + Dice.custom(2, 4)
+				+ " 25 gp art objects "
+				+ getMagicItem(Dice.custom(1, 4), magicItemC);
+		iHoardByCR[0][12] = () -> hoardC0() + Dice.custom(2, 6)
+				+ " 50 gp gems " + getMagicItem(Dice.custom(1, 4), magicItemC);
+		// F Prizes
+		iHoardByCR[0][13] = () -> hoardC0() + Dice.custom(2, 4)
+				+ " 25 gp art objects\n"
+				+ getMagicItem(Dice.custom(1, 4), magicItemF);
+		iHoardByCR[0][14] = () -> hoardC0() + Dice.custom(2, 6)
+				+ " 50 gp gems\n" + getMagicItem(Dice.custom(1, 4), magicItemF);
+		// G Prizes
+		iHoardByCR[0][15] = () -> hoardC0() + Dice.custom(2, 4)
+				+ " 25 gp art objects " + getMagicItem(1, magicItemG);
+		iHoardByCR[0][16] = () -> hoardC0() + Dice.custom(2, 6)
+				+ " 50 gp gems " + getMagicItem(Dice.custom(1), magicItemG);
+
+	}
+
+	private static String hoardC0() {
+		return Dice.custom(6, 6) * 100 + " CP " + Dice.custom(3, 6) * 100
+				+ " SP " + Dice.custom(2, 6) + " GP ";
+	}
+
+	static int[] percentagesforHoard0 = { 6, 16, 26, 36, 44, 52, 60, 65, 70,
+			75, 78, 80, 85, 92, 97, 99, 100 };
+
+	private static String getHoard(int treasureCR) {
+		int result = Dice.custom(100);
+		if (treasureCR == 0)
+			for (int i = 0; i < percentagesforHoard0.length; i++)
+				if (result <= percentagesforHoard0[i])
+					return iHoardByCR[treasureCR][10].get();
+		return "Hoard for CR " + treasureCR + " not yet implemented.";
 	}
 }

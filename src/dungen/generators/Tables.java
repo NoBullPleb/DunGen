@@ -349,15 +349,21 @@ public class Tables {
 				+ " SP " + Dice.custom(2, 6) + " GP ";
 	}
 
-	static int[] percentagesforHoard0 = { 6, 16, 26, 36, 44, 52, 60, 65, 70,
-			75, 78, 80, 85, 92, 97, 99, 100 };
+	static int[][] percentagesforHoard = new int[1][];
+
+	static {
+		int[] percents0 = { 6, 16, 26, 36, 44, 52, 60, 65, 70, 75, 78, 80, 85,
+				92, 97, 99, 100 };
+		percentagesforHoard[0] = percents0;
+	}
 
 	private static String getHoard(int treasureCR) {
 		int result = Dice.custom(100);
-		if (treasureCR == 0)
-			for (int i = 0; i < percentagesforHoard0.length; i++)
-				if (result <= percentagesforHoard0[i])
-					return iHoardByCR[treasureCR][10].get();
+		if (treasureCR <= percentagesforHoard.length
+				&& percentagesforHoard[treasureCR] != null)
+			for (int i = 0; i < percentagesforHoard[0].length; i++)
+				if (result <= percentagesforHoard[0][i])
+					return iHoardByCR[treasureCR][i].get();
 		return "Hoard for CR " + treasureCR + " not yet implemented.";
 	}
 }

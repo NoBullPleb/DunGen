@@ -113,7 +113,7 @@ public class Tables {
 	public static String getEvent() {
 		String event = "";
 		int result = Dice.custom(100);
-		if (result > 60) { // 40% of rooms will have an event
+		if (result > 70) { // 90% of rooms will have an event
 			result = Dice.custom(challenge); // roll for type of encounter
 			if (result > 95)
 				event = "Deadly Encounter: " + getEncounter(deadlyTable);

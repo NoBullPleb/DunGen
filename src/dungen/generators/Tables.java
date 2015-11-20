@@ -93,9 +93,9 @@ public class Tables {
 		int result = Dice.custom(100);
 		if (result > 60) { // 40% of rooms will have an event
 			result = Dice.custom(challenge); // roll for type of encounter
-			if (result > 10)
+			if (result > 95)
 				event = "Deadly Encounter: " + getEncounter(deadlyTable);
-			else if (result > 70)
+			else if (result > 80)
 				event = "Hard Encounter: " + getEncounter(hardTable);
 			else if (result >= 30)
 				event = "Medium Encounter: " + getEncounter(mediumTable);
@@ -291,7 +291,6 @@ public class Tables {
 				+ " 25 gp art objects " + getMagicItem(1, magicItemG);
 		iHoardByCR[0][16] = () -> hoardC0() + Dice.custom(2, 6)
 				+ " 50 gp gems " + getMagicItem(Dice.custom(1), magicItemG);
-
 	}
 
 	private static String hoardC0() {

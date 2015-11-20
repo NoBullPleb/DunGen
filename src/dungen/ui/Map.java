@@ -22,6 +22,7 @@ public class Map extends JFrame {
 	private transient static ImageIcon roomImage = getImage("Room.png");
 	private transient static ImageIcon trapImage = getImage("Trap.png");
 	private transient static ImageIcon hazardImage = getImage("Hazard.png");
+	private transient static ImageIcon trickImage = getImage("Trick.png");
 	private transient static ImageIcon hallImage = getImage("Hall.png");
 	private transient static ImageIcon hallImage2 = getImage("Hall2.png");
 	private transient static ImageIcon partyImage = getImage("Party.png");
@@ -66,6 +67,8 @@ public class Map extends JFrame {
 			encounterLbl.setIcon(trapImage);
 		else if (encounter.contains("Hazard"))
 			encounterLbl.setIcon(hazardImage);
+		else if (encounter.contains("Trick"))
+			encounterLbl.setIcon(trickImage);
 		else if (hasParty)
 			encounterLbl.setIcon(otherPartyImage);
 		else

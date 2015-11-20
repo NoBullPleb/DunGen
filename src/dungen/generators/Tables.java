@@ -39,8 +39,11 @@ public class Tables {
 	private final static List<String> trapTriggers = getTable("Trap Triggers.txt");
 	private final static List<String> trapDamage = getTable("Trap Damage.txt");
 	private final static List<String> trapEffect = getTable("Trap Effects.txt");
+
 	private final static List<String> hazards = getTable("Hazards.txt");
 
+	private final static List<String> trickObjects = getTable("Trick Objects.txt");
+	private final static List<String> trickEffects = getTable("Trick Effects.txt");
 	private final static List<String> alignments = getTable("Alignments.txt");
 	private final static List<String> classes = getTable("Classes.txt");
 
@@ -112,29 +115,35 @@ public class Tables {
 		return getResultFromTable(Dice.custom(100), trapEffect);
 	}
 
-	private static int challenge = 40; // this will be used to slowly increase
+	private static int challenge = 60; // this will be used to slowly increase
 										// difficulty.
 
 	public static String getEvent() {
 		String event = "";
 		int result = Dice.custom(100);
-
 		result = Dice.custom(challenge); // roll for type of encounter
 		if (result > 95)
 			event = "Deadly Encounter: " + getEncounter(deadlyTable);
 		else if (result > 80)
 			event = "Hard Encounter: " + getEncounter(hardTable);
-		else if (result >= 30)
+		else if (result >= 60)
 			event = "Medium Encounter: " + getEncounter(mediumTable);
-		else if (result >= 20)
+		else if (result >= 50)
 			event = "Easy Encounter: " + getEncounter(easyTable);
-		else if (result >= 10)
-			event = "Hazard!\n"+getHazard();
-		else
+		else if (result >= 38)
+			event = "Hazard!\n" + getHazard();
+		else if (result >= 26)
 			event = "Trap!\n" + getTrap();
+		else if (result >= 20)
+			event = "Trick!\n" + getTrick();
 
 		challenge += 5;
 		return event;
+	}
+
+	private static String getTrick() {
+		return getResultFromTable(Dice.d20(), trickObjects) + "\n"
+				+ getResultFromTable(Dice.custom(100), trickEffects);
 	}
 
 	private static String[][] easyTable = getEncounterTable("Easy.txt");

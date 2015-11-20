@@ -140,6 +140,8 @@ public class Controls extends JFrame {
 				thisRoom.eastRoom.westRoom = thisRoom;
 				if (showY <= 0)
 					thisRoom.eastRoom.south = false;
+				else if (showY >= 10)
+					thisRoom.eastRoom.north = false;
 				if (showX >= 5)
 					thisRoom.eastRoom.east = false;
 				thisRoom.eastRoom.addDoor("west");
@@ -163,6 +165,8 @@ public class Controls extends JFrame {
 				thisRoom.westRoom.addDoor("east");
 				if (showY <= 0)
 					thisRoom.westRoom.south = false;
+				else if (showY >= 10)
+					thisRoom.westRoom.north = false;
 				if (showX <= -5)
 					thisRoom.westRoom.west = false;
 				rooms.put(p, thisRoom.westRoom);
@@ -183,6 +187,8 @@ public class Controls extends JFrame {
 				}
 				thisRoom.northRoom.southRoom = thisRoom;
 				thisRoom.northRoom.addDoor("south");
+				if (showY >= 10)
+					thisRoom.northRoom.north = false;
 				if (showX >= 5)
 					thisRoom.northRoom.east = false;
 				else if (showX <= -5)
@@ -211,7 +217,7 @@ public class Controls extends JFrame {
 				if (showX >= 5)
 					thisRoom.southRoom.east = false;
 				else if (showX <= -5)
-					thisRoom.westRoom.west = false;
+					thisRoom.southRoom.west = false;
 			}
 			thisRoom = thisRoom.southRoom;
 			showRoom();

@@ -5,12 +5,16 @@ import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
+
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+
+import dungen.generators.Tables;
 import dungen.pojos.Dungeon;
 
 public class Controls extends JFrame {
@@ -106,7 +110,6 @@ public class Controls extends JFrame {
 
 	public Controls() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("X: " + showX + " Y: " + showY);
 		setResizable(false);
 		setBounds(50, 50, 183, 137);
 
@@ -124,6 +127,16 @@ public class Controls extends JFrame {
 		load.addActionListener(Controls::load);
 		file.add(load);
 
+		JMenu generate = new JMenu("Generate");
+		JMenuItem trap = new JMenuItem("Trap");
+		trap.addActionListener(e -> {
+			GeneratedDialog jd = new GeneratedDialog();
+			jd.setTitle("Trap Generated");
+			jd.setText(Tables.getTrap());
+			jd.setVisible(true);
+		});
+		generate.add(trap);
+		menuBar.add(generate);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		eastButton.addActionListener(e -> {
@@ -227,5 +240,4 @@ public class Controls extends JFrame {
 		contentPane.add(eastButton, BorderLayout.EAST);
 		contentPane.add(southButton, BorderLayout.SOUTH);
 	}
-
 }

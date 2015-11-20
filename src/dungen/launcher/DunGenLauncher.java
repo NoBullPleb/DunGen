@@ -30,11 +30,8 @@ public final class DunGenLauncher {
 	private static final String version = currentVersion = Controls.version;
 
 	final public static void main(String[] args) {
-
 		try {
-
 			currentVersion = getCurrentVersion();
-
 			if (!currentVersion.equals(version)) {
 				jd.setTitle("DunGen v" + version);
 				jd.setLocationRelativeTo(null);

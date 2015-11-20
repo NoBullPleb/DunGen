@@ -21,6 +21,7 @@ public class Map extends JFrame {
 	public JLabel star = new JLabel();
 	private transient static ImageIcon roomImage = getImage("Room.png");
 	private transient static ImageIcon trapImage = getImage("Trap.png");
+	private transient static ImageIcon hazardImage = getImage("Hazard.png");
 	private transient static ImageIcon hallImage = getImage("Hall.png");
 	private transient static ImageIcon hallImage2 = getImage("Hall2.png");
 	private transient static ImageIcon partyImage = getImage("Party.png");
@@ -39,7 +40,7 @@ public class Map extends JFrame {
 
 			ImageIcon i = new ImageIcon(Map.class.getClassLoader().getResource(
 					"images/" + path));
-			
+
 			return i;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -63,6 +64,8 @@ public class Map extends JFrame {
 
 		if (encounter.contains("Trap"))
 			encounterLbl.setIcon(trapImage);
+		else if (encounter.contains("Hazard"))
+			encounterLbl.setIcon(hazardImage);
 		else if (hasParty)
 			encounterLbl.setIcon(otherPartyImage);
 		else

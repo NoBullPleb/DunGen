@@ -39,6 +39,7 @@ public class Tables {
 	private final static List<String> trapTriggers = getTable("Trap Triggers.txt");
 	private final static List<String> trapDamage = getTable("Trap Damage.txt");
 	private final static List<String> trapEffect = getTable("Trap Effects.txt");
+	private final static List<String> hazards = getTable("Hazards.txt");
 
 	private final static List<String> alignments = getTable("Alignments.txt");
 	private final static List<String> classes = getTable("Classes.txt");
@@ -103,6 +104,10 @@ public class Tables {
 				+ getTrapTrigger() + "\nDescription: " + getTrapEffect();
 	}
 
+	private static String getHazard() {
+		return getResultFromTable(Dice.d20(), hazards);
+	}
+
 	private static String getTrapEffect() {
 		return getResultFromTable(Dice.custom(100), trapEffect);
 	}
@@ -113,19 +118,21 @@ public class Tables {
 	public static String getEvent() {
 		String event = "";
 		int result = Dice.custom(100);
-		if (result > 33) { // 2/3 of rooms will have an event
-			result = Dice.custom(challenge); // roll for type of encounter
-			if (result > 95)
-				event = "Deadly Encounter: " + getEncounter(deadlyTable);
-			else if (result > 80)
-				event = "Hard Encounter: " + getEncounter(hardTable);
-			else if (result >= 30)
-				event = "Medium Encounter: " + getEncounter(mediumTable);
-			else if (result >= 20)
-				event = "Easy Encounter: " + getEncounter(easyTable);
-			else
-				event = "Trap!\n" + getTrap();
-		}
+
+		result = Dice.custom(challenge); // roll for type of encounter
+		if (result > 95)
+			event = "Deadly Encounter: " + getEncounter(deadlyTable);
+		else if (result > 80)
+			event = "Hard Encounter: " + getEncounter(hardTable);
+		else if (result >= 30)
+			event = "Medium Encounter: " + getEncounter(mediumTable);
+		else if (result >= 20)
+			event = "Easy Encounter: " + getEncounter(easyTable);
+		else if (result >= 10)
+			event = "Hazard!\n"+getHazard();
+		else
+			event = "Trap!\n" + getTrap();
+
 		challenge += 5;
 		return event;
 	}

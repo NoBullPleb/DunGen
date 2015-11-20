@@ -37,6 +37,9 @@ public class Tables {
 
 	private final static List<String> trapSeverity = getTable("Trap Severity.txt");
 	private final static List<String> trapTriggers = getTable("Trap Triggers.txt");
+	private final static List<String> trapDamage = getTable("Trap Damage.txt");
+	private final static List<String> trapEffect = getTable("Trap Effects.txt");
+
 	private final static List<String> alignments = getTable("Alignments.txt");
 	private final static List<String> classes = getTable("Classes.txt");
 
@@ -49,7 +52,21 @@ public class Tables {
 	}
 
 	public static String getTrapSeverity() {
-		return getResultFromTable(Dice.custom(6), trapSeverity);
+		String severity = getResultFromTable(Dice.custom(6), trapSeverity);
+		return severity + " " + getDamage(severity);
+	}
+
+	private static String getDamage(String severity) {
+		int index = 0;
+		if (severity.contains("Setback"))
+			index = 0;
+		else if (severity.contains("Dangerous"))
+			index = 1;
+		else
+			index = 2;
+		System.out.println("DAMAGES:"
+				+ getResultFromTable(InfoPanel.partyLevel, trapDamage));
+		return getResultFromTable(InfoPanel.partyLevel, trapDamage).split(",")[index];
 	}
 
 	public static String getMagicItem(int number, List<String> table) {
@@ -66,12 +83,17 @@ public class Tables {
 	private static String getResultFromTable(int result, List<String> table) {
 		final StringBuilder items = new StringBuilder();
 		try {
-			table.parallelStream().map(e -> e.split(","))
-					.filter(e -> e.length > 1).filter(e -> {
+			table.parallelStream()
+					.map(e -> e.split(","))
+					.filter(e -> e.length > 1)
+					.filter(e -> {
 						Integer max = new Integer(e[0].trim());
 						return result <= max;
-					}).findFirst()
-					.ifPresent(e -> items.append(e[e.length - 1]));
+					})
+					.findFirst()
+					.ifPresent(
+							e -> items.append(String.join(",", e).substring(
+									e[0].length() + 1)));
 			return items.toString().trim();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -82,7 +104,11 @@ public class Tables {
 
 	public static String getTrap() {
 		return "Severity: " + getTrapSeverity() + "\nTrigger: "
-				+ getTrapTrigger();
+				+ getTrapTrigger() + "\nDescription: " + getTrapEffect();
+	}
+
+	private static String getTrapEffect() {
+		return getResultFromTable(Dice.custom(100), trapEffect);
 	}
 
 	private static int challenge = 40; // this will be used to slowly increase
@@ -183,9 +209,9 @@ public class Tables {
 			return 3;
 	}
 
-	private static int whichTreasureSize(int CR) {
+	private static int whichTreasureSize(int CRGroup) {
 		int result = Dice.custom(100);
-		if (CR <= 1) {
+		if (CRGroup <= 1) {
 			if (result <= 30)
 				return 0;
 			if (result <= 60)
@@ -196,7 +222,7 @@ public class Tables {
 				return 3;
 			return 4;
 
-		} else if (CR == 2) {
+		} else if (CRGroup == 2) {
 			if (result <= 20)
 				return 0;
 			if (result <= 35)

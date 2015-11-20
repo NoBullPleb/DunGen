@@ -48,7 +48,6 @@ public class Controls extends JFrame {
 				mapView.setTitle("Dungeon Map");
 				mapView.setVisible(true);
 				ip.setVisible(true);
-
 				Controls.showRoom();
 			} catch (Exception e) {
 				e.printStackTrace();

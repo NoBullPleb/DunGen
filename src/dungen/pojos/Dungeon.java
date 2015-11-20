@@ -39,7 +39,6 @@ public class Dungeon implements Serializable {
 		partyLevel = InfoPanel.partyLevel;
 		for (int i = 0; i < Tables.monsterTypes.length; i++) {
 			types.add(InfoPanel.getTruth(i));
-			System.out.println(types.get(i));
 		}
 
 	}
@@ -84,7 +83,6 @@ public class Dungeon implements Serializable {
 
 	public void save(ActionEvent e) {
 		try {
-			System.out.println("Trying to save...");
 			File f = getFile(true);
 			f.delete();
 			f.createNewFile();

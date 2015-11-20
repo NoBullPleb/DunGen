@@ -113,7 +113,7 @@ public class Tables {
 	public static String getEvent() {
 		String event = "";
 		int result = Dice.custom(100);
-		if (result > 70) { // 90% of rooms will have an event
+		if (result > 33) { // 2/3 of rooms will have an event
 			result = Dice.custom(challenge); // roll for type of encounter
 			if (result > 95)
 				event = "Deadly Encounter: " + getEncounter(deadlyTable);
@@ -261,8 +261,8 @@ public class Tables {
 					.filter(e -> InfoPanel.getTruth(indexes.get(e[4])))
 					.collect(Collectors.toList());
 			mobs.forEach(e -> {
-				encounter.append("\n" + e[1] + " Size: " + e[3] + " XP: "
-						+ e[2] + " Book: " + e[6]);
+				encounter.append("\n" + e[1] + " XP: " + e[2] + " Book: "
+						+ e[6]);
 			});
 			attempts++;
 		}

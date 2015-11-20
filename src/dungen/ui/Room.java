@@ -1,6 +1,8 @@
 package dungen.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Scrollbar;
+import java.awt.peer.ScrollbarPeer;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -40,8 +42,8 @@ public class Room extends JFrame {
 			} else {
 				encounter = Tables.getEvent();
 			}
-		else 
-			encounter="This is the room where it all began... ";
+		else
+			encounter = "This is the room where it all began... ";
 	}
 	public Boolean north = (Math.random() * 100) > 100 - neverTellMeTheOdds,
 			south = (Math.random() * 100) > 100 - neverTellMeTheOdds,
@@ -83,11 +85,13 @@ public class Room extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 		JTextArea positionLbl = new JTextArea();
-		scrollPane.setViewportView(positionLbl);
-
+		positionLbl.setColumns(10);
+		positionLbl.setLineWrap(true);
+		positionLbl.setWrapStyleWord(true);
 		positionLbl.setLocation(0, 0);
 		positionLbl.setSize(200, 200);
 		positionLbl.setText(sb.toString());
+		scrollPane.setViewportView(positionLbl);
 
 	}
 }

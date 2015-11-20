@@ -361,8 +361,8 @@ public class Tables {
 		int result = Dice.custom(100);
 		if (treasureCR <= percentagesforHoard.length
 				&& percentagesforHoard[treasureCR] != null)
-			for (int i = 0; i < percentagesforHoard[0].length; i++)
-				if (result <= percentagesforHoard[0][i])
+			for (int i = 0; i < percentagesforHoard[treasureCR].length; i++)
+				if (result <= percentagesforHoard[treasureCR][i])
 					return iHoardByCR[treasureCR][i].get();
 		return "Hoard for CR " + treasureCR + " not yet implemented.";
 	}

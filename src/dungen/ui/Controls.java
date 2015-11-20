@@ -6,7 +6,6 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
 
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -136,6 +135,64 @@ public class Controls extends JFrame {
 			jd.setVisible(true);
 		});
 		generate.add(trap);
+		JMenuItem treasure = new JMenuItem("Treasure");
+		treasure.addActionListener(e -> {
+			GeneratedDialog jd = new GeneratedDialog();
+			jd.setTitle("Treasure Generated");
+			jd.setText(Tables.getTreasure());
+			jd.setVisible(true);
+		});
+		generate.add(treasure);
+		JMenuItem trick = new JMenuItem("Trick");
+		trick.addActionListener(e -> {
+			GeneratedDialog jd = new GeneratedDialog();
+			jd.setTitle("Trick Generated");
+			jd.setText(Tables.getTrick());
+			jd.setVisible(true);
+		});
+		generate.add(trick);
+		JMenu encounter = new JMenu("Encounter");
+		JMenuItem deadly = new JMenuItem("Deadly");
+		deadly.addActionListener(e -> {
+			GeneratedDialog jd = new GeneratedDialog();
+			jd.setTitle("Deadly Encounter Generated");
+			jd.setText(Tables.getEncounter(Tables.deadlyTable));
+			jd.setVisible(true);
+		});
+		JMenuItem hard = new JMenuItem("Hard");
+		hard.addActionListener(e -> {
+			GeneratedDialog jd = new GeneratedDialog();
+			jd.setTitle("Hard Encounter Generated");
+			jd.setText(Tables.getEncounter(Tables.hardTable));
+			jd.setVisible(true);
+		});
+		JMenuItem medium = new JMenuItem("Medium");
+		medium.addActionListener(e -> {
+			GeneratedDialog jd = new GeneratedDialog();
+			jd.setTitle("Medium Encounter Generated");
+			jd.setText(Tables.getEncounter(Tables.mediumTable));
+			jd.setVisible(true);
+		});
+		JMenuItem easy = new JMenuItem("Easy");
+		easy.addActionListener(e -> {
+			GeneratedDialog jd = new GeneratedDialog();
+			jd.setTitle("Easy Encounter Generated");
+			jd.setText(Tables.getEncounter(Tables.easyTable));
+			jd.setVisible(true);
+		});
+		encounter.add(deadly);
+		encounter.add(hard);
+		encounter.add(medium);
+		encounter.add(easy);
+		generate.add(encounter);
+		JMenuItem hazard = new JMenuItem("Hazard");
+		hazard.addActionListener(e -> {
+			GeneratedDialog jd = new GeneratedDialog();
+			jd.setTitle("Hazard Generated");
+			jd.setText(Tables.getHazard());
+			jd.setVisible(true);
+		});
+		generate.add(hazard);
 		menuBar.add(generate);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);

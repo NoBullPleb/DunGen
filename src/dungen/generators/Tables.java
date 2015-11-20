@@ -107,7 +107,7 @@ public class Tables {
 				+ getTrapTrigger() + "\nDescription: " + getTrapEffect();
 	}
 
-	private static String getHazard() {
+	public static String getHazard() {
 		return getResultFromTable(Dice.d20(), hazards);
 	}
 
@@ -141,15 +141,15 @@ public class Tables {
 		return event;
 	}
 
-	private static String getTrick() {
+	public static String getTrick() {
 		return getResultFromTable(Dice.d20(), trickObjects) + "\n"
 				+ getResultFromTable(Dice.custom(100), trickEffects);
 	}
 
-	private static String[][] easyTable = getEncounterTable("Easy.txt");
-	private static String[][] mediumTable = getEncounterTable("Medium.txt");
-	private static String[][] hardTable = getEncounterTable("Hard.txt");
-	private static String[][] deadlyTable = getEncounterTable("Deadly.txt");
+	public static String[][] easyTable = getEncounterTable("Easy.txt");
+	public static String[][] mediumTable = getEncounterTable("Medium.txt");
+	public static String[][] hardTable = getEncounterTable("Hard.txt");
+	public static String[][] deadlyTable = getEncounterTable("Deadly.txt");
 
 	private static String[][] getEncounterTable(String path) {
 		List<String> table = getTable(path);
@@ -251,7 +251,23 @@ public class Tables {
 		}
 	}
 
-	private static String getEncounter(String[][] table) {
+	public static String getTreasure(int result) {
+		int treasureCR = whichTreasureCR(result);
+		return "Individual Treasure: "
+				+ iTreasureByCR[treasureCR][whichTreasureSize(treasureCR)]
+						.get();
+	}
+
+	// assumes medium encounter.
+	public static String getTreasure() {
+		int result = Dice.custom(mediumTable[InfoPanel.partyLevel].length - 2) + 1;
+		int treasureCR = whichTreasureCR(result);
+		return "Individual Treasure: "
+				+ iTreasureByCR[treasureCR][whichTreasureSize(treasureCR)]
+						.get();
+	}
+
+	public static String getEncounter(String[][] table) {
 		List<String[]> mobs = new ArrayList<>();
 		StringBuilder encounter = new StringBuilder("");
 		int attempts = 0;
@@ -261,10 +277,7 @@ public class Tables {
 			encounter.append(table[InfoPanel.partyLevel][result].trim());
 			encounter.append(" CR:" + CRs[result]);
 			int treasureCR = whichTreasureCR(result);
-			encounter
-					.append("\nIndividual Treasure: "
-							+ iTreasureByCR[whichTreasureCR(result)][whichTreasureSize(treasureCR)]
-									.get());
+			encounter.append("\nIndividual Treasure: " + getTreasure(result));
 			// if it's hard or deadly, add a treasure hoard
 			if (table.equals(hardTable) || table.equals(deadlyTable)) {
 				encounter.append("\nHoard: " + getHoard(treasureCR));

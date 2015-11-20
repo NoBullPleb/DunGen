@@ -140,6 +140,8 @@ public class Controls extends JFrame {
 				thisRoom.eastRoom.westRoom = thisRoom;
 				if (showY <= 0)
 					thisRoom.eastRoom.south = false;
+				if (showX >= 5)
+					thisRoom.eastRoom.east = false;
 				thisRoom.eastRoom.addDoor("west");
 				rooms.put(p, thisRoom.eastRoom);
 			}
@@ -161,6 +163,8 @@ public class Controls extends JFrame {
 				thisRoom.westRoom.addDoor("east");
 				if (showY <= 0)
 					thisRoom.westRoom.south = false;
+				if (showX <= -5)
+					thisRoom.westRoom.west = false;
 				rooms.put(p, thisRoom.westRoom);
 			}
 			thisRoom = thisRoom.westRoom;
@@ -169,7 +173,6 @@ public class Controls extends JFrame {
 		northButton.addActionListener(e -> {
 			hideRoom();
 			showY++;
-
 			if (thisRoom.northRoom == null) {
 				Point p = new Point(showX, showY);
 				if (rooms.containsKey(p)) {
@@ -180,6 +183,10 @@ public class Controls extends JFrame {
 				}
 				thisRoom.northRoom.southRoom = thisRoom;
 				thisRoom.northRoom.addDoor("south");
+				if (showX >= 5)
+					thisRoom.northRoom.east = false;
+				else if (showX <= -5)
+					thisRoom.northRoom.west = false;
 				rooms.put(p, thisRoom.northRoom);
 			}
 			thisRoom = thisRoom.northRoom;
@@ -201,6 +208,10 @@ public class Controls extends JFrame {
 				thisRoom.southRoom.north = true;
 				if (showY <= 0)
 					thisRoom.southRoom.south = false;
+				if (showX >= 5)
+					thisRoom.southRoom.east = false;
+				else if (showX <= -5)
+					thisRoom.westRoom.west = false;
 			}
 			thisRoom = thisRoom.southRoom;
 			showRoom();

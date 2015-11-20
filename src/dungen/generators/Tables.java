@@ -58,14 +58,10 @@ public class Tables {
 
 	private static String getDamage(String severity) {
 		int index = 0;
-		if (severity.contains("Setback"))
-			index = 0;
-		else if (severity.contains("Dangerous"))
+		if (severity.contains("Dangerous"))
 			index = 1;
-		else
+		else if (severity.contains("Deadly"))
 			index = 2;
-		System.out.println("DAMAGES:"
-				+ getResultFromTable(InfoPanel.partyLevel, trapDamage));
 		return getResultFromTable(InfoPanel.partyLevel, trapDamage).split(",")[index];
 	}
 

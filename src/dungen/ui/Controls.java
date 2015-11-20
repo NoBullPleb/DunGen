@@ -47,6 +47,7 @@ public class Controls extends JFrame {
 						controls.getY());
 				mapView.setTitle("Dungeon Map");
 				mapView.setVisible(true);
+				ip.setVisible(true);
 
 				Controls.showRoom();
 			} catch (Exception e) {
@@ -197,7 +198,6 @@ public class Controls extends JFrame {
 					thisRoom.southRoom = new Room("north");
 				}
 				thisRoom.southRoom.northRoom = thisRoom;
-
 				rooms.put(p, thisRoom.southRoom);
 				thisRoom.southRoom.north = true;
 				if (showY <= 0)

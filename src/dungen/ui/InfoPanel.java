@@ -70,6 +70,5 @@ public class InfoPanel extends JFrame {
 		JLabel lblInclude = new JLabel("Include: ");
 		lblInclude.setBounds(6, 25, 61, 16);
 		contentPane.add(lblInclude);
-		this.setVisible(true);
 	}
 }

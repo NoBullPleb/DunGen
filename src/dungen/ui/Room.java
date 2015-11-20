@@ -1,8 +1,6 @@
 package dungen.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Scrollbar;
-import java.awt.peer.ScrollbarPeer;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;

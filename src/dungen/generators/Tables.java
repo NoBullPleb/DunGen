@@ -211,7 +211,8 @@ public class Tables {
 
 	}
 
-	private static int whichTreasureCR(int result) {
+	private static int whichTreasureCR(Double result) {
+		// rewards are grouped weird.
 		if (result <= 8)
 			return 0;
 		else if (result <= 14)
@@ -252,8 +253,7 @@ public class Tables {
 		}
 	}
 
-	public static String getTreasure(int result) {
-		int treasureCR = whichTreasureCR(result);
+	public static String getTreasure(int treasureCR) {
 		return "Individual Treasure: "
 				+ iTreasureByCR[treasureCR][whichTreasureSize(treasureCR)]
 						.get();
@@ -261,7 +261,8 @@ public class Tables {
 
 	// assumes medium encounter.
 	public static String getTreasure() {
-		int result = Dice.custom(mediumTable[InfoPanel.partyLevel].length - 2) + 1;
+		Double result = Dice
+				.custom(mediumTable[InfoPanel.partyLevel].length - 2) + 1.0;
 		int treasureCR = whichTreasureCR(result);
 		return "Individual Treasure: "
 				+ iTreasureByCR[treasureCR][whichTreasureSize(treasureCR)]
@@ -277,8 +278,8 @@ public class Tables {
 			int result = Dice.custom(table[InfoPanel.partyLevel].length - 2) + 1;
 			encounter.append(table[InfoPanel.partyLevel][result].trim());
 			encounter.append(" CR:" + CRs[result]);
-			int treasureCR = whichTreasureCR(result);
-			encounter.append("\n" + getTreasure(result));
+			int treasureCR = whichTreasureCR(Double.parseDouble(CRs[result]));
+			encounter.append("\n" + getTreasure(treasureCR));
 			// if it's hard or deadly, add a treasure hoard
 			if (table.equals(hardTable) || table.equals(deadlyTable)) {
 				encounter.append("\nHoard: " + getHoard(treasureCR));
@@ -348,7 +349,7 @@ public class Tables {
 		// 3d6 50 gp gems
 		// 3d6 100 gp gems
 		// 2d4 250 gp art objects
-		iHoardByCR[1] = new Supplier[28];
+		iHoardByCR[1] = new Supplier[29];
 		iHoardByCR[1][0] = () -> hoardC1();
 		iHoardByCR[1][1] = () -> hoardC1() + " "
 				+ Dice.custom("2d4 25gp art objects");
@@ -416,15 +417,15 @@ public class Tables {
 		iHoardByCR[1][24] = () -> hoardC1() + " "
 				+ Dice.custom("2d4 250 gp art objects ")
 				+ getMagicItem(Dice.custom(1, 4), magicItemF);
-		iHoardByCR[1][1] = () -> hoardC1() + " "
+		iHoardByCR[1][25] = () -> hoardC1() + " "
 				+ Dice.custom("2d4 25gp art objects")
 				+ getMagicItem(Dice.custom(1, 4), magicItemG);
-		iHoardByCR[1][2] = () -> hoardC1() + " "
+		iHoardByCR[1][26] = () -> hoardC1() + " "
 				+ Dice.custom("3d6 50 gp gems")
 				+ getMagicItem(Dice.custom(1, 4), magicItemG);
-		iHoardByCR[1][3] = () -> hoardC1() + " "
+		iHoardByCR[1][27] = () -> hoardC1() + " "
 				+ Dice.custom("3d6 100 gp gems") + getMagicItem(1, magicItemH);
-		iHoardByCR[1][4] = () -> hoardC1() + " "
+		iHoardByCR[1][28] = () -> hoardC1() + " "
 				+ Dice.custom("2d4 250 gp art objects ")
 				+ getMagicItem(1, magicItemH);
 
@@ -446,7 +447,11 @@ public class Tables {
 	static {
 		int[] percents0 = { 6, 16, 26, 36, 44, 52, 60, 65, 70, 75, 78, 80, 85,
 				92, 97, 99, 100 };
+		int[] percents1 = { 04, 10, 16, 22, 28, 32, 36, 40, 44, 49, 54, 59, 63,
+				66, 69, 72, 74, 76, 78, 79, 80, 84, 88, 91, 94, 96, 98, 99, 100 };
+
 		percentagesforHoard[0] = percents0;
+		percentagesforHoard[1] = percents1;
 	}
 
 	private static String getHoard(int treasureCR) {
@@ -456,11 +461,11 @@ public class Tables {
 			for (int i = 0; i < percentagesforHoard[treasureCR].length; i++)
 				if (result <= percentagesforHoard[treasureCR][i])
 					return iHoardByCR[treasureCR][i].get();
-		return "Hoard for CR " + treasureCR + " not yet implemented.";
+		return "Hoard for CR GROUP " + treasureCR + " not yet implemented.";
 	}
 
 	// assumes the CR = ECL
 	public static String getHoard() {
-		return getHoard(whichTreasureCR(InfoPanel.partyLevel));
+		return getHoard(whichTreasureCR(InfoPanel.partyLevel + 0.0));
 	}
 }

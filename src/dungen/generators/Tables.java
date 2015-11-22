@@ -278,7 +278,7 @@ public class Tables {
 			encounter.append(table[InfoPanel.partyLevel][result].trim());
 			encounter.append(" CR:" + CRs[result]);
 			int treasureCR = whichTreasureCR(result);
-			encounter.append("\nIndividual Treasure: " + getTreasure(result));
+			encounter.append("\n" + getTreasure(result));
 			// if it's hard or deadly, add a treasure hoard
 			if (table.equals(hardTable) || table.equals(deadlyTable)) {
 				encounter.append("\nHoard: " + getHoard(treasureCR));

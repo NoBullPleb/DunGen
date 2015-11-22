@@ -195,6 +195,17 @@ public class Tables {
 		return encounter.toString();
 	}
 
+	private final static List<String> scrollMishaps = getTable("Scroll Mishaps.csv");
+	private final static List<String> potionMishaps = getTable("Potion Mishaps.txt");
+
+	public static String scrollMishap() {
+		return getResultFromTable(Dice.roll(6), scrollMishaps);
+	}
+
+	public static String potionMishap() {
+		return getResultFromTable(Dice.roll(100), potionMishaps);
+	}
+
 	public static int whichTreasureCR(Double result) {
 		// rewards are grouped weird.
 		if (result <= 4)

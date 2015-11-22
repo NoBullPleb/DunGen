@@ -138,7 +138,6 @@ public class Controls extends JFrame {
 			jd.setText(Tables.getTrap());
 			jd.setVisible(true);
 		});
-		generate.add(trap);
 		JMenuItem treasure = new JMenuItem("Treasure");
 		treasure.addActionListener(e -> {
 			GeneratedDialog jd = new GeneratedDialog();
@@ -146,7 +145,6 @@ public class Controls extends JFrame {
 			jd.setText(Treasure.getTreasure());
 			jd.setVisible(true);
 		});
-		generate.add(treasure);
 		JMenuItem trick = new JMenuItem("Trick");
 		trick.addActionListener(e -> {
 			GeneratedDialog jd = new GeneratedDialog();
@@ -154,7 +152,6 @@ public class Controls extends JFrame {
 			jd.setText(Tables.getTrick());
 			jd.setVisible(true);
 		});
-		generate.add(trick);
 		JMenu encounter = new JMenu("Encounter");
 		JMenuItem deadly = new JMenuItem("Deadly");
 		deadly.addActionListener(e -> {
@@ -188,7 +185,7 @@ public class Controls extends JFrame {
 		encounter.add(hard);
 		encounter.add(medium);
 		encounter.add(easy);
-		generate.add(encounter);
+
 		JMenuItem hazard = new JMenuItem("Hazard");
 		hazard.addActionListener(e -> {
 			GeneratedDialog jd = new GeneratedDialog();
@@ -196,7 +193,7 @@ public class Controls extends JFrame {
 			jd.setText(Tables.getHazard());
 			jd.setVisible(true);
 		});
-		generate.add(hazard);
+
 		JMenuItem hoard = new JMenuItem("Hoard");
 		hoard.addActionListener(e -> {
 			GeneratedDialog jd = new GeneratedDialog();
@@ -204,8 +201,32 @@ public class Controls extends JFrame {
 			jd.setText(Hoard.getHoard());
 			jd.setVisible(true);
 		});
+		generate.add(encounter);
+		generate.add(hazard);
 		generate.add(hoard);
+		generate.add(trap);
+		generate.add(treasure);
+		generate.add(trick);
 		menuBar.add(generate);
+
+		JMenu mishaps = new JMenu("Mishaps");
+		JMenuItem scroll = new JMenuItem("Scroll");
+		scroll.addActionListener(e -> {
+			GeneratedDialog jd = new GeneratedDialog();
+			jd.setTitle("Scroll mishap!");
+			jd.setText(Tables.scrollMishap());
+			jd.setVisible(true);
+		});
+		JMenuItem potion = new JMenuItem("Potion");
+		potion.addActionListener(e -> {
+			GeneratedDialog jd = new GeneratedDialog();
+			jd.setTitle("Scroll mishap!");
+			jd.setText(Tables.potionMishap());
+			jd.setVisible(true);
+		});
+		mishaps.add(potion);
+		mishaps.add(scroll);
+		menuBar.add(mishaps);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		eastButton.addActionListener(e -> {

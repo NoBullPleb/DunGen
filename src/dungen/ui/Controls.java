@@ -15,6 +15,8 @@ import javax.swing.JMenuItem;
 
 import dungen.generators.Tables;
 import dungen.pojos.Dungeon;
+import dungen.pojos.Hoard;
+import dungen.pojos.Treasure;
 
 public class Controls extends JFrame {
 	public static String version = "1.0.0";
@@ -141,7 +143,7 @@ public class Controls extends JFrame {
 		treasure.addActionListener(e -> {
 			GeneratedDialog jd = new GeneratedDialog();
 			jd.setTitle("Treasure Generated");
-			jd.setText(Tables.getTreasure());
+			jd.setText(Treasure.getTreasure());
 			jd.setVisible(true);
 		});
 		generate.add(treasure);
@@ -199,7 +201,7 @@ public class Controls extends JFrame {
 		hoard.addActionListener(e -> {
 			GeneratedDialog jd = new GeneratedDialog();
 			jd.setTitle("Hoard Generated");
-			jd.setText(Tables.getHoard());
+			jd.setText(Hoard.getHoard());
 			jd.setVisible(true);
 		});
 		generate.add(hoard);

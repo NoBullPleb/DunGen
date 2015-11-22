@@ -30,6 +30,8 @@ public class Controls extends JFrame {
 	{
 		thisRoom.north = true;
 		thisRoom.south = false;
+		thisRoom.west = false;
+		thisRoom.east = false;
 		thisRoom.encounter = "This is the room where it all began... ";
 		rooms.put(new Point(showX, showY), thisRoom);
 	}

@@ -34,6 +34,7 @@ public class Tables {
 	private final static List<String> magicItemE = getTable("Magic Item Table E.txt");
 	private final static List<String> magicItemF = getTable("Magic Item Table F.txt");
 	private final static List<String> magicItemG = getTable("Magic Item Table G.txt");
+	private final static List<String> magicItemH = getTable("Magic Item Table H.txt");
 
 	private final static List<String> trapSeverity = getTable("Trap Severity.txt");
 	private final static List<String> trapTriggers = getTable("Trap Triggers.txt");
@@ -303,50 +304,141 @@ public class Tables {
 		iHoardByCR[0] = new Supplier[17];
 		// No magic items
 		iHoardByCR[0][0] = () -> hoardC0();
-		iHoardByCR[0][1] = () -> hoardC0() + Dice.custom(2, 6) + " 10gpgems ";
-		iHoardByCR[0][2] = () -> hoardC0() + Dice.custom(2, 4)
-				+ " 25 gp art objects";
-		iHoardByCR[0][3] = () -> hoardC0() + Dice.custom(2, 6) + " 50 gp gems ";
+		iHoardByCR[0][1] = () -> hoardC0() + Dice.custom("2d6 10gp gems ");
+		iHoardByCR[0][2] = () -> hoardC0()
+				+ Dice.custom("2d4 25 gp art objects");
+		iHoardByCR[0][3] = () -> hoardC0() + Dice.custom("2d6 50 gp gems ");
 		// A prizes
-		iHoardByCR[0][4] = () -> hoardC0() + Dice.custom(2, 6) + " 10 gp gem "
+		iHoardByCR[0][4] = () -> hoardC0() + Dice.custom("2d6 10 gp gem ")
 				+ getMagicItem(Dice.custom(6), magicItemA);
-		iHoardByCR[0][5] = () -> hoardC0() + Dice.custom(2, 4)
-				+ " 25 gp art objects "
+		iHoardByCR[0][5] = () -> hoardC0()
+				+ Dice.custom("2d4  25 gp art objects ")
 				+ getMagicItem(Dice.custom(6), magicItemA);
-		iHoardByCR[0][6] = () -> hoardC0() + Dice.custom(2, 6) + " 50 gp gems "
+		iHoardByCR[0][6] = () -> hoardC0() + Dice.custom("2d6 50 gp gems ")
 				+ getMagicItem(Dice.custom(6), magicItemA);
 		// B prizes
-		iHoardByCR[0][7] = () -> hoardC0() + Dice.custom(2, 6) + " 10 gp gems "
+		iHoardByCR[0][7] = () -> hoardC0() + Dice.custom("2d6 10 gp gems ")
 				+ getMagicItem(Dice.custom(4), magicItemB);
-		iHoardByCR[0][8] = () -> hoardC0() + Dice.custom(2, 4)
-				+ " 25 gp art objects "
+		iHoardByCR[0][8] = () -> hoardC0()
+				+ Dice.custom("2d4 25 gp art objects ")
 				+ getMagicItem(Dice.custom(4), magicItemB);
-		iHoardByCR[0][9] = () -> hoardC0() + Dice.custom(2, 6) + " 50 gp gems "
+		iHoardByCR[0][9] = () -> hoardC0() + Dice.custom("2d6 50 gp gems ")
 				+ getMagicItem(Dice.custom(4), magicItemB);
 		// C prizes
-		iHoardByCR[0][10] = () -> hoardC0() + Dice.custom(2, 6)
-				+ " 10 gp gems " + getMagicItem(Dice.custom(1, 4), magicItemC);
+		iHoardByCR[0][10] = () -> hoardC0() + Dice.custom("2d6 10 gp gems ")
+				+ getMagicItem(Dice.custom(1, 4), magicItemC);
 		iHoardByCR[0][11] = () -> hoardC0() + Dice.custom(2, 4)
 				+ " 25 gp art objects "
 				+ getMagicItem(Dice.custom(1, 4), magicItemC);
-		iHoardByCR[0][12] = () -> hoardC0() + Dice.custom(2, 6)
-				+ " 50 gp gems " + getMagicItem(Dice.custom(1, 4), magicItemC);
+		iHoardByCR[0][12] = () -> hoardC0() + Dice.custom("2d6 50 gp gems")
+				+ getMagicItem(Dice.custom(1, 4), magicItemC);
 		// F Prizes
-		iHoardByCR[0][13] = () -> hoardC0() + Dice.custom(2, 4)
-				+ " 25 gp art objects\n"
+		iHoardByCR[0][13] = () -> hoardC0()
+				+ Dice.custom("2d4 25 gp art objects")
 				+ getMagicItem(Dice.custom(1, 4), magicItemF);
-		iHoardByCR[0][14] = () -> hoardC0() + Dice.custom(2, 6)
-				+ " 50 gp gems\n" + getMagicItem(Dice.custom(1, 4), magicItemF);
+		iHoardByCR[0][14] = () -> hoardC0() + Dice.custom("2d6 50 gp gems")
+				+ getMagicItem(Dice.custom(1, 4), magicItemF);
 		// G Prizes
-		iHoardByCR[0][15] = () -> hoardC0() + Dice.custom(2, 4)
-				+ " 25 gp art objects " + getMagicItem(1, magicItemG);
-		iHoardByCR[0][16] = () -> hoardC0() + Dice.custom(2, 6)
-				+ " 50 gp gems " + getMagicItem(Dice.custom(1), magicItemG);
+		iHoardByCR[0][15] = () -> hoardC0()
+				+ Dice.custom("2d4  25 gp art objects ")
+				+ getMagicItem(1, magicItemG);
+		iHoardByCR[0][16] = () -> hoardC0() + Dice.custom("2d6 50 gp gems ")
+				+ getMagicItem(1, magicItemG);
+		// 2d4 25 gp art objects
+		// 3d6 50 gp gems
+		// 3d6 100 gp gems
+		// 2d4 250 gp art objects
+		iHoardByCR[1] = new Supplier[28];
+		iHoardByCR[1][0] = () -> hoardC1();
+		iHoardByCR[1][1] = () -> hoardC1() + " "
+				+ Dice.custom("2d4 25gp art objects");
+		iHoardByCR[1][2] = () -> hoardC1() + " "
+				+ Dice.custom("3d6 50 gp gems");
+		iHoardByCR[1][3] = () -> hoardC1() + " "
+				+ Dice.custom("3d6 100 gp gems");
+		iHoardByCR[1][4] = () -> hoardC1() + " "
+				+ Dice.custom("2d4 250 gp art objects ");
+		iHoardByCR[1][5] = () -> hoardC1() + " "
+				+ Dice.custom("2d4 25gp art objects ")
+				+ getMagicItem(Dice.custom(6), magicItemA);
+		iHoardByCR[1][6] = () -> hoardC1() + " "
+				+ Dice.custom("3d6 50 gp gems ")
+				+ getMagicItem(Dice.custom(6), magicItemA);
+		iHoardByCR[1][7] = () -> hoardC1() + " "
+				+ Dice.custom("3d6 100 gp gems ")
+				+ getMagicItem(Dice.custom(6), magicItemA);
+		iHoardByCR[1][8] = () -> hoardC1() + " "
+				+ Dice.custom("2d4 250 gp art objects ")
+				+ getMagicItem(Dice.custom(6), magicItemA);
+		iHoardByCR[1][9] = () -> hoardC1() + " "
+				+ Dice.custom("2d4 25gp art objects ")
+				+ getMagicItem(Dice.custom(4), magicItemB);
+		iHoardByCR[1][10] = () -> hoardC1() + " "
+				+ Dice.custom("3d6 50 gp gems ")
+				+ getMagicItem(Dice.custom(4), magicItemB);
+		iHoardByCR[1][11] = () -> hoardC1() + " "
+				+ Dice.custom("3d6 100 gp gems ")
+				+ getMagicItem(Dice.custom(4), magicItemB);
+		iHoardByCR[1][12] = () -> hoardC1() + " "
+				+ Dice.custom("2d4 250 gp art objects ")
+				+ getMagicItem(Dice.custom(4), magicItemB);
+		iHoardByCR[1][13] = () -> hoardC1() + " "
+				+ Dice.custom("2d4 25gp art objects ")
+				+ getMagicItem(Dice.custom(4), magicItemC);
+		iHoardByCR[1][14] = () -> hoardC1() + " "
+				+ Dice.custom("3d6 50 gp gems ")
+				+ getMagicItem(Dice.custom(4), magicItemC);
+		iHoardByCR[1][15] = () -> hoardC1() + " "
+				+ Dice.custom("3d6 100 gp gems ")
+				+ getMagicItem(Dice.custom(4), magicItemC);
+		iHoardByCR[1][16] = () -> hoardC1() + " "
+				+ Dice.custom("2d4 250 gp art objects ")
+				+ getMagicItem(Dice.custom(4), magicItemC);
+		iHoardByCR[1][17] = () -> hoardC1() + " "
+				+ Dice.custom("2d4 25gp art objects ")
+				+ getMagicItem(1, magicItemD);
+		iHoardByCR[1][18] = () -> hoardC1() + " "
+				+ Dice.custom("3d6 50 gp gems ") + getMagicItem(1, magicItemD);
+		iHoardByCR[1][19] = () -> hoardC1() + " "
+				+ Dice.custom("3d6 100 gp gems ") + getMagicItem(1, magicItemD);
+		iHoardByCR[1][20] = () -> hoardC1() + " "
+				+ Dice.custom("2d4 250 gp art objects ")
+				+ getMagicItem(1, magicItemD);
+		iHoardByCR[1][21] = () -> hoardC1() + " "
+				+ Dice.custom("2d4 25gp art objects ")
+				+ getMagicItem(Dice.custom(1, 4), magicItemF);
+		iHoardByCR[1][22] = () -> hoardC1() + " "
+				+ Dice.custom("3d6 50 gp gems ")
+				+ getMagicItem(Dice.custom(1, 4), magicItemF);
+		iHoardByCR[1][23] = () -> hoardC1() + " "
+				+ Dice.custom("3d6 100 gp gems ")
+				+ getMagicItem(Dice.custom(1, 4), magicItemF);
+		iHoardByCR[1][24] = () -> hoardC1() + " "
+				+ Dice.custom("2d4 250 gp art objects ")
+				+ getMagicItem(Dice.custom(1, 4), magicItemF);
+		iHoardByCR[1][1] = () -> hoardC1() + " "
+				+ Dice.custom("2d4 25gp art objects")
+				+ getMagicItem(Dice.custom(1, 4), magicItemG);
+		iHoardByCR[1][2] = () -> hoardC1() + " "
+				+ Dice.custom("3d6 50 gp gems")
+				+ getMagicItem(Dice.custom(1, 4), magicItemG);
+		iHoardByCR[1][3] = () -> hoardC1() + " "
+				+ Dice.custom("3d6 100 gp gems") + getMagicItem(1, magicItemH);
+		iHoardByCR[1][4] = () -> hoardC1() + " "
+				+ Dice.custom("2d4 250 gp art objects ")
+				+ getMagicItem(1, magicItemH);
+
 	}
 
 	private static String hoardC0() {
-		return Dice.custom(6, 6) * 100 + " CP " + Dice.custom(3, 6) * 100
-				+ " SP " + Dice.custom(2, 6) + " GP ";
+		return Dice.custom(6, 6) * 100 + "CP " + Dice.custom(3, 6) * 100
+				+ " SP " + Dice.custom(2, 6) + "GP ";
+	}
+
+	private static String hoardC1() {
+		return Dice.custom(2, 6) * 100 + "CP " + Dice.custom(2, 6) * 1000
+				+ "SP " + Dice.custom(6, 6) * 100 + "GP " + Dice.custom(3, 6)
+				* 10 + "PP";
 	}
 
 	static int[][] percentagesforHoard = new int[1][];
@@ -365,5 +457,10 @@ public class Tables {
 				if (result <= percentagesforHoard[treasureCR][i])
 					return iHoardByCR[treasureCR][i].get();
 		return "Hoard for CR " + treasureCR + " not yet implemented.";
+	}
+
+	// assumes the CR = ECL
+	public static String getHoard() {
+		return getHoard(whichTreasureCR(InfoPanel.partyLevel));
 	}
 }

@@ -193,6 +193,14 @@ public class Controls extends JFrame {
 			jd.setVisible(true);
 		});
 		generate.add(hazard);
+		JMenuItem hoard = new JMenuItem("Hoard");
+		hoard.addActionListener(e -> {
+			GeneratedDialog jd = new GeneratedDialog();
+			jd.setTitle("Hoard Generated");
+			jd.setText(Tables.getHoard());
+			jd.setVisible(true);
+		});
+		generate.add(hoard);
 		menuBar.add(generate);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);

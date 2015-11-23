@@ -29,7 +29,7 @@ public class Hoard {
 	public static String getMagicItem(int number, List<String> table) {
 		StringBuilder result = new StringBuilder();
 		for (int i = 0; i < number; i++)
-			result.append(getMagicItem(table) + " ");
+			result.append("\n" + getMagicItem(table));
 		return result.toString();
 	}
 

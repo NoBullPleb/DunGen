@@ -204,7 +204,7 @@ public class Tables {
 	}
 
 	public static String meleeMishap() {
-		return getResultFromTable(Dice.roll(6), meleeMishaps);
+		return getResultFromTable(Dice.roll(100), meleeMishaps);
 	}
 
 	public static String potionMishap() {

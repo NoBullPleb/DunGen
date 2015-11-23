@@ -224,10 +224,10 @@ public class Controls extends JFrame {
 			jd.setText(Tables.potionMishap());
 			jd.setVisible(true);
 		});
-		JMenuItem melee = new JMenuItem("Melee");
+		JMenuItem melee = new JMenuItem("Attack");
 		melee.addActionListener(e -> {
 			GeneratedDialog jd = new GeneratedDialog();
-			jd.setTitle("Melee mishap!");
+			jd.setTitle("Attack mishap!");
 			jd.setText(Tables.meleeMishap());
 			jd.setVisible(true);
 		});

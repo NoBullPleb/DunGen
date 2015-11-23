@@ -72,7 +72,6 @@ public class Controls extends JFrame {
 		thisRoom.setLocation(controls.getX(),
 				controls.getY() + controls.getHeight());
 		thisRoom.setVisible(true);
-		controls.setTitle("DunGen v" + version);
 		if (!thisRoom.drawn) {
 			mapView.addRoom(showX, showY, thisRoom.encounter, thisRoom.hasNPCs);
 			if (thisRoom.north)
@@ -114,6 +113,7 @@ public class Controls extends JFrame {
 	public Controls() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
+		setTitle("DunGen v" + version);
 		setBounds(50, 50, 183, 137);
 
 		menuBar = new JMenuBar();

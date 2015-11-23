@@ -197,9 +197,14 @@ public class Tables {
 
 	private final static List<String> scrollMishaps = getTable("Scroll Mishaps.csv");
 	private final static List<String> potionMishaps = getTable("Potion Mishaps.txt");
+	private final static List<String> meleeMishaps = getTable("Melee Mishaps.txt");
 
 	public static String scrollMishap() {
 		return getResultFromTable(Dice.roll(6), scrollMishaps);
+	}
+
+	public static String meleeMishap() {
+		return getResultFromTable(Dice.roll(6), meleeMishaps);
 	}
 
 	public static String potionMishap() {

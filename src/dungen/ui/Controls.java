@@ -1,7 +1,5 @@
 package dungen.ui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
@@ -12,68 +10,46 @@ import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JTextArea;
 
 import dungen.generators.Tables;
 import dungen.pojos.Dungeon;
 import dungen.pojos.Hoard;
+import dungen.pojos.Room;
 import dungen.pojos.Treasure;
 
+import javax.swing.JScrollPane;
+import javax.swing.JLabel;
+
 public class Controls extends JFrame {
-	public static String version = "1.0.0";
+	public static String version = "1.5.0";
 	private static final long serialVersionUID = 7985611292217902489L;
 	transient final static JButton southButton = new JButton("Go South"),
 			eastButton = new JButton("Go East"), westButton = new JButton(
 					"Go West"), northButton = new JButton("Go North");
 	// used to track where rooms are. If one is already at that location, we can
 	// load it.
+	public static JTextArea roomDetails = new JTextArea();
+	private static JLabel lblRoomDetails = new JLabel("Room Details");
 	public static HashMap<Point, Room> rooms = new HashMap<>();
 	public static Room thisRoom = new Room();
 	public static int showX = 0, showY = 0;
-	{
-		thisRoom.north = true;
-		thisRoom.south = false;
-		thisRoom.west = false;
-		thisRoom.east = false;
-		thisRoom.encounter = "This is the room where it all began... ";
-		rooms.put(new Point(showX, showY), thisRoom);
-	}
+	private static int xLimit = 7, yLimit = 13;
 	public static Map mapView = new Map();
 	public static InfoPanel ip = new InfoPanel();
 	private transient final static JPanel contentPane = new JPanel();
 	private transient JMenuBar menuBar;
-	private transient JMenu file;
-	private transient JMenuItem Save;
-	private transient JMenuItem load;
-	private static Controls controls = new Controls();
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
-			try {
-				controls.setVisible(true);
-				mapView.setLocation(controls.getX() + controls.getWidth(),
-						controls.getY());
-				mapView.setTitle("Dungeon Map");
-				mapView.setVisible(true);
-				ip.setVisible(true);
-				Controls.showRoom();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-
-	}
 
 	private static void hideRoom() {
-		thisRoom.encounter = thisRoom.roomDetails.getText();
-		thisRoom.setVisible(false);
+		thisRoom.details = roomDetails.getText();
+		roomDetails.setText("");
 	}
 
 	private static void showRoom() {
-		thisRoom.setLocation(controls.getX(),
-				controls.getY() + controls.getHeight());
-		thisRoom.setVisible(true);
+		roomDetails.setText(thisRoom.details);
+		lblRoomDetails.setText("Room Details: " + thisRoom.roomNumber);
 		if (!thisRoom.drawn) {
-			mapView.addRoom(showX, showY, thisRoom.encounter, thisRoom.hasNPCs);
+			mapView.addRoom(showX, showY, thisRoom.details, thisRoom.hasNPCs);
 			if (thisRoom.north)
 				mapView.addHall(showX, showY, "north");
 			if (thisRoom.south)
@@ -114,40 +90,47 @@ public class Controls extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setTitle("DunGen v" + version);
-		setBounds(50, 50, 183, 137);
-
+		setBounds(0, 50, 271, 580);
+		thisRoom.north = true;
+		thisRoom.south = false;
+		thisRoom.west = false;
+		thisRoom.east = false;
+		thisRoom.details = "This is the room where it all began... ";
+		rooms.put(new Point(showX, showY), thisRoom);
 		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-
-		file = new JMenu("File");
+		JMenu file = new JMenu("File");
 		menuBar.add(file);
 
-		Save = new JMenuItem("Save");
+		JMenuItem Save = new JMenuItem("Save");
 		Save.addActionListener(new Dungeon()::save);
 		file.add(Save);
 
-		load = new JMenuItem("Load");
+		JMenuItem load = new JMenuItem("Load");
 		load.addActionListener(Controls::load);
 		file.add(load);
+		JMenuItem exit = new JMenuItem("Exit");
+		exit.addActionListener(e -> System.exit(0));
+		file.add(exit);
 
 		JMenu generate = new JMenu("Generate");
 		JMenuItem trap = new JMenuItem("Trap");
 		trap.addActionListener(e -> {
-			GeneratedDialog jd = new GeneratedDialog();
+			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Trap Generated");
 			jd.setText(Tables.getTrap());
 			jd.setVisible(true);
 		});
 		JMenuItem treasure = new JMenuItem("Treasure");
 		treasure.addActionListener(e -> {
-			GeneratedDialog jd = new GeneratedDialog();
+			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Treasure Generated");
 			jd.setText(Treasure.getTreasure());
 			jd.setVisible(true);
 		});
 		JMenuItem trick = new JMenuItem("Trick");
 		trick.addActionListener(e -> {
-			GeneratedDialog jd = new GeneratedDialog();
+			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Trick Generated");
 			jd.setText(Tables.getTrick());
 			jd.setVisible(true);
@@ -155,28 +138,28 @@ public class Controls extends JFrame {
 		JMenu encounter = new JMenu("Encounter");
 		JMenuItem deadly = new JMenuItem("Deadly");
 		deadly.addActionListener(e -> {
-			GeneratedDialog jd = new GeneratedDialog();
+			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Deadly Encounter Generated");
 			jd.setText(Tables.getEncounter(Tables.deadlyTable));
 			jd.setVisible(true);
 		});
 		JMenuItem hard = new JMenuItem("Hard");
 		hard.addActionListener(e -> {
-			GeneratedDialog jd = new GeneratedDialog();
+			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Hard Encounter Generated");
 			jd.setText(Tables.getEncounter(Tables.hardTable));
 			jd.setVisible(true);
 		});
 		JMenuItem medium = new JMenuItem("Medium");
 		medium.addActionListener(e -> {
-			GeneratedDialog jd = new GeneratedDialog();
+			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Medium Encounter Generated");
 			jd.setText(Tables.getEncounter(Tables.mediumTable));
 			jd.setVisible(true);
 		});
 		JMenuItem easy = new JMenuItem("Easy");
 		easy.addActionListener(e -> {
-			GeneratedDialog jd = new GeneratedDialog();
+			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Easy Encounter Generated");
 			jd.setText(Tables.getEncounter(Tables.easyTable));
 			jd.setVisible(true);
@@ -188,7 +171,7 @@ public class Controls extends JFrame {
 
 		JMenuItem hazard = new JMenuItem("Hazard");
 		hazard.addActionListener(e -> {
-			GeneratedDialog jd = new GeneratedDialog();
+			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Hazard Generated");
 			jd.setText(Tables.getHazard());
 			jd.setVisible(true);
@@ -196,7 +179,7 @@ public class Controls extends JFrame {
 
 		JMenuItem hoard = new JMenuItem("Hoard");
 		hoard.addActionListener(e -> {
-			GeneratedDialog jd = new GeneratedDialog();
+			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Hoard Generated");
 			jd.setText(Hoard.getHoard());
 			jd.setVisible(true);
@@ -212,31 +195,87 @@ public class Controls extends JFrame {
 		JMenu mishaps = new JMenu("Mishaps");
 		JMenuItem scroll = new JMenuItem("Scroll");
 		scroll.addActionListener(e -> {
-			GeneratedDialog jd = new GeneratedDialog();
+			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Scroll mishap!");
 			jd.setText(Tables.scrollMishap());
 			jd.setVisible(true);
 		});
 		JMenuItem potion = new JMenuItem("Potion");
 		potion.addActionListener(e -> {
-			GeneratedDialog jd = new GeneratedDialog();
+			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Scroll mishap!");
 			jd.setText(Tables.potionMishap());
 			jd.setVisible(true);
 		});
-		JMenuItem melee = new JMenuItem("Attack");
-		melee.addActionListener(e -> {
-			GeneratedDialog jd = new GeneratedDialog();
+		JMenuItem attack = new JMenuItem("Attack");
+		attack.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Attack mishap!");
 			jd.setText(Tables.meleeMishap());
 			jd.setVisible(true);
 		});
+		JMenuItem injury = new JMenuItem("Injury");
+		injury.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Injury mishap!");
+			jd.setText(Tables.getInjury());
+			jd.setVisible(true);
+		});
+		JMenu chases = new JMenu("Chase Complication");
+		JMenuItem urban = new JMenuItem("Urban");
+		urban.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Urban Chase Complication!");
+			jd.setText(Tables.getUrbanMishap());
+			jd.setVisible(true);
+		});
+		JMenuItem wilderness = new JMenuItem("Wilderness");
+		wilderness.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Wilderness Chase Complication!");
+			jd.setText(Tables.getWildernessMishap());
+			jd.setVisible(true);
+		});
+		chases.add(urban);
+		chases.add(wilderness);
+
+		JMenu madness = new JMenu("Madness");
+		JMenuItem shortterm = new JMenuItem("Short Term");
+		shortterm.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Short Term Madness");
+			jd.setText(Tables.getMadness(0));
+			jd.setVisible(true);
+		});
+		madness.add(shortterm);
+
+		JMenuItem longterm = new JMenuItem("Long Term");
+		longterm.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Long Term Madness");
+			jd.setText(Tables.getMadness(1));
+			jd.setVisible(true);
+		});
+		madness.add(longterm);
+		JMenuItem indefinite = new JMenuItem("Indefinite");
+		indefinite.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Indefinite Madness");
+			jd.setText(Tables.getMadness(2));
+			jd.setVisible(true);
+		});
+		madness.add(indefinite);
+
+		mishaps.add(attack);
+		mishaps.add(chases);
+		mishaps.add(injury);
 		mishaps.add(potion);
+		mishaps.add(madness);
 		mishaps.add(scroll);
-		mishaps.add(melee);
+
 		menuBar.add(mishaps);
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		eastButton.setBounds(142, 29, 123, 35);
 		eastButton.addActionListener(e -> {
 			hideRoom();
 			showX++;
@@ -251,9 +290,9 @@ public class Controls extends JFrame {
 				thisRoom.eastRoom.westRoom = thisRoom;
 				if (showY <= 0)
 					thisRoom.eastRoom.south = false;
-				else if (showY >= 10)
+				else if (showY >= yLimit)
 					thisRoom.eastRoom.north = false;
-				if (showX >= 5)
+				if (showX >= xLimit)
 					thisRoom.eastRoom.east = false;
 				thisRoom.eastRoom.addDoor("west");
 				rooms.put(p, thisRoom.eastRoom);
@@ -261,6 +300,7 @@ public class Controls extends JFrame {
 			thisRoom = thisRoom.eastRoom;
 			showRoom();
 		});
+		westButton.setBounds(0, 29, 130, 35);
 		westButton.addActionListener(e -> {
 			hideRoom();
 			showX--;
@@ -276,15 +316,16 @@ public class Controls extends JFrame {
 				thisRoom.westRoom.addDoor("east");
 				if (showY <= 0)
 					thisRoom.westRoom.south = false;
-				else if (showY >= 10)
+				else if (showY >= yLimit)
 					thisRoom.westRoom.north = false;
-				if (showX <= -5)
+				if (showX <= -xLimit)
 					thisRoom.westRoom.west = false;
 				rooms.put(p, thisRoom.westRoom);
 			}
 			thisRoom = thisRoom.westRoom;
 			showRoom();
 		});
+		northButton.setBounds(0, 0, 265, 29);
 		northButton.addActionListener(e -> {
 			hideRoom();
 			showY++;
@@ -298,17 +339,18 @@ public class Controls extends JFrame {
 				}
 				thisRoom.northRoom.southRoom = thisRoom;
 				thisRoom.northRoom.addDoor("south");
-				if (showY >= 10)
+				if (showY >= yLimit)
 					thisRoom.northRoom.north = false;
-				if (showX >= 5)
+				if (showX >= xLimit)
 					thisRoom.northRoom.east = false;
-				else if (showX <= -5)
+				else if (showX <= -xLimit)
 					thisRoom.northRoom.west = false;
 				rooms.put(p, thisRoom.northRoom);
 			}
 			thisRoom = thisRoom.northRoom;
 			showRoom();
 		});
+		southButton.setBounds(0, 64, 265, 29);
 		southButton.addActionListener(e -> {
 			hideRoom();
 			showY--;
@@ -318,24 +360,41 @@ public class Controls extends JFrame {
 					thisRoom.southRoom = rooms.get(p);
 					mapView.addHall(showX, showY, "north");
 				} else {
-					thisRoom.southRoom = new Room("north");
+					thisRoom.southRoom = new Room();
 				}
 				thisRoom.southRoom.northRoom = thisRoom;
 				rooms.put(p, thisRoom.southRoom);
 				thisRoom.southRoom.north = true;
 				if (showY <= 0)
 					thisRoom.southRoom.south = false;
-				if (showX >= 5)
+				if (showX >= xLimit)
 					thisRoom.southRoom.east = false;
-				else if (showX <= -5)
+				else if (showX <= -xLimit)
 					thisRoom.southRoom.west = false;
 			}
 			thisRoom = thisRoom.southRoom;
 			showRoom();
 		});
-		contentPane.add(westButton, BorderLayout.WEST);
-		contentPane.add(northButton, BorderLayout.NORTH);
-		contentPane.add(eastButton, BorderLayout.EAST);
-		contentPane.add(southButton, BorderLayout.SOUTH);
+		contentPane.setLayout(null);
+		contentPane.add(westButton);
+		contentPane.add(northButton);
+		contentPane.add(eastButton);
+		contentPane.add(southButton);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(11, 110, 254, 420);
+		contentPane.add(scrollPane);
+
+		lblRoomDetails.setBounds(10, 91, 147, 16);
+		contentPane.add(lblRoomDetails);
+
+		roomDetails.setColumns(10);
+		roomDetails.setLineWrap(true);
+		roomDetails.setWrapStyleWord(true);
+		roomDetails.setLocation(0, 0);
+		roomDetails.setSize(200, 200);
+		roomDetails.setText(thisRoom.details);
+		scrollPane.setViewportView(roomDetails);
+		Controls.showRoom();
 	}
 }

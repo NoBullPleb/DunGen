@@ -4,7 +4,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -42,9 +41,9 @@ public class InfoPanel extends JFrame {
 
 	public InfoPanel() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocation(683, 50);
-		setSize(183, 375);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setLocation(Controls.mapView.getX() + Controls.mapView.getWidth(), 50);
+		setSize(183, 580);
+		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
@@ -70,5 +69,6 @@ public class InfoPanel extends JFrame {
 		JLabel lblInclude = new JLabel("Include: ");
 		lblInclude.setBounds(6, 25, 61, 16);
 		contentPane.add(lblInclude);
+
 	}
 }

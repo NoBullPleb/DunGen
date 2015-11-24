@@ -1,4 +1,4 @@
-10,Weapon , +3
+10,Weapon, +3
 12,Amulet of the planes
 14,Carpet of flying
 16,Crystal ball (very rare version)
@@ -41,7 +41,7 @@
 72,Figurine of wondrous power (obsidian steed)
 73,Frost brand
 74,Helm of brilliance
-75,Horn ofValhalla (bronze)
+75,Horn of Valhalla (bronze)
 76,Instrument of the bards (Anstruth harp)
 77,loun stone (absorption)
 78,loun stone (agility)

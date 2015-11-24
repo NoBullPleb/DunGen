@@ -5,7 +5,7 @@
 57,Spell scroll (7th level) 
 62,Ammunition +3
 67,Oil of sharpness
-72,Potion offlying
+72,Potion of flying
 77,Potion of cloud giant strength
 82,Potion of longevity
 87,Potion of vitality

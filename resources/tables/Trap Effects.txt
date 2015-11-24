@@ -16,8 +16,8 @@
 49,Lightning bolt shoots from wall or object
 52,Locked room floods with water or acid
 56,Darts shoot out of an opened chest
-59,A weapon , suit of armor, or rug animates and attacks when touched (see Animated Objects in the Monster Manual)
-62,Pendulum , either bladed or weighted as a maul , swings across the room or hall
+59,A weapon, suit of armor, or rug animates and attacks when touched (see Animated Objects in the Monster Manual)
+62,Pendulum, either bladed or weighted as a maul, swings across the room or hall
 67,Hidden pit opens beneath characters (25 percent chance that a black pudding or gelatinous cube fills the bottom of the pit)
 70,Hidden pit floods with acid or fire
 73,Locking pit floods with water

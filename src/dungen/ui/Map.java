@@ -16,19 +16,18 @@ public class Map extends JFrame {
 	public ArrayList<Point> roomsLocations = new ArrayList<>();
 	public ArrayList<JLabel> rooms = new ArrayList<>();
 	public ArrayList<JLabel> halls = new ArrayList<>();
-	public ArrayList<JLabel> encounters = new ArrayList<>();
 
 	public JLabel star = new JLabel();
-	private transient static ImageIcon roomImage = getImage("Room.png");
-	private transient static ImageIcon trapImage = getImage("Trap.png");
-	private transient static ImageIcon hazardImage = getImage("Hazard.png");
-	private transient static ImageIcon trickImage = getImage("Trick.png");
-	private transient static ImageIcon hallImage = getImage("Hall.png");
-	private transient static ImageIcon hallImage2 = getImage("Hall2.png");
-	private transient static ImageIcon partyImage = getImage("Party.png");
-	private transient static ImageIcon encounterImage = getImage("Encounter.png");
-	private transient static ImageIcon otherPartyImage = getImage("otherParty.png");
-	public transient JLayeredPane contentPane = new JLayeredPane();
+	private static ImageIcon roomImage = getImage("Room.png");
+	private static ImageIcon trapImage = getImage("Trap.png");
+	private static ImageIcon hazardImage = getImage("Hazard.png");
+	private static ImageIcon trickImage = getImage("Trick.png");
+	private static ImageIcon hallImage = getImage("Hall.png");
+	private static ImageIcon hallImage2 = getImage("Hall2.png");
+	private static ImageIcon partyImage = getImage("Party.png");
+	private static ImageIcon encounterImage = getImage("Encounter.png");
+	private static ImageIcon otherPartyImage = getImage("otherParty.png");
+	public JLayeredPane contentPane = new JLayeredPane();
 	private static Dimension imagesize = new Dimension(20, 20);
 	{
 		this.setBackground(Color.BLACK);
@@ -53,16 +52,17 @@ public class Map extends JFrame {
 		contentPane.removeAll();
 		rooms.forEach(contentPane::add);
 		halls.forEach(contentPane::add);
-		encounters.forEach(contentPane::add);
+		Controls.rooms.forEach((p, r) -> {
+			addEventOnRoom(getPosition((int) p.getX(), (int) p.getY()),
+					r.details, r.hasNPCs);
+		});
 		contentPane.add(star);
 		contentPane.revalidate();
 		contentPane.repaint();
 	}
 
-	public void addEventOnRoom(int x, int y, String encounter, boolean hasParty) {
-		Point p = getPosition(x, y);
+	public void addEventOnRoom(Point p, String encounter, boolean hasParty) {
 		JLabel encounterLbl = new JLabel();
-
 		if (encounter.contains("Trap"))
 			encounterLbl.setIcon(trapImage);
 		else if (encounter.contains("Hazard"))
@@ -71,19 +71,27 @@ public class Map extends JFrame {
 			encounterLbl.setIcon(trickImage);
 		else if (hasParty)
 			encounterLbl.setIcon(otherPartyImage);
-		else
+		else if (encounter.contains("Encounter"))
 			encounterLbl.setIcon(encounterImage);
+		else
+			return;
 		encounterLbl.setSize(imagesize);
 		encounterLbl.setLocation((int) p.getX(), (int) p.getY());
 		encounterLbl.setVisible(true);
 		contentPane.add(encounterLbl, contentPane.highestLayer());
-		encounters.add(encounterLbl);
 		contentPane.repaint();
+	}
+
+	public void addEventOnRoom(int x, int y, String encounter, boolean hasParty) {
+		addEventOnRoom(getPosition(x, y), encounter, hasParty);
 	}
 
 	public void addRoom(Integer x, Integer y, String hasEncounter,
 			boolean hasParty) {
-		Point p = getPosition(x, y);
+		addRoom(getPosition(x, y), hasEncounter, hasParty);
+	}
+
+	public void addRoom(Point p, String details, boolean hasParty) {
 		if (roomsLocations != null && !roomsLocations.contains(p)) {
 			JLabel room = new JLabel();
 			room.setIcon(roomImage);
@@ -93,8 +101,8 @@ public class Map extends JFrame {
 			contentPane.add(room);
 			rooms.add(room);
 			roomsLocations.add(p);
-			if (!hasEncounter.isEmpty() && !hasEncounter.contains("began"))
-				addEventOnRoom(x, y, hasEncounter, hasParty);
+			if (!details.isEmpty() && !details.contains("began"))
+				addEventOnRoom(p, details, hasParty);
 		}
 		contentPane.repaint();
 
@@ -108,7 +116,7 @@ public class Map extends JFrame {
 		star.repaint();
 	}
 
-	private Point getPosition(int x, int y) {
+	public Point getPosition(int x, int y) {
 		return new Point((this.getWidth() / 2) + x
 				* ((int) imagesize.getWidth() * 2), (this.getHeight() - 45) - y
 				* ((int) imagesize.getHeight() * 2));
@@ -148,11 +156,13 @@ public class Map extends JFrame {
 	}
 
 	public Map() {
+		setTitle("Dungeon Map");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 450);
+		setBounds(271, 50, 580, 580);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+
 	}
 
 }

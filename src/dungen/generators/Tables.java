@@ -36,9 +36,34 @@ public class Tables {
 	private final static List<String> trickEffects = getTable("Trick Effects.txt");
 	private final static List<String> alignments = getTable("Alignments.txt");
 	private final static List<String> classes = getTable("Classes.txt");
+	private final static List<String> urbanChase = getTable("Urban Chase.txt");
+	private final static List<String> wildernessChase = getTable("Wilderness Chase.txt");
+
+	private final static List<String> shortTerm = getTable("Short Mad.txt");
+	private final static List<String> longTerm = getTable("Long Mad.txt");
+	private final static List<String> indefinite = getTable("Indefinite Mad.txt");
+
+	private final static List<String> spellList = getTable("Spells.txt");
+	private final static List<String> injuries = getTable("Injuries.txt");
+
+	public static String getInjury() {
+		return getResultFromTable(Dice.d20(), injuries);
+	}
+
+	public static String getSpell(Integer Level) {
+		// get spells of a particular level (0 for cantrip)
+		List<String> spells = spellList.parallelStream()
+				.filter(e -> e.startsWith(Level.toString()))
+				.collect(Collectors.toList());
+		return spells.get(Dice.roll(spells.size()));
+	}
+
+	public static String getUrbanMishap() {
+		return getResultFromTable(Dice.d20(), urbanChase);
+	}
 
 	public static String getNpcClass() {
-		return getResultFromTable(Dice.roll(20), classes);
+		return getResultFromTable(Dice.d20(), classes);
 	}
 
 	public static String getTrapTrigger() {
@@ -60,7 +85,7 @@ public class Tables {
 	}
 
 	public static String getAlignment() {
-		return getResultFromTable(Dice.roll(20), alignments);
+		return getResultFromTable(Dice.d20(), alignments);
 	}
 
 	public static String getResultFromTable(int result, List<String> table) {
@@ -192,6 +217,7 @@ public class Tables {
 			});
 			attempts++;
 		}
+
 		return encounter.toString();
 	}
 
@@ -221,6 +247,22 @@ public class Tables {
 			return 2;
 		else
 			return 3;
+	}
+
+	public static String getWildernessMishap() {
+		return getResultFromTable(Dice.d20(), wildernessChase);
+	}
+
+	public static String getMadness(int i) {
+		if (i == 1)
+			return "For " + Dice.roll(10) * 10 + " hours:\n"
+					+ getResultFromTable(Dice.roll(100), longTerm);
+		else if (i == 2)
+			return "Lasts until cured:\n"
+					+ getResultFromTable(Dice.roll(100), indefinite);
+		else
+			return "For " + Dice.roll(10) + " minutes:\n"
+					+ getResultFromTable(Dice.roll(100), shortTerm);
 	}
 
 }

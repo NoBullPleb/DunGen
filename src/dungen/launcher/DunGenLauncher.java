@@ -1,6 +1,7 @@
 package dungen.launcher;
 
 import java.awt.BorderLayout;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,12 +44,26 @@ public final class DunGenLauncher {
 				jd.add(updater);
 				jd.setVisible(true);
 			} else {
-				Controls.main(new String[0]);
+				launch();
 			}
 		} catch (Exception e) {
 			System.err.println("Unable to find DunGen Version.");
-			Controls.main(new String[0]);
+			launch();
 		}
+	}
+
+	private final static void launch() {
+		EventQueue.invokeLater(() -> {
+			try {
+				Controls c = new Controls();
+				c.setVisible(true);
+				Controls.mapView.setVisible(true);
+				Controls.ip.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+
 	}
 
 	private final static void update(ActionEvent e) {
@@ -79,7 +94,7 @@ public final class DunGenLauncher {
 			err.printStackTrace();
 			jd.revalidate();
 			jd.repaint();
-			Controls.main(new String[0]);
+			launch();
 		}
 
 	}

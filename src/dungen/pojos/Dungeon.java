@@ -18,7 +18,6 @@ import dungen.generators.Tables;
 import dungen.ui.Controls;
 import dungen.ui.InfoPanel;
 import dungen.ui.Map;
-import dungen.ui.Room;
 
 //used for serialization
 public class Dungeon implements Serializable {

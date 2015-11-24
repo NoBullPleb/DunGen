@@ -20,7 +20,7 @@
 32,Armor +1 chain shirt
 33,Armor of resistance (chain shirt)
 34,Cloak of displacement
-35,Cloak ofthe bat
+35,Cloak of the bat
 36,Cube afforce
 37,Daern's instant fortress
 38,Dagger of venom
@@ -60,10 +60,10 @@
 72,Ring of X-ray vision
 73,Robe ofeyes
 74,Rod of rulership
-75, Rod ofthe pact keeper +2
+75,Rod of the pact keeper +2
 76,Rope of entanglement
 77,Armor +1 scale mail
-78, Armor of resistance (scale mail)
+78,Armor of resistance (scale mail)
 79,Shield +2
 80,Shield of missile attraction
 81,Staff of charming

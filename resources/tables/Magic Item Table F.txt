@@ -39,7 +39,7 @@
 79,Gem of brightness
 80,Gloves of missile snaring
 81,Gloves of swimming and climbing
-82,Gloves o f thievery
+82,Gloves of thievery
 83,Headband of intellect
 84,Helm oftelepathy
 85,Instrument of the bards (Doss lute)
@@ -51,8 +51,10 @@
 91,Pipes of haunting
 92,Pipes of the sewers
 93,Ring of jumping
-94,Ring of mind shielding 95 Ring of warmth
-96,Ring ofwater walking 97 Quiver of Ehlonna
+94,Ring of mind shielding 
+95, Ring of warmth
+96,Ring ofwater walking
+97, Quiver of Ehlonna
 98,Stone of good luck
 99,Wind fan
 100,Winged boots

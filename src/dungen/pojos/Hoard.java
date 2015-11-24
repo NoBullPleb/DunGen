@@ -28,13 +28,55 @@ public class Hoard {
 
 	public static String getMagicItem(int number, List<String> table) {
 		StringBuilder result = new StringBuilder();
-		for (int i = 0; i < number; i++)
+		for (int i = 0; i < number; i++) {
 			result.append("\n" + getMagicItem(table));
+		}
 		return result.toString();
 	}
 
 	public static String getMagicItem(List<String> table) {
-		return Tables.getResultFromTable(Dice.roll(100), table);
+		String item = Tables.getResultFromTable(Dice.roll(100), table);
+		if (item.toLowerCase().contains("scroll"))
+			item = generateScroll(item);
+		else {
+			item = getItemDetails(item);
+		}
+		return item;
+	}
+
+	private final static List<String> magicItemDetails = Tables
+			.getTable("Magic Items.txt");
+
+	private static String getItemDetails(String item) {
+		return magicItemDetails.parallelStream()
+				.filter(e -> e.split(",")[0].equalsIgnoreCase(item))
+				// Tries to find a match, if not, returns the original
+				.findAny().orElse(item);
+	}
+
+	private static String generateScroll(String item) {
+		if (item.contains("cantrip")) {
+			item = item.replace("cantrip", Tables.getSpell(0));
+		} else if (item.contains("1st level")) {
+			item = item.replace("1st level", Tables.getSpell(1));
+		} else if (item.contains("2nd level")) {
+			item = item.replace("2nd level", Tables.getSpell(2));
+		} else if (item.contains("3rd level")) {
+			item = item.replace("3rd level", Tables.getSpell(3));
+		} else if (item.contains("4th level")) {
+			item = item.replace("4th level", Tables.getSpell(4));
+		} else if (item.contains("5th level")) {
+			item = item.replace("5th level", Tables.getSpell(5));
+		} else if (item.contains("6th level")) {
+			item = item.replace("6th level", Tables.getSpell(6));
+		} else if (item.contains("7th level")) {
+			item = item.replace("7th level", Tables.getSpell(7));
+		} else if (item.contains("8th level")) {
+			item = item.replace("8th level", Tables.getSpell(8));
+		} else if (item.contains("9th level")) {
+			item = item.replace("9th level", Tables.getSpell(9));
+		}
+		return item;
 	}
 
 	private final static List<String> magicItemA = Tables

@@ -2,6 +2,8 @@ package dungen.generators;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,19 +14,21 @@ import java.util.stream.Collectors;
 import dungen.pojos.Hoard;
 import dungen.pojos.Treasure;
 import dungen.ui.InfoPanel;
-import dungen.ui.Map;
 
 public class Tables {
+	static final ClassLoader cl = Tables.class.getClassLoader();
+	static final String tableString = cl.getResource("./tables").getPath();
+	static final Path table = new File(tableString).toPath();
 
 	public static List<String> getTable(String path) {
 		try {
-			return Files.readAllLines(new File(Map.class.getClassLoader()
-					.getResource("tables/" + path).getPath()
-					.replaceAll("%20", " ")).toPath());
+			List<Path> paths = Files.find(table, 2,
+					(a, b) -> a.getFileName().endsWith(path)).collect(
+					Collectors.toList());
+			return Files.readAllLines(paths.get(0));
 		} catch (Exception e) {
-			e.printStackTrace();
-			// represents empty file if there was an error loading.
-			return new ArrayList<String>();
+			System.out.println("FAILED- " + path + " : " + e.toString());
+			return null;
 		}
 	}
 

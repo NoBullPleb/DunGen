@@ -1,9 +1,5 @@
 package dungen.generators;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,43 +9,45 @@ import java.util.stream.Collectors;
 
 import dungen.pojos.Hoard;
 import dungen.pojos.Treasure;
+import dungen.resourceLoader.ResourceLoader;
 import dungen.ui.InfoPanel;
 
 public class Tables {
-	static final ClassLoader cl = Tables.class.getClassLoader();
-	static final String tableString = cl.getResource("./tables").getPath();
-	static final Path table = new File(tableString).toPath();
 
-	public static List<String> getTable(String path) {
-		try {
-			List<Path> paths = Files.find(table, 2,
-					(a, b) -> a.getFileName().endsWith(path)).collect(
-					Collectors.toList());
-			return Files.readAllLines(paths.get(0));
-		} catch (Exception e) {
-			System.out.println("FAILED- " + path + " : " + e.toString());
-			return null;
-		}
-	}
+	private final static List<String> trapSeverity = ResourceLoader
+			.getTable("Trap Severity.txt");
+	private final static List<String> trapTriggers = ResourceLoader
+			.getTable("Trap Triggers.txt");
+	private final static List<String> trapDamage = ResourceLoader
+			.getTable("Trap Damage.txt");
+	private final static List<String> trapEffect = ResourceLoader
+			.getTable("Trap Effects.txt");
+	private final static List<String> hazards = ResourceLoader
+			.getTable("Hazards.txt");
+	private final static List<String> trickObjects = ResourceLoader
+			.getTable("Trick Objects.txt");
+	private final static List<String> trickEffects = ResourceLoader
+			.getTable("Trick Effects.txt");
+	private final static List<String> alignments = ResourceLoader
+			.getTable("Alignments.txt");
+	private final static List<String> classes = ResourceLoader
+			.getTable("Classes.txt");
+	private final static List<String> urbanChase = ResourceLoader
+			.getTable("Urban Chase.txt");
+	private final static List<String> wildernessChase = ResourceLoader
+			.getTable("Wilderness Chase.txt");
 
-	private final static List<String> trapSeverity = getTable("Trap Severity.txt");
-	private final static List<String> trapTriggers = getTable("Trap Triggers.txt");
-	private final static List<String> trapDamage = getTable("Trap Damage.txt");
-	private final static List<String> trapEffect = getTable("Trap Effects.txt");
-	private final static List<String> hazards = getTable("Hazards.txt");
-	private final static List<String> trickObjects = getTable("Trick Objects.txt");
-	private final static List<String> trickEffects = getTable("Trick Effects.txt");
-	private final static List<String> alignments = getTable("Alignments.txt");
-	private final static List<String> classes = getTable("Classes.txt");
-	private final static List<String> urbanChase = getTable("Urban Chase.txt");
-	private final static List<String> wildernessChase = getTable("Wilderness Chase.txt");
+	private final static List<String> shortTerm = ResourceLoader
+			.getTable("Short Mad.txt");
+	private final static List<String> longTerm = ResourceLoader
+			.getTable("Long Mad.txt");
+	private final static List<String> indefinite = ResourceLoader
+			.getTable("Indefinite Mad.txt");
 
-	private final static List<String> shortTerm = getTable("Short Mad.txt");
-	private final static List<String> longTerm = getTable("Long Mad.txt");
-	private final static List<String> indefinite = getTable("Indefinite Mad.txt");
-
-	private final static List<String> spellList = getTable("Spells.txt");
-	private final static List<String> injuries = getTable("Injuries.txt");
+	private final static List<String> spellList = ResourceLoader
+			.getTable("Spells.txt");
+	private final static List<String> injuries = ResourceLoader
+			.getTable("Injuries.txt");
 
 	public static String getInjury() {
 		return getResultFromTable(Dice.d20(), injuries);
@@ -165,11 +163,14 @@ public class Tables {
 	public static String[][] deadlyTable = getEncounterTable("Deadly.txt");
 
 	private static String[][] getEncounterTable(String path) {
-		List<String> table = getTable(path);
-		String[][] result = new String[table.size()][];
-		AtomicInteger ai = new AtomicInteger(0);
-		table.forEach(e -> result[ai.getAndIncrement()] = e.split(","));
-		return result;
+		List<String> table = ResourceLoader.getTable(path);
+		if (table != null) {
+			String[][] result = new String[table.size()][];
+			AtomicInteger ai = new AtomicInteger(0);
+			table.forEach(e -> result[ai.getAndIncrement()] = e.split(","));
+			return result;
+		}
+		return null;
 	}
 
 	private static String[] CRs = "LEVEL / CR,0,1/8,1/4,1/2,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20"
@@ -226,9 +227,12 @@ public class Tables {
 		return encounter.toString();
 	}
 
-	private final static List<String> scrollMishaps = getTable("Scroll Mishaps.csv");
-	private final static List<String> potionMishaps = getTable("Potion Mishaps.txt");
-	private final static List<String> meleeMishaps = getTable("Melee Mishaps.txt");
+	private final static List<String> scrollMishaps = ResourceLoader
+			.getTable("ScrollMishaps.txt");
+	private final static List<String> potionMishaps = ResourceLoader
+			.getTable("Potion Mishaps.txt");
+	private final static List<String> meleeMishaps = ResourceLoader
+			.getTable("Melee Mishaps.txt");
 
 	public static String scrollMishap() {
 		return getResultFromTable(Dice.roll(6), scrollMishaps);
@@ -254,10 +258,14 @@ public class Tables {
 			return 3;
 	}
 
-	private final static List<String> itemCommunication = getTable("Item Communication.txt");
-	private final static List<String> itemSenses = getTable("Item Senses.txt");
-	private final static List<String> itemAlign = getTable("Item Alignment.txt");
-	private final static List<String> itemPurpose = getTable("Item Purpose.txt");
+	private final static List<String> itemCommunication = ResourceLoader
+			.getTable("Item Communication.txt");
+	private final static List<String> itemSenses = ResourceLoader
+			.getTable("Item Senses.txt");
+	private final static List<String> itemAlign = ResourceLoader
+			.getTable("Item Alignment.txt");
+	private final static List<String> itemPurpose = ResourceLoader
+			.getTable("Item Purpose.txt");
 
 	public static String getSentientItem(String item) {
 		item = "_Sentient " + item + "_";

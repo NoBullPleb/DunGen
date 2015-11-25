@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import dungen.generators.Dice;
 import dungen.generators.Tables;
+import dungen.resourceLoader.ResourceLoader;
 import dungen.ui.InfoPanel;
 
 @SuppressWarnings("unchecked")
@@ -67,7 +68,7 @@ public class Hoard {
 		return item;
 	}
 
-	private final static List<String> magicItemDetails = Tables
+	private final static List<String> magicItemDetails = ResourceLoader
 			.getTable("Magic Items.txt");
 
 	private static String getItemDetails(String item) {
@@ -102,23 +103,23 @@ public class Hoard {
 		return item;
 	}
 
-	private final static List<String> magicItemA = Tables
+	private final static List<String> magicItemA = ResourceLoader
 			.getTable("Magic Item Table A.txt");
-	private final static List<String> magicItemB = Tables
+	private final static List<String> magicItemB = ResourceLoader
 			.getTable("Magic Item Table B.txt");
-	private final static List<String> magicItemC = Tables
+	private final static List<String> magicItemC = ResourceLoader
 			.getTable("Magic Item Table C.txt");
-	private final static List<String> magicItemD = Tables
+	private final static List<String> magicItemD = ResourceLoader
 			.getTable("Magic Item Table D.txt");
-	private final static List<String> magicItemE = Tables
+	private final static List<String> magicItemE = ResourceLoader
 			.getTable("Magic Item Table E.txt");
-	private final static List<String> magicItemF = Tables
+	private final static List<String> magicItemF = ResourceLoader
 			.getTable("Magic Item Table F.txt");
-	private final static List<String> magicItemG = Tables
+	private final static List<String> magicItemG = ResourceLoader
 			.getTable("Magic Item Table G.txt");
-	private final static List<String> magicItemH = Tables
+	private final static List<String> magicItemH = ResourceLoader
 			.getTable("Magic Item Table H.txt");
-	private final static List<String> magicItemI = Tables
+	private final static List<String> magicItemI = ResourceLoader
 			.getTable("Magic Item Table I.txt");
 
 	private static Supplier<String>[][] iHoardByCR = new Supplier[4][];

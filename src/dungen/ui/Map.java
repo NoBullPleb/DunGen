@@ -13,6 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
+import dungen.resourceLoader.ResourceLoader;
+
 public class Map extends JFrame {
 
 	private static final long serialVersionUID = 3925862084304805067L;
@@ -21,17 +23,21 @@ public class Map extends JFrame {
 	public ArrayList<JLabel> halls = new ArrayList<>();
 
 	public JLabel star = new JLabel();
-	private static ImageIcon roomImage = getImage("Room.png");
-	private static ImageIcon deadlyImage = getImage("Deadly.png");
-	private static ImageIcon hardImage = getImage("Hard.png");
-	private static ImageIcon trapImage = getImage("Trap.png");
-	private static ImageIcon hazardImage = getImage("Hazard.png");
-	private static ImageIcon trickImage = getImage("Trick.png");
-	private static ImageIcon hallImage = getImage("Hall.png");
-	private static ImageIcon hallImage2 = getImage("Hall2.png");
-	private static ImageIcon partyImage = getImage("Party.png");
-	private static ImageIcon encounterImage = getImage("Encounter.png");
-	private static ImageIcon otherPartyImage = getImage("otherParty.png");
+	private static ImageIcon roomImage = ResourceLoader.getImage("Room.png");
+	private static ImageIcon deadlyImage = ResourceLoader
+			.getImage("Deadly.png");
+	private static ImageIcon hardImage = ResourceLoader.getImage("Hard.png");
+	private static ImageIcon trapImage = ResourceLoader.getImage("Trap.png");
+	private static ImageIcon hazardImage = ResourceLoader
+			.getImage("Hazard.png");
+	private static ImageIcon trickImage = ResourceLoader.getImage("Trick.png");
+	private static ImageIcon hallImage = ResourceLoader.getImage("Hall.png");
+	private static ImageIcon hallImage2 = ResourceLoader.getImage("Hall2.png");
+	private static ImageIcon partyImage = ResourceLoader.getImage("Party.png");
+	private static ImageIcon encounterImage = ResourceLoader
+			.getImage("Encounter.png");
+	private static ImageIcon otherPartyImage = ResourceLoader
+			.getImage("npcs.png");
 	public JLayeredPane contentPane = new JLayeredPane();
 	private static Dimension imagesize = new Dimension(20, 20);
 	{
@@ -50,19 +56,6 @@ public class Map extends JFrame {
 				.filter(e -> !e.getIcon().equals(partyImage))
 				.collect(Collectors.toList());
 		removers.forEach(getContentPane()::remove);
-	}
-
-	private static ImageIcon getImage(String path) {
-		try {
-
-			ImageIcon i = new ImageIcon(Map.class.getClassLoader().getResource(
-					"images/" + path));
-
-			return i;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
 	}
 
 	public void redraw() {

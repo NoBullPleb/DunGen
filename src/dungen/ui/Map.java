@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -19,6 +22,8 @@ public class Map extends JFrame {
 
 	public JLabel star = new JLabel();
 	private static ImageIcon roomImage = getImage("Room.png");
+	private static ImageIcon deadlyImage = getImage("Deadly.png");
+	private static ImageIcon hardImage = getImage("Hard.png");
 	private static ImageIcon trapImage = getImage("Trap.png");
 	private static ImageIcon hazardImage = getImage("Hazard.png");
 	private static ImageIcon trickImage = getImage("Trick.png");
@@ -33,6 +38,18 @@ public class Map extends JFrame {
 		this.setBackground(Color.BLACK);
 		star.setSize(imagesize);
 		star.setIcon(partyImage);
+	}
+
+	public void clearRoom(int x, int y) {
+		final Point p = getPosition(x, y);
+		List<JLabel> removers = Arrays.stream(contentPane.getComponents())
+				.parallel().filter(e -> e.getLocation().equals(p))
+				.filter(e -> e.getClass().equals(JLabel.class))
+				.map(e -> (JLabel) e)
+				.filter(e -> !e.getIcon().equals(roomImage))
+				.filter(e -> !e.getIcon().equals(partyImage))
+				.collect(Collectors.toList());
+		removers.forEach(getContentPane()::remove);
 	}
 
 	private static ImageIcon getImage(String path) {
@@ -71,10 +88,16 @@ public class Map extends JFrame {
 			encounterLbl.setIcon(trickImage);
 		else if (hasParty)
 			encounterLbl.setIcon(otherPartyImage);
-		else if (encounter.contains("Encounter"))
+		else if (encounter.contains("Encounter")) {
 			encounterLbl.setIcon(encounterImage);
-		else
+			if (encounter.contains("Deadly")) {
+				encounterLbl.setIcon(deadlyImage);
+			} else if (encounter.contains("Hard")) {
+				encounterLbl.setIcon(hardImage);
+			}
+		} else {
 			return;
+		}
 		encounterLbl.setSize(imagesize);
 		encounterLbl.setLocation((int) p.getX(), (int) p.getY());
 		encounterLbl.setVisible(true);

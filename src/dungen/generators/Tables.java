@@ -23,7 +23,8 @@ public class Tables {
 					.replaceAll("%20", " ")).toPath());
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			// represents empty file if there was an error loading.
+			return new ArrayList<String>();
 		}
 	}
 
@@ -55,7 +56,7 @@ public class Tables {
 		List<String> spells = spellList.parallelStream()
 				.filter(e -> e.startsWith(Level.toString()))
 				.collect(Collectors.toList());
-		return spells.get(Dice.roll(spells.size()));
+		return spells.get(Dice.roll(spells.size()) - 1);
 	}
 
 	public static String getUrbanMishap() {
@@ -144,8 +145,8 @@ public class Tables {
 			event = "Trap!\n" + getTrap();
 		else if (result >= 20)
 			event = "Trick!\n" + getTrick();
-
-		challenge += 5;
+		if (challenge < 110) // caps challenge to avoid spamming deadlies
+			challenge += 5;
 		return event;
 	}
 
@@ -247,6 +248,25 @@ public class Tables {
 			return 2;
 		else
 			return 3;
+	}
+
+	private final static List<String> itemCommunication = getTable("Item Communication.txt");
+	private final static List<String> itemSenses = getTable("Item Senses.txt");
+	private final static List<String> itemAlign = getTable("Item Alignment.txt");
+	private final static List<String> itemPurpose = getTable("Item Purpose.txt");
+
+	public static String getSentientItem(String item) {
+		item = "_Sentient " + item + "_";
+		item += "\nAlignment: " + getResultFromTable(Dice.roll(100), itemAlign);
+		item += "\nPurpose: " + getResultFromTable(Dice.roll(10), itemPurpose);
+		item += "\nCommunication: "
+				+ getResultFromTable(Dice.roll(100), itemCommunication);
+		item += "\nSenses: " + getResultFromTable(Dice.roll(4), itemSenses);
+		item += "\nInt: " + Dice.statroll();
+		item += "\nWis: " + Dice.statroll();
+		item += "\nCha: " + Dice.statroll();
+		item += "\n______________________";
+		return item;
 	}
 
 	public static String getWildernessMishap() {

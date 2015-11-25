@@ -2,6 +2,7 @@ package dungen.pojos;
 
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import dungen.generators.Dice;
 import dungen.generators.Tables;
@@ -34,12 +35,34 @@ public class Hoard {
 		return result.toString();
 	}
 
+	private static boolean rarityMatch(String rarity, String item) {
+		item = item.split(",")[1].trim().toLowerCase();
+		rarity = rarity.toLowerCase().trim();
+		return item.equals(rarity) || rarity.isEmpty();
+	}
+
+	public static String getSentientMagicItem(String s) {
+		return Tables.getSentientItem(getMagicItem(s));
+	}
+
+	public static String getMagicItem(String string) {
+		List<String> items = magicItemDetails.parallelStream()
+				.filter(item -> rarityMatch(string, item))
+				.collect(Collectors.toList());
+		// picks one at random.
+		return items.get(Dice.roll(items.size()) - 1);
+	}
+
 	public static String getMagicItem(List<String> table) {
 		String item = Tables.getResultFromTable(Dice.roll(100), table);
 		if (item.toLowerCase().contains("scroll"))
 			item = generateScroll(item);
 		else {
 			item = getItemDetails(item);
+			// if the stars align...
+			if (Dice.roll(100) == 42 && !item.toLowerCase().contains("potion")) {
+				item = Tables.getSentientItem(item);
+			}
 		}
 		return item;
 	}

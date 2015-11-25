@@ -20,9 +20,10 @@ import dungen.pojos.Treasure;
 
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import dungen.pojos.NPC;
 
 public class Controls extends JFrame {
-	public static String version = "1.5.0";
+	public static String version = "1.5.1";
 	private static final long serialVersionUID = 7985611292217902489L;
 	transient final static JButton southButton = new JButton("Go South"),
 			eastButton = new JButton("Go East"), westButton = new JButton(
@@ -34,7 +35,7 @@ public class Controls extends JFrame {
 	public static HashMap<Point, Room> rooms = new HashMap<>();
 	public static Room thisRoom = new Room();
 	public static int showX = 0, showY = 0;
-	private static int xLimit = 7, yLimit = 13;
+	private static int xLimit = 6, yLimit = 13;
 	public static Map mapView = new Map();
 	public static InfoPanel ip = new InfoPanel();
 	private transient final static JPanel contentPane = new JPanel();
@@ -176,6 +177,13 @@ public class Controls extends JFrame {
 			jd.setText(Tables.getHazard());
 			jd.setVisible(true);
 		});
+		JMenuItem npc = new JMenuItem("NPC");
+		npc.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("NPC Generated");
+			jd.setText(new NPC().toString());
+			jd.setVisible(true);
+		});
 
 		JMenuItem hoard = new JMenuItem("Hoard");
 		hoard.addActionListener(e -> {
@@ -184,9 +192,71 @@ public class Controls extends JFrame {
 			jd.setText(Hoard.getHoard());
 			jd.setVisible(true);
 		});
+
+		JMenu items = new JMenu("Items");
+		JMenuItem anyItem = new JMenuItem("Any Magic Item");
+		anyItem.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Item Generated");
+			jd.setText(Hoard.getMagicItem(""));
+			jd.setVisible(true);
+		});
+		JMenuItem sentientItem = new JMenuItem("Sentient Magic Item");
+		sentientItem.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Sentient Item Generated");
+			jd.setText(Hoard.getSentientMagicItem(""));
+			jd.setVisible(true);
+		});
+		JMenuItem rareItem = new JMenuItem("Rare Item");
+		rareItem.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Rare Item Generated");
+			jd.setText(Hoard.getMagicItem("Rare"));
+			jd.setVisible(true);
+		});
+		JMenuItem veryRareItem = new JMenuItem("Very Rare Item");
+		veryRareItem.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Very Rare Item Generated");
+			jd.setText(Hoard.getMagicItem("Very Rare"));
+			jd.setVisible(true);
+		});
+		JMenuItem legendaryItem = new JMenuItem("Legendary Item");
+		legendaryItem.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Legendary Item Generated");
+			jd.setText(Hoard.getMagicItem("Legendary"));
+			jd.setVisible(true);
+		});
+		JMenuItem uncommonItem = new JMenuItem("Uncommon Item");
+		uncommonItem.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Uncommon Item Generated");
+			jd.setText(Hoard.getMagicItem("Uncommon"));
+			jd.setVisible(true);
+		});
+		JMenuItem commonItem = new JMenuItem("Common Item");
+		commonItem.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Common Item Generated");
+			jd.setText(Hoard.getMagicItem("Common"));
+			jd.setVisible(true);
+		});
+
+		items.add(anyItem);
+		items.add(sentientItem);
+		items.add(legendaryItem);
+		items.add(veryRareItem);
+		items.add(rareItem);
+		items.add(uncommonItem);
+		items.add(commonItem);
+
 		generate.add(encounter);
 		generate.add(hazard);
 		generate.add(hoard);
+		generate.add(items);
+		generate.add(npc);
 		generate.add(trap);
 		generate.add(treasure);
 		generate.add(trick);
@@ -395,6 +465,15 @@ public class Controls extends JFrame {
 		roomDetails.setSize(200, 200);
 		roomDetails.setText(thisRoom.details);
 		scrollPane.setViewportView(roomDetails);
+
+		JButton clearRoom = new JButton("Clear Room");
+		clearRoom.addActionListener(e -> {
+			roomDetails.setText(null);
+			mapView.clearRoom(Controls.showX, Controls.showY);
+			mapView.repaint();
+		});
+		clearRoom.setBounds(142, 91, 117, 16);
+		contentPane.add(clearRoom);
 		Controls.showRoom();
 	}
 }

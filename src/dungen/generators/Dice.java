@@ -1,11 +1,20 @@
 package dungen.generators;
 
+import java.util.Arrays;
+
 public class Dice {
 	public static int roll(int dice, int sides) {
 		int result = 0;
 		for (int i = 0; i < dice; i++)
 			result += (int) Math.floor(Math.random() * sides) + 1;
 		return result;
+	}
+
+	public final static int statroll() {
+		int[] rolls = new int[4];
+		Arrays.setAll(rolls, e -> (int) (Math.random() * 6) + 1);
+		Arrays.sort(rolls);
+		return (rolls[3] + rolls[2] + rolls[1]);
 	}
 
 	public static String roll(String s) {

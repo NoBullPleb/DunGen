@@ -38,7 +38,13 @@ public class DunGenPop extends JFrame {
 		scrollPane.setViewportView(textArea);
 		JButton btnAddToRoom = new JButton("Add To Room");
 		btnAddToRoom.addActionListener(e -> {
-			Controls.roomDetails.append("\n" + textArea.getText());
+			if (!Controls.roomDetails.getText().endsWith("\n"))
+				Controls.roomDetails.append("\n");
+			Controls.roomDetails.append(this.getTitle() + "\n"
+					+ textArea.getText());
+			Controls.mapView.addEventOnRoom(Controls.mapView.getPosition(
+					Controls.showX, Controls.showY), this.getTitle(), this
+					.getTitle().toLowerCase().contains("npc"));
 			this.dispose();
 		});
 		contentPane.add(btnAddToRoom, BorderLayout.SOUTH);

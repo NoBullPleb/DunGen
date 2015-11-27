@@ -15,8 +15,6 @@ public class ResourceLoader {
 	public static ImageIcon getImage(String path) {
 		try {
 			ImageIcon i = new ImageIcon(cl.getResource("images/" + path));
-			System.out.println("Found image: "
-					+ cl.getResource("images/" + path).getPath());
 			return i;
 		} catch (Exception e) {
 			e.printStackTrace();

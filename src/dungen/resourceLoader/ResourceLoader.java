@@ -1,21 +1,34 @@
 package dungen.resourceLoader;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.nio.file.Files;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
 
 public class ResourceLoader {
 	static final ClassLoader cl = ResourceLoader.class.getClassLoader();
-	static final String tableString = cl.getResource(".").getPath();
-	static final Path table = new File(tableString).toPath();
+	static String tableString = cl.getResource("dungen").getPath();
+	static final Path table;
+
+	static {
+		tableString = tableString.substring(0, tableString.lastIndexOf("/"))
+				.replaceAll("%20", " ").replaceAll("file:", "");
+		table = new File(tableString).toPath();
+		System.out.println("table string: " + tableString);
+	}
 
 	public static ImageIcon getImage(String path) {
 		try {
-			ImageIcon i = new ImageIcon(getResourcePath(path).toString());
+
+			ImageIcon i = new ImageIcon(cl.getResource("images/" + path));
+			System.out.println("Found image: "
+					+ cl.getResource("images/" + path).getPath());
 			return i;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -23,25 +36,17 @@ public class ResourceLoader {
 		}
 	}
 
-	private static Path getResourcePath(String path) throws Exception {
-		Optional<Path> paths = Files
-				.find(table, 2, (a, b) -> a.toString().contains(path))
-				.parallel().findFirst();
-		if (!paths.isPresent()) {
-			System.out.println("No matches found for " + path);
-			throw new Exception("No matches found for resource: " + path);
-		}
-		return paths.get();
-	}
-
 	public static List<String> getTable(String path) {
 		try {
-			return Files.readAllLines(getResourcePath(path));
-
+			InputStream in = cl.getResourceAsStream("tables/" + path);
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(in));
+			return reader.lines().collect(Collectors.toList());
 		} catch (Exception e) {
-			System.out.println("FAILED- " + path + " : " + e.toString() + ", "
-					+ e.getStackTrace()[0].getLineNumber());
-			return null;
+			e.printStackTrace();
+			// represents empty file if there was an error loading.
+			return new ArrayList<String>();
 		}
 	}
+
 }

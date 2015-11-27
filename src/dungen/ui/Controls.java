@@ -42,7 +42,12 @@ public class Controls extends JFrame {
 	private transient JMenuBar menuBar;
 
 	private static void hideRoom() {
-		thisRoom.details = roomDetails.getText();
+		String temp = roomDetails.getText();
+		if (!thisRoom.details.equals(temp)) {
+			thisRoom.details = temp;
+			mapView.clearRoom(showX, showY);
+			mapView.addEventOnRoom(showX, showY, temp, thisRoom.hasNPCs);
+		}
 		roomDetails.setText("");
 	}
 

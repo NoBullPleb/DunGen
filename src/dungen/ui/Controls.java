@@ -186,7 +186,8 @@ public class Controls extends JFrame {
 		npc.addActionListener(e -> {
 			DunGenPop jd = new DunGenPop();
 			jd.setTitle("NPC Generated");
-			jd.setText(new NPC().toString());
+			NPC n = new NPC();
+			jd.setText(n.toString() + "\n" + n.getStats());
 			jd.setVisible(true);
 		});
 

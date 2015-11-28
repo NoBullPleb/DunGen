@@ -44,8 +44,9 @@ public class Room implements Serializable {
 				details += "NPCs: ";
 				for (int i = 0; i < (Math.random() * 3); i++) {
 					party.add(new NPC());
-					details += "\n" + party.get(i).alignment + " "
-							+ party.get(i).npcClass;
+					details += "\n" + party.get(i).toString() + "\nSTATS: "
+							+ party.get(i).getStats();
+
 				}
 			} else {
 				details = Tables.getEvent();

@@ -2,6 +2,7 @@ package dungen.pojos;
 
 import java.io.Serializable;
 
+import dungen.generators.Dice;
 import dungen.generators.Tables;
 import dungen.ui.InfoPanel;
 
@@ -12,7 +13,10 @@ public class NPC implements Serializable {
 	public int lvl = Math
 			.max(InfoPanel.partyLevel
 					+ ((int) Math.floor(Math.random() * 5) - 2), 1);
-	
+	public int Int = Dice.statroll(), Wis = Dice.statroll(), Cha = Dice
+			.statroll(), Dex = Dice.statroll(), Str = Dice.statroll(),
+			Con = Dice.statroll();
+
 	public String getAlignment() {
 		return alignment;
 	}
@@ -27,6 +31,11 @@ public class NPC implements Serializable {
 
 	public void setLvl(int lvl) {
 		this.lvl = lvl;
+	}
+
+	public String getStats() {
+		return "[Int:" + Int + ", Wis:" + Wis + ", Cha:" + Cha + ", Str:" + Str
+				+ ", Dex:" + Dex + ", Con:" + Con + "]";
 	}
 
 	@Override

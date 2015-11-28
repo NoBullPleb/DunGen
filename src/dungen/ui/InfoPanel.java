@@ -43,7 +43,7 @@ public class InfoPanel extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(Controls.mapView.getX() + Controls.mapView.getWidth(), 50);
 		setSize(183, 580);
-		
+
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
@@ -64,6 +64,7 @@ public class InfoPanel extends JFrame {
 		for (int i = 0; i < types.length; i++) {
 			types[i] = new JCheckBox(Tables.monsterTypes[i]);
 			types[i].setBounds(59, 21 + 23 * i, 118, 23);
+			types[i].setSelected(true);
 			contentPane.add(types[i]);
 		}
 		JLabel lblInclude = new JLabel("Include: ");

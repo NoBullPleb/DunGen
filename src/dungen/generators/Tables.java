@@ -134,13 +134,17 @@ public class Tables {
 		int result = Dice.roll(100);
 		result = Dice.roll(challenge); // roll for type of encounter
 		if (result > 95)
-			event = "Deadly Encounter: " + getEncounter(deadlyTable[InfoPanel.partySize]);
+			event = "Deadly Encounter: "
+					+ getEncounter(deadlyTable[InfoPanel.partySize]);
 		else if (result > 80)
-			event = "Hard Encounter: " + getEncounter(hardTable[InfoPanel.partySize]);
+			event = "Hard Encounter: "
+					+ getEncounter(hardTable[InfoPanel.partySize]);
 		else if (result >= 60)
-			event = "Medium Encounter: " + getEncounter(mediumTable[InfoPanel.partySize]);
+			event = "Medium Encounter: "
+					+ getEncounter(mediumTable[InfoPanel.partySize]);
 		else if (result >= 50)
-			event = "Easy Encounter: " + getEncounter(easyTable[InfoPanel.partySize]);
+			event = "Easy Encounter: "
+					+ getEncounter(easyTable[InfoPanel.partySize]);
 		else if (result >= 38)
 			event = "Hazard!\n" + getHazard();
 		else if (result >= 26)
@@ -157,11 +161,12 @@ public class Tables {
 				+ getResultFromTable(Dice.roll(100), trickEffects);
 	}
 
-	public static String[][][] easyTable = new String[5][][],
-			mediumTable = new String[5][][], hardTable = new String[5][][],
-			deadlyTable = new String[5][][];
+	public static String[][][] easyTable = new String[InfoPanel.maxPartySize + 1][][],
+			mediumTable = new String[InfoPanel.maxPartySize + 1][][],
+			hardTable = new String[InfoPanel.maxPartySize + 1][][],
+			deadlyTable = new String[InfoPanel.maxPartySize + 1][][];
 	static {
-		for (Integer i = 1; i < 5; i++) {
+		for (Integer i = 1; i <= InfoPanel.maxPartySize; i++) {
 			easyTable[i] = getEncounterTable(i + " Easy.txt");
 			mediumTable[i] = getEncounterTable(i + " Medium.txt");
 			hardTable[i] = getEncounterTable(i + " Easy.txt");
@@ -180,7 +185,7 @@ public class Tables {
 		return null;
 	}
 
-	private static String[] CRs = "LEVEL / CR,0,1/8,1/4,1/2,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20"
+	private static String[] CRs = ",0,1/8,1/4,1/2,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20"
 			.split(",");
 	public static String[] monsterTypes = "Beast,Plant,Undead,Construct,Fiend,Aberration,Humanoid,Fey,Elemental,Dragon,Monstrosity,Ooze,Giant,Celestial"
 			.split(",");
@@ -210,8 +215,8 @@ public class Tables {
 			encounter.delete(0, encounter.length());
 			int result = Dice.roll(table[InfoPanel.partyLevel].length - 2) + 1;
 			encounter.append(table[InfoPanel.partyLevel][result].trim());
-			encounter.append(" CR:" + CRs[result]);
-			int treasureCR = whichTreasureCR(crToDouble(CRs[result]));
+			encounter.append(" CR:" + CRs[result-1]);
+			int treasureCR = whichTreasureCR(crToDouble(CRs[result-1]));
 			encounter.append("\n" + Treasure.getTreasure(treasureCR));
 			// if it's hard or deadly, add a treasure hoard
 			if (table.equals(hardTable) || table.equals(deadlyTable)) {

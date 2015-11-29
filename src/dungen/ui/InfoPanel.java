@@ -22,7 +22,7 @@ public class InfoPanel extends JFrame {
 	private static transient DefaultListModel<Integer> sizes = new DefaultListModel<Integer>();
 	private static transient JScrollPane scrollPane = null;
 	private static transient JList<Integer> sizeList = new JList<>();
-	private static int maxPartySize = 4;
+	public static int maxPartySize = 6;
 	static {
 		for (int i = 1; i < 21; i++)
 			levels.addElement(i);
@@ -88,13 +88,14 @@ public class InfoPanel extends JFrame {
 		sizeList.setVisibleRowCount(1);
 		sizeList.addListSelectionListener(e -> {
 			partySize = sizeList.getSelectedValue();
+			System.out.println("PARTY SIZE: " + partySize);
 		});
 		sizeList.setModel(sizes);
 		sizeList.setSelectedIndex(3);
 		sizeList.setAutoscrolls(true);
 		JScrollPane sp2 = new JScrollPane(sizeList);
 		sp2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		sp2.getVerticalScrollBar().setValue(100 * (4 / maxPartySize));
+		sp2.getVerticalScrollBar().setValue(52);
 		sp2.setBounds(145, 4, 35, 20);
 		contentPane.add(sp2);
 	}

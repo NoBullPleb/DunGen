@@ -146,28 +146,32 @@ public class Controls extends JFrame {
 		deadly.addActionListener(e -> {
 			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Deadly Encounter Generated");
-			jd.setText(Tables.getEncounter(Tables.deadlyTable[InfoPanel.partySize]));
+			jd.setText(Tables
+					.getEncounter(Tables.deadlyTable[InfoPanel.partySize]));
 			jd.setVisible(true);
 		});
 		JMenuItem hard = new JMenuItem("Hard");
 		hard.addActionListener(e -> {
 			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Hard Encounter Generated");
-			jd.setText(Tables.getEncounter(Tables.hardTable[InfoPanel.partySize]));
+			jd.setText(Tables
+					.getEncounter(Tables.hardTable[InfoPanel.partySize]));
 			jd.setVisible(true);
 		});
 		JMenuItem medium = new JMenuItem("Medium");
 		medium.addActionListener(e -> {
 			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Medium Encounter Generated");
-			jd.setText(Tables.getEncounter(Tables.mediumTable[InfoPanel.partySize]));
+			jd.setText(Tables
+					.getEncounter(Tables.mediumTable[InfoPanel.partySize]));
 			jd.setVisible(true);
 		});
 		JMenuItem easy = new JMenuItem("Easy");
 		easy.addActionListener(e -> {
 			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Easy Encounter Generated");
-			jd.setText(Tables.getEncounter(Tables.easyTable[InfoPanel.partySize]));
+			jd.setText(Tables
+					.getEncounter(Tables.easyTable[InfoPanel.partySize]));
 			jd.setVisible(true);
 		});
 		encounter.add(deadly);
@@ -257,12 +261,53 @@ public class Controls extends JFrame {
 		items.add(rareItem);
 		items.add(uncommonItem);
 		items.add(commonItem);
-
+		JMenu poisons = new JMenu("Poisons");
+		JMenuItem anyPoison = new JMenuItem("Any Poison");
+		anyPoison.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Poison Generated");
+			jd.setText(Tables.getPoison(""));
+			jd.setVisible(true);
+		});
+		JMenuItem injuryPoison = new JMenuItem("Injury");
+		injuryPoison.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Poison Generated");
+			jd.setText(Tables.getPoison("Injury"));
+			jd.setVisible(true);
+		});
+		JMenuItem contactPoison = new JMenuItem("Contact");
+		contactPoison.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Poison Generated");
+			jd.setText(Tables.getPoison("Contact"));
+			jd.setVisible(true);
+		});
+		JMenuItem inhaledPoison = new JMenuItem("Inhaled");
+		inhaledPoison.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Poison Generated");
+			jd.setText(Tables.getPoison("Inhaled"));
+			jd.setVisible(true);
+		});
+		JMenuItem ingestedPoison = new JMenuItem("Ingested");
+		ingestedPoison.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Poison Generated");
+			jd.setText(Tables.getPoison("Ingested"));
+			jd.setVisible(true);
+		});
+		poisons.add(anyPoison);
+		poisons.add(contactPoison);
+		poisons.add(ingestedPoison);
+		poisons.add(inhaledPoison);
+		poisons.add(injuryPoison);
 		generate.add(encounter);
 		generate.add(hazard);
 		generate.add(hoard);
 		generate.add(items);
 		generate.add(npc);
+		generate.add(poisons);
 		generate.add(trap);
 		generate.add(treasure);
 		generate.add(trick);

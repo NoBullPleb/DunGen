@@ -61,6 +61,17 @@ public class Tables {
 		return spells.get(Dice.roll(spells.size()) - 1);
 	}
 
+	private final static List<String> poisons = ResourceLoader
+			.getTable("Poisons.txt");
+
+	public static String getPoison(String x) {
+		List<String> p = poisons.parallelStream()
+				.filter(e -> e.toLowerCase().contains(x.toLowerCase()))
+				.collect(Collectors.toList());
+		String poison = p.get((int) Math.floor(Math.random() * (p.size())));
+		return poison;
+	}
+
 	public static String getUrbanMishap() {
 		return getResultFromTable(Dice.d20(), urbanChase);
 	}
@@ -215,8 +226,8 @@ public class Tables {
 			encounter.delete(0, encounter.length());
 			int result = Dice.roll(table[InfoPanel.partyLevel].length - 2) + 1;
 			encounter.append(table[InfoPanel.partyLevel][result].trim());
-			encounter.append(" CR:" + CRs[result-1]);
-			int treasureCR = whichTreasureCR(crToDouble(CRs[result-1]));
+			encounter.append(" CR:" + CRs[result - 1]);
+			int treasureCR = whichTreasureCR(crToDouble(CRs[result - 1]));
 			encounter.append("\n" + Treasure.getTreasure(treasureCR));
 			// if it's hard or deadly, add a treasure hoard
 			if (table.equals(hardTable) || table.equals(deadlyTable)) {

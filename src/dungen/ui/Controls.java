@@ -146,28 +146,28 @@ public class Controls extends JFrame {
 		deadly.addActionListener(e -> {
 			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Deadly Encounter Generated");
-			jd.setText(Tables.getEncounter(Tables.deadlyTable));
+			jd.setText(Tables.getEncounter(Tables.deadlyTable[InfoPanel.partySize]));
 			jd.setVisible(true);
 		});
 		JMenuItem hard = new JMenuItem("Hard");
 		hard.addActionListener(e -> {
 			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Hard Encounter Generated");
-			jd.setText(Tables.getEncounter(Tables.hardTable));
+			jd.setText(Tables.getEncounter(Tables.hardTable[InfoPanel.partySize]));
 			jd.setVisible(true);
 		});
 		JMenuItem medium = new JMenuItem("Medium");
 		medium.addActionListener(e -> {
 			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Medium Encounter Generated");
-			jd.setText(Tables.getEncounter(Tables.mediumTable));
+			jd.setText(Tables.getEncounter(Tables.mediumTable[InfoPanel.partySize]));
 			jd.setVisible(true);
 		});
 		JMenuItem easy = new JMenuItem("Easy");
 		easy.addActionListener(e -> {
 			DunGenPop jd = new DunGenPop();
 			jd.setTitle("Easy Encounter Generated");
-			jd.setText(Tables.getEncounter(Tables.easyTable));
+			jd.setText(Tables.getEncounter(Tables.easyTable[InfoPanel.partySize]));
 			jd.setVisible(true);
 		});
 		encounter.add(deadly);

@@ -134,13 +134,13 @@ public class Tables {
 		int result = Dice.roll(100);
 		result = Dice.roll(challenge); // roll for type of encounter
 		if (result > 95)
-			event = "Deadly Encounter: " + getEncounter(deadlyTable);
+			event = "Deadly Encounter: " + getEncounter(deadlyTable[InfoPanel.partySize]);
 		else if (result > 80)
-			event = "Hard Encounter: " + getEncounter(hardTable);
+			event = "Hard Encounter: " + getEncounter(hardTable[InfoPanel.partySize]);
 		else if (result >= 60)
-			event = "Medium Encounter: " + getEncounter(mediumTable);
+			event = "Medium Encounter: " + getEncounter(mediumTable[InfoPanel.partySize]);
 		else if (result >= 50)
-			event = "Easy Encounter: " + getEncounter(easyTable);
+			event = "Easy Encounter: " + getEncounter(easyTable[InfoPanel.partySize]);
 		else if (result >= 38)
 			event = "Hazard!\n" + getHazard();
 		else if (result >= 26)
@@ -157,10 +157,17 @@ public class Tables {
 				+ getResultFromTable(Dice.roll(100), trickEffects);
 	}
 
-	public static String[][] easyTable = getEncounterTable("Easy.txt");
-	public static String[][] mediumTable = getEncounterTable("Medium.txt");
-	public static String[][] hardTable = getEncounterTable("Hard.txt");
-	public static String[][] deadlyTable = getEncounterTable("Deadly.txt");
+	public static String[][][] easyTable = new String[5][][],
+			mediumTable = new String[5][][], hardTable = new String[5][][],
+			deadlyTable = new String[5][][];
+	static {
+		for (Integer i = 1; i < 5; i++) {
+			easyTable[i] = getEncounterTable(i + " Easy.txt");
+			mediumTable[i] = getEncounterTable(i + " Medium.txt");
+			hardTable[i] = getEncounterTable(i + " Easy.txt");
+			deadlyTable[i] = getEncounterTable(i + " Medium.txt");
+		}
+	}
 
 	private static String[][] getEncounterTable(String path) {
 		List<String> table = ResourceLoader.getTable(path);

@@ -23,7 +23,7 @@ import javax.swing.JLabel;
 import dungen.pojos.NPC;
 
 public class Controls extends JFrame {
-	public static String version = "1.5.1";
+	public static String version = "1.5.2";
 	private static final long serialVersionUID = 7985611292217902489L;
 	transient final static JButton southButton = new JButton("Go South"),
 			eastButton = new JButton("Go East"), westButton = new JButton(

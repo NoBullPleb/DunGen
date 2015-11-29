@@ -1,6 +1,6 @@
 4,Magic missiles shoot from a statue or object 
 7,Collapsing staircase creates a ramp that deposits characters into a pit at its lower end
-10,Ceiling block falls , or entire ceiling collapses
+10,Ceiling block falls, or entire ceiling collapses
 12,Ceiling lowers slowly in locked room
 14,Chute opens in floor
 16,Clanging noise attracts nearby monsters
@@ -9,7 +9,7 @@
 27,Fire shoots out from wall, floor, or object
 30,Touching an object triggers aflesh to stone spell
 33,Floor collapses or is an illusion
-36,Vent releases gas: blinding, acidic, obscuring, paralyzing, poisonous , or sleep-inducing
+36,Vent releases gas: blinding, acidic, obscuring, paralyzing, poisonous, or sleep-inducing
 39,Floor tiles are electrified
 43,Glyph ofwarding
 46,Huge wheeled statue rolls down corridor

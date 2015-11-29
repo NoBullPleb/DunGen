@@ -88,7 +88,6 @@ public class InfoPanel extends JFrame {
 		sizeList.setVisibleRowCount(1);
 		sizeList.addListSelectionListener(e -> {
 			partySize = sizeList.getSelectedValue();
-			System.out.println("PARTY SIZE: " + partySize);
 		});
 		sizeList.setModel(sizes);
 		sizeList.setSelectedIndex(3);

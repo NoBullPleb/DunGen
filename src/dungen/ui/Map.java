@@ -56,6 +56,8 @@ public class Map extends JFrame {
 				.filter(e -> !e.getIcon().equals(partyImage))
 				.collect(Collectors.toList());
 		removers.forEach(getContentPane()::remove);
+		//redraws the party icon
+		moveStar(x, y);
 	}
 
 	public void redraw() {

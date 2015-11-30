@@ -67,10 +67,18 @@ public class Controls extends JFrame {
 			thisRoom.drawn = true;
 		}
 		mapView.moveStar(showX, showY);
-		northButton.setEnabled(thisRoom.north);
-		westButton.setEnabled(thisRoom.west);
-		eastButton.setEnabled(thisRoom.east);
-		southButton.setEnabled(thisRoom.south);
+		Point p = new Point(showX, showY + 1);
+		northButton.setEnabled(thisRoom.north || thisRoom.northRoom != null
+				|| (rooms.containsKey(p) && rooms.get(p).south));
+		p = new Point(showX - 1, showY);
+		westButton.setEnabled(thisRoom.west || thisRoom.westRoom != null
+				|| (rooms.containsKey(p) && rooms.get(p).east));
+		p = new Point(showX + 1, showY);
+		eastButton.setEnabled(thisRoom.east || thisRoom.eastRoom != null
+				|| (rooms.containsKey(p) && rooms.get(p).west));
+		p = new Point(showX, showY - 1);
+		southButton.setEnabled(thisRoom.south || thisRoom.southRoom != null
+				|| (rooms.containsKey(p) && rooms.get(p).north));
 	}
 
 	public static void load(ActionEvent e) {
@@ -435,6 +443,7 @@ public class Controls extends JFrame {
 					thisRoom.eastRoom.north = false;
 				if (showX >= xLimit)
 					thisRoom.eastRoom.east = false;
+
 				thisRoom.eastRoom.addDoor("west");
 				rooms.put(p, thisRoom.eastRoom);
 			}
@@ -455,6 +464,7 @@ public class Controls extends JFrame {
 				}
 				thisRoom.westRoom.eastRoom = thisRoom;
 				thisRoom.westRoom.addDoor("east");
+				
 				if (showY <= 0)
 					thisRoom.westRoom.south = false;
 				else if (showY >= yLimit)
@@ -504,7 +514,6 @@ public class Controls extends JFrame {
 					thisRoom.southRoom = new Room();
 				}
 				thisRoom.southRoom.northRoom = thisRoom;
-				rooms.put(p, thisRoom.southRoom);
 				thisRoom.southRoom.north = true;
 				if (showY <= 0)
 					thisRoom.southRoom.south = false;
@@ -512,6 +521,7 @@ public class Controls extends JFrame {
 					thisRoom.southRoom.east = false;
 				else if (showX <= -xLimit)
 					thisRoom.southRoom.west = false;
+				rooms.put(p, thisRoom.southRoom);
 			}
 			thisRoom = thisRoom.southRoom;
 			showRoom();

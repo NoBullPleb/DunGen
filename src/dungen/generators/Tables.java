@@ -98,9 +98,65 @@ public class Tables {
 		return getResultFromTable(InfoPanel.partyLevel, trapDamage).split(",")[index];
 	}
 
+	private final static List<String> npcInteractive = ResourceLoader
+			.getTable("NPC Interactive Trait.txt");
+	private final static List<String> npcSpecialty = ResourceLoader
+			.getTable("NPC Specialty.txt");
+	private final static List<String> npcQuirks = ResourceLoader
+			.getTable("NPC quirks.txt");
+
+	public static String getInteractiveTrait() {
+		return getResultFromTable(Dice.roll(12), npcInteractive);
+	}
+
+	public static String getQuirk() {
+		return getResultFromTable(Dice.d20(), npcQuirks);
+	}
+
+	public static String getSpecialty() {
+		return getResultFromTable(Dice.d20(), npcSpecialty);
+	}
+
 	public static String getAlignment() {
 		return getResultFromTable(Dice.d20(), alignments);
 	}
+
+	public static String getIdeals(String alignment) {
+		Character a1 = alignment.charAt(0);
+		Character a2 = alignment.charAt(1);
+
+		StringBuilder ideals = new StringBuilder("Believes in ");
+		if (a1.equals('L'))
+			ideals.append(getResultFromTable(Dice.roll(6), lawfulIdeal));
+		else if (a1.equals('C'))
+			ideals.append(getResultFromTable(Dice.roll(6), chaoticIdeal));
+		else
+			ideals.append(getResultFromTable(Dice.roll(6), neutral1Ideal));
+		ideals.append(" and ");
+
+		if (a2.equals('G'))
+			ideals.append(getResultFromTable(Dice.roll(6), goodIdeal));
+		else if (a2.equals('E'))
+			ideals.append(getResultFromTable(Dice.roll(6), evilIdeal));
+		else
+			ideals.append(getResultFromTable(Dice.roll(6), neutral2Ideal));
+
+		return ideals.toString();
+
+	}
+
+	private final static List<String> chaoticIdeal = ResourceLoader
+			.getTable("Chaos Ideal.txt");
+	private final static List<String> evilIdeal = ResourceLoader
+			.getTable("Evil Ideal.txt");
+	private final static List<String> goodIdeal = ResourceLoader
+			.getTable("Good Ideal.txt");
+	private final static List<String> lawfulIdeal = ResourceLoader
+			.getTable("Law Ideal.txt");
+	private final static List<String> neutral1Ideal = ResourceLoader
+			.getTable("Neutral 1 Ideal.txt");
+	private final static List<String> neutral2Ideal = ResourceLoader
+			.getTable("Neutral 2 Ideal.txt");
 
 	public static String getResultFromTable(int result, List<String> table) {
 		final StringBuilder items = new StringBuilder();
@@ -208,7 +264,7 @@ public class Tables {
 	}
 	private static String[][] monsters = getEncounterTable("MonsterList.txt");
 
-	public static Double crToDouble(String CR) {
+	public static Double crStringToDouble(String CR) {
 		if (!CR.contains("/")) {
 			return Double.parseDouble(CR);
 		} else {
@@ -227,7 +283,7 @@ public class Tables {
 			int result = Dice.roll(table[InfoPanel.partyLevel].length - 2) + 1;
 			encounter.append(table[InfoPanel.partyLevel][result].trim());
 			encounter.append(" CR:" + CRs[result - 1]);
-			int treasureCR = whichTreasureCR(crToDouble(CRs[result - 1]));
+			int treasureCR = whichTreasureCR(crStringToDouble(CRs[result - 1]));
 			encounter.append("\n" + Treasure.getTreasure(treasureCR));
 			// if it's hard or deadly, add a treasure hoard
 			if (table.equals(hardTable) || table.equals(deadlyTable)) {

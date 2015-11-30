@@ -1,7 +1,6 @@
 package dungen.pojos;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import dungen.generators.Tables;
 
@@ -14,7 +13,6 @@ public class Room implements Serializable {
 	public boolean drawn = false;
 	public String details = "";
 	public boolean hasNPCs = Math.random() * 100 > 98; // 2% ODDS OF NPCS
-	private ArrayList<NPC> party = new ArrayList<NPC>();
 
 	public Boolean north = (Math.random() * 100) > 100 - neverTellMeTheOdds,
 			south = (Math.random() * 100) > 100 - neverTellMeTheOdds,
@@ -41,13 +39,7 @@ public class Room implements Serializable {
 		if (roomNumber > 1)
 			// If it has NPCs, generate the party. 1-3 adventurers.
 			if (hasNPCs) {
-				details += "NPCs: ";
-				for (int i = 0; i < (Math.random() * 3); i++) {
-					party.add(new NPC());
-					details += "\n" + party.get(i).toString() + "\nSTATS: "
-							+ party.get(i).getStats();
-
-				}
+				details += new NPC().toString();
 			} else {
 				details = Tables.getEvent();
 			}

@@ -55,20 +55,19 @@ public class Tables {
 
 	public static String getSpell(Integer Level) {
 		// get spells of a particular level (0 for cantrip)
-		List<String> spells = spellList.parallelStream()
+		
+		return  getResultFromTable(spellList.parallelStream()
 				.filter(e -> e.startsWith(Level.toString()))
-				.collect(Collectors.toList());
-		return spells.get(Dice.roll(spells.size()) - 1);
+				.collect(Collectors.toList()));
 	}
 
 	private final static List<String> poisons = ResourceLoader
 			.getTable("Poisons.txt");
 
 	public static String getPoison(String x) {
-		List<String> p = poisons.parallelStream()
+		String poison = getResultFromTable(poisons.parallelStream()
 				.filter(e -> e.toLowerCase().contains(x.toLowerCase()))
-				.collect(Collectors.toList());
-		String poison = p.get((int) Math.floor(Math.random() * (p.size())));
+				.collect(Collectors.toList()));
 		return poison;
 	}
 
@@ -113,12 +112,23 @@ public class Tables {
 		return getResultFromTable(Dice.d20(), npcQuirks);
 	}
 
+	private final static List<String> insults = ResourceLoader
+			.getTable("Trash Talk.txt");
+
+	public static String getInsult() {
+		return getResultFromTable(insults);
+	}
+
 	public static String getSpecialty() {
 		return getResultFromTable(Dice.d20(), npcSpecialty);
 	}
 
 	public static String getAlignment() {
 		return getResultFromTable(Dice.d20(), alignments);
+	}
+
+	private static String getResultFromTable(List<String> table) {
+		return table.get((int) Math.floor(Math.random() * table.size()));
 	}
 
 	public static String getIdeals(String alignment) {

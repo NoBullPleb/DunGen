@@ -14,7 +14,8 @@ public class DunGenPop extends JFrame {
 
 	private JPanel contentPane;
 	JTextArea textArea = new JTextArea();
-
+	
+	
 	public void setText(String text) {
 		textArea.setText(text);
 		textArea.revalidate();

@@ -20,7 +20,7 @@ import dungen.pojos.Treasure;
 
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
-import dungen.pojos.NPC;
+import dungen.pojos.*;
 
 public class Controls extends JFrame {
 	public static String version = "1.5.2";
@@ -186,7 +186,8 @@ public class Controls extends JFrame {
 			jd.setText(Tables.getHazard());
 			jd.setVisible(true);
 		});
-		JMenuItem npc = new JMenuItem("NPC");
+		JMenu npcs = new JMenu("NPCs");
+		JMenuItem npc = new JMenuItem("Any");
 		npc.addActionListener(e -> {
 			DunGenPop jd = new DunGenPop();
 			jd.setTitle("NPC Generated");
@@ -194,6 +195,16 @@ public class Controls extends JFrame {
 			jd.setText(n.toString() + "\n" + n.getStats());
 			jd.setVisible(true);
 		});
+		JMenuItem wizard = new JMenuItem("Wizard");
+		wizard.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Wizard Generated");
+			NPC n = new Wizard();
+			jd.setText(n.toString());
+			jd.setVisible(true);
+		});
+		npcs.add(npc);
+		npcs.add(wizard);
 
 		JMenuItem hoard = new JMenuItem("Hoard");
 		hoard.addActionListener(e -> {
@@ -302,11 +313,20 @@ public class Controls extends JFrame {
 		poisons.add(ingestedPoison);
 		poisons.add(inhaledPoison);
 		poisons.add(injuryPoison);
+
+		JMenuItem insult = new JMenuItem("Insult");
+		insult.addActionListener(e -> {
+			DunGenPop jd = new DunGenPop();
+			jd.setTitle("Insult Generated");
+			jd.setText(Tables.getInsult());
+			jd.setVisible(true);
+		});
 		generate.add(encounter);
 		generate.add(hazard);
 		generate.add(hoard);
 		generate.add(items);
-		generate.add(npc);
+		generate.add(insult);
+		generate.add(npcs);
 		generate.add(poisons);
 		generate.add(trap);
 		generate.add(treasure);

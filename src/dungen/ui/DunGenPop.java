@@ -20,7 +20,6 @@ public class DunGenPop extends JFrame {
 		textArea.setText(text);
 		textArea.revalidate();
 		textArea.repaint();
-		scrollPane.getVerticalScrollBar().setValue(0);
 	}
 
 	public DunGenPop(String title, Supplier<String> text) {

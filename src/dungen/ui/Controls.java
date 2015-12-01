@@ -48,10 +48,12 @@ public class Controls extends JFrame {
 			mapView.clearRoom(showX, showY);
 			mapView.addEventOnRoom(showX, showY, temp, thisRoom.hasNPCs);
 		}
+		rooms.put(new Point(showX, showY), thisRoom);
 		roomDetails.setText("");
 	}
 
 	private static void showRoom() {
+		fixDoors();
 		roomDetails.setText(thisRoom.details);
 		lblRoomDetails.setText("Room Details: " + thisRoom.roomNumber);
 		if (!thisRoom.drawn) {
@@ -67,18 +69,10 @@ public class Controls extends JFrame {
 			thisRoom.drawn = true;
 		}
 		mapView.moveStar(showX, showY);
-		Point p = new Point(showX, showY + 1);
-		northButton.setEnabled(thisRoom.north || thisRoom.northRoom != null
-				|| (rooms.containsKey(p) && rooms.get(p).south));
-		p = new Point(showX - 1, showY);
-		westButton.setEnabled(thisRoom.west || thisRoom.westRoom != null
-				|| (rooms.containsKey(p) && rooms.get(p).east));
-		p = new Point(showX + 1, showY);
-		eastButton.setEnabled(thisRoom.east || thisRoom.eastRoom != null
-				|| (rooms.containsKey(p) && rooms.get(p).west));
-		p = new Point(showX, showY - 1);
-		southButton.setEnabled(thisRoom.south || thisRoom.southRoom != null
-				|| (rooms.containsKey(p) && rooms.get(p).north));
+		northButton.setEnabled(thisRoom.north);
+		westButton.setEnabled(thisRoom.west);
+		eastButton.setEnabled(thisRoom.east);
+		southButton.setEnabled(thisRoom.south);
 	}
 
 	public static void load(ActionEvent e) {
@@ -432,19 +426,15 @@ public class Controls extends JFrame {
 				Point p = new Point(showX, showY);
 				if (rooms.containsKey(p)) {
 					thisRoom.eastRoom = rooms.get(p);
-					mapView.addHall(showX, showY, "west");
 				} else {
 					thisRoom.eastRoom = new Room();
 				}
-				thisRoom.eastRoom.westRoom = thisRoom;
 				if (showY <= 0)
 					thisRoom.eastRoom.south = false;
 				else if (showY >= yLimit)
 					thisRoom.eastRoom.north = false;
 				if (showX >= xLimit)
 					thisRoom.eastRoom.east = false;
-
-				thisRoom.eastRoom.addDoor("west");
 				rooms.put(p, thisRoom.eastRoom);
 			}
 			thisRoom = thisRoom.eastRoom;
@@ -458,20 +448,15 @@ public class Controls extends JFrame {
 				Point p = new Point(showX, showY);
 				if (rooms.containsKey(p)) {
 					thisRoom.westRoom = rooms.get(p);
-					mapView.addHall(showX, showY, "east");
 				} else {
 					thisRoom.westRoom = new Room();
 				}
-				thisRoom.westRoom.eastRoom = thisRoom;
-				thisRoom.westRoom.addDoor("east");
-				
 				if (showY <= 0)
 					thisRoom.westRoom.south = false;
 				else if (showY >= yLimit)
 					thisRoom.westRoom.north = false;
 				if (showX <= -xLimit)
 					thisRoom.westRoom.west = false;
-				rooms.put(p, thisRoom.westRoom);
 			}
 			thisRoom = thisRoom.westRoom;
 			showRoom();
@@ -484,19 +469,15 @@ public class Controls extends JFrame {
 				Point p = new Point(showX, showY);
 				if (rooms.containsKey(p)) {
 					thisRoom.northRoom = rooms.get(p);
-					mapView.addHall(showX, showY, "south");
 				} else {
 					thisRoom.northRoom = new Room();
 				}
-				thisRoom.northRoom.southRoom = thisRoom;
-				thisRoom.northRoom.addDoor("south");
 				if (showY >= yLimit)
 					thisRoom.northRoom.north = false;
 				if (showX >= xLimit)
 					thisRoom.northRoom.east = false;
 				else if (showX <= -xLimit)
 					thisRoom.northRoom.west = false;
-				rooms.put(p, thisRoom.northRoom);
 			}
 			thisRoom = thisRoom.northRoom;
 			showRoom();
@@ -509,19 +490,15 @@ public class Controls extends JFrame {
 				Point p = new Point(showX, showY);
 				if (rooms.containsKey(p)) {
 					thisRoom.southRoom = rooms.get(p);
-					mapView.addHall(showX, showY, "north");
 				} else {
 					thisRoom.southRoom = new Room();
 				}
-				thisRoom.southRoom.northRoom = thisRoom;
-				thisRoom.southRoom.north = true;
 				if (showY <= 0)
 					thisRoom.southRoom.south = false;
 				if (showX >= xLimit)
 					thisRoom.southRoom.east = false;
 				else if (showX <= -xLimit)
 					thisRoom.southRoom.west = false;
-				rooms.put(p, thisRoom.southRoom);
 			}
 			thisRoom = thisRoom.southRoom;
 			showRoom();
@@ -556,5 +533,30 @@ public class Controls extends JFrame {
 		clearRoom.setBounds(142, 91, 117, 16);
 		contentPane.add(clearRoom);
 		Controls.showRoom();
+	}
+
+	private static void fixDoors() {
+		Room north = rooms.getOrDefault(new Point(showX, showY + 1), null), south = rooms
+				.getOrDefault(new Point(showX, showY - 1), null), east = rooms
+				.getOrDefault(new Point(showX + 1, showY), null), west = rooms
+				.getOrDefault(new Point(showX - 1, showY), null);
+
+		if (north != null) {
+			thisRoom.north = north.south;
+			thisRoom.northRoom = north;
+		}
+		if (south != null) {
+			thisRoom.south = south.north;
+			thisRoom.southRoom = south;
+		}
+		if (west != null) {
+			thisRoom.west = west.east;
+			thisRoom.westRoom = west;
+		}
+		if (east != null) {
+			thisRoom.east = east.west;
+			thisRoom.eastRoom = east;
+		}
+
 	}
 }

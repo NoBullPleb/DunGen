@@ -20,6 +20,7 @@ import dungen.pojos.Treasure;
 
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+
 import dungen.pojos.*;
 
 public class Controls extends JFrame {
@@ -30,6 +31,7 @@ public class Controls extends JFrame {
 					"Go West"), northButton = new JButton("Go North");
 	// used to track where rooms are. If one is already at that location, we can
 	// load it.
+	static JScrollPane scrollPane = new JScrollPane();
 	public static JTextArea roomDetails = new JTextArea();
 	private static JLabel lblRoomDetails = new JLabel("Room Details");
 	public static HashMap<Point, Room> rooms = new HashMap<>();
@@ -55,6 +57,7 @@ public class Controls extends JFrame {
 	private static void showRoom() {
 		fixDoors();
 		roomDetails.setText(thisRoom.details);
+
 		lblRoomDetails.setText("Room Details: " + thisRoom.roomNumber);
 		if (!thisRoom.drawn) {
 			mapView.addRoom(showX, showY, thisRoom.details, thisRoom.hasNPCs);
@@ -124,76 +127,84 @@ public class Controls extends JFrame {
 		JMenu generate = new JMenu("Generate");
 		JMenuItem trap = new JMenuItem("Trap");
 		trap.addActionListener(e -> {
-			new DunGenPop("Trap Generated", Tables.getTrap());
+			new DunGenPop("Trap Generated", Tables::getTrap);
 		});
 		JMenuItem treasure = new JMenuItem("Treasure");
 		treasure.addActionListener(e -> {
-			new DunGenPop("Treasure Generated", Treasure.getTreasure());
+			new DunGenPop("Treasure Generated", Treasure::getTreasure);
 		});
 		JMenuItem trick = new JMenuItem("Trick");
 		trick.addActionListener(e -> {
-			new DunGenPop("Trick Generated", Tables.getTrick());
+			new DunGenPop("Trick Generated", Tables::getTrick);
 		});
 		JMenu encounter = new JMenu("Encounter");
 		JMenuItem deadly = new JMenuItem("Deadly");
 		deadly.addActionListener(e -> {
-			new DunGenPop("Deadly Encounter Generated", Tables
+			new DunGenPop("Deadly Encounter Generated", () -> Tables
 					.getEncounter(Tables.deadlyTable[InfoPanel.partySize]));
 		});
 		JMenuItem hard = new JMenuItem("Hard");
 		hard.addActionListener(e -> new DunGenPop("Hard Encounter Generated",
-				Tables.getEncounter(Tables.hardTable[InfoPanel.partySize])));
+				() -> Tables
+						.getEncounter(Tables.hardTable[InfoPanel.partySize])));
 		JMenuItem medium = new JMenuItem("Medium");
 		medium.addActionListener(e -> new DunGenPop(
-				"Medium Encounter Generated", Tables
+				"Medium Encounter Generated", () -> Tables
 						.getEncounter(Tables.mediumTable[InfoPanel.partySize])));
 		JMenuItem easy = new JMenuItem("Easy");
 		easy.addActionListener(e -> new DunGenPop("Easy Encounter Generated",
-				Tables.getEncounter(Tables.easyTable[InfoPanel.partySize])));
+				() -> Tables
+						.getEncounter(Tables.easyTable[InfoPanel.partySize])));
 		encounter.add(deadly);
 		encounter.add(hard);
 		encounter.add(medium);
 		encounter.add(easy);
 
 		JMenuItem hazard = new JMenuItem("Hazard");
-		hazard.addActionListener(e -> new DunGenPop("Hazard Generated", Tables
-				.getHazard()));
+		hazard.addActionListener(e -> new DunGenPop("Hazard Generated",
+				() -> Tables.getHazard()));
 		JMenu npcs = new JMenu("NPCs");
 		JMenuItem npc = new JMenuItem("Any");
-		npc.addActionListener(e -> new DunGenPop("NPC Generated", new NPC()
-				.toString()));
+		npc.addActionListener(e -> new DunGenPop("NPC Generated",
+				() -> new NPC().toString()));
 		JMenuItem wizard = new JMenuItem("Wizard");
 		wizard.addActionListener(e -> new DunGenPop("Wizard Generated",
-				new Wizard().toString()));
+				() -> new Wizard().toString()));
 		npcs.add(npc);
 		npcs.add(wizard);
 
 		JMenuItem hoard = new JMenuItem("Hoard");
-		hoard.addActionListener(e -> new DunGenPop("Hoard Generated", Hoard
-				.getHoard()));
+		hoard.addActionListener(e -> new DunGenPop("Hoard Generated",
+				() -> Hoard.getHoard()));
 
 		JMenu items = new JMenu("Items");
 		JMenuItem anyItem = new JMenuItem("Any Magic Item");
-		anyItem.addActionListener(e -> new DunGenPop("Item Generated", Hoard
-				.getMagicItem("")));
+		anyItem.addActionListener(e -> new DunGenPop("Item Generated",
+				() -> Hoard.getMagicItem("")));
 		JMenuItem sentientItem = new JMenuItem("Sentient Magic Item");
-		sentientItem.addActionListener(e -> new DunGenPop(
-				"Sentient Item Generated", Hoard.getSentientMagicItem("")));
+		sentientItem
+				.addActionListener(e -> new DunGenPop(
+						"Sentient Item Generated", () -> Hoard
+								.getSentientMagicItem("")));
 		JMenuItem rareItem = new JMenuItem("Rare Item");
 		rareItem.addActionListener(e -> new DunGenPop("Rare Item Generated",
-				Hoard.getMagicItem("Rare")));
+				() -> Hoard.getMagicItem("Rare")));
 		JMenuItem veryRareItem = new JMenuItem("Very Rare Item");
 		veryRareItem.addActionListener(e -> new DunGenPop(
-				"Very Rare Item Generated", Hoard.getMagicItem("Very Rare")));
+				"Very Rare Item Generated", () -> Hoard
+						.getMagicItem("Very Rare")));
 		JMenuItem legendaryItem = new JMenuItem("Legendary Item");
 		legendaryItem.addActionListener(e -> new DunGenPop(
-				"Legendary Item Generated", Hoard.getMagicItem("Legendary")));
+				"Legendary Item Generated", () -> Hoard
+						.getMagicItem("Legendary")));
 		JMenuItem uncommonItem = new JMenuItem("Uncommon Item");
-		uncommonItem.addActionListener(e -> new DunGenPop(
-				"Uncommon Item Generated", Hoard.getMagicItem("Uncommon")));
+		uncommonItem
+				.addActionListener(e -> new DunGenPop(
+						"Uncommon Item Generated", () -> Hoard
+								.getMagicItem("Uncommon")));
 		JMenuItem commonItem = new JMenuItem("Common Item");
 		commonItem.addActionListener(e -> new DunGenPop(
-				"Common Item Generated", Hoard.getMagicItem("Common")));
+				"Common Item Generated", () -> Hoard.getMagicItem("Common")));
 
 		items.add(anyItem);
 		items.add(sentientItem);
@@ -205,19 +216,19 @@ public class Controls extends JFrame {
 		JMenu poisons = new JMenu("Poisons");
 		JMenuItem anyPoison = new JMenuItem("Any Poison");
 		anyPoison.addActionListener(e -> new DunGenPop("Poison Generated",
-				Tables.getPoison("")));
+				() -> Tables.getPoison("")));
 		JMenuItem injuryPoison = new JMenuItem("Injury");
 		injuryPoison.addActionListener(e -> new DunGenPop("Poison Generated",
-				Tables.getPoison("Injury")));
+				() -> Tables.getPoison("Injury")));
 		JMenuItem contactPoison = new JMenuItem("Contact");
 		contactPoison.addActionListener(e -> new DunGenPop("Poison Generated",
-				Tables.getPoison("Contact")));
+				() -> Tables.getPoison("Contact")));
 		JMenuItem inhaledPoison = new JMenuItem("Inhaled");
 		inhaledPoison.addActionListener(e -> new DunGenPop("Poison Generated",
-				Tables.getPoison("Inhaled")));
+				() -> Tables.getPoison("Inhaled")));
 		JMenuItem ingestedPoison = new JMenuItem("Ingested");
 		ingestedPoison.addActionListener(e -> new DunGenPop("Poison Generated",
-				Tables.getPoison("Ingested")));
+				() -> Tables.getPoison("Ingested")));
 		poisons.add(anyPoison);
 		poisons.add(contactPoison);
 		poisons.add(ingestedPoison);
@@ -225,8 +236,8 @@ public class Controls extends JFrame {
 		poisons.add(injuryPoison);
 
 		JMenuItem insult = new JMenuItem("Insult");
-		insult.addActionListener(e -> new DunGenPop("Insult Generated", Tables
-				.getInsult()));
+		insult.addActionListener(e -> new DunGenPop("Insult Generated",
+				Tables::getInsult));
 		generate.add(encounter);
 		generate.add(hazard);
 		generate.add(hoard);
@@ -241,42 +252,41 @@ public class Controls extends JFrame {
 
 		JMenu mishaps = new JMenu("Mishaps");
 		JMenuItem scroll = new JMenuItem("Scroll");
-		scroll.addActionListener(e -> new DunGenPop("Scroll mishap!", Tables
-				.scrollMishap()));
+		scroll.addActionListener(e -> new DunGenPop("Scroll mishap!",
+				Tables::scrollMishap));
 		JMenuItem potion = new JMenuItem("Potion");
-		potion.addActionListener(e -> new DunGenPop("Potion mishap!", Tables
-				.potionMishap()));
+		potion.addActionListener(e -> new DunGenPop("Potion mishap!",
+				Tables::potionMishap));
 		JMenuItem attack = new JMenuItem("Attack");
-		attack.addActionListener(e -> new DunGenPop("Attack mishap!", Tables
-				.meleeMishap()));
+		attack.addActionListener(e -> new DunGenPop("Attack mishap!",
+				Tables::meleeMishap));
 		JMenuItem injury = new JMenuItem("Injury");
-		injury.addActionListener(e -> new DunGenPop("Injury mishap!", Tables
-				.getInjury()));
+		injury.addActionListener(e -> new DunGenPop("Injury mishap!",
+				Tables::getInjury));
 		JMenu chases = new JMenu("Chase Complication");
 		JMenuItem urban = new JMenuItem("Urban");
 		urban.addActionListener(e -> new DunGenPop("Urban Chase Complication!",
-				Tables.getUrbanMishap()));
+				Tables::getUrbanMishap));
 		JMenuItem wilderness = new JMenuItem("Wilderness");
-		wilderness
-				.addActionListener(e -> new DunGenPop(
-						"Wilderness Chase Complication!", Tables
-								.getWildernessMishap()));
+		wilderness.addActionListener(e -> new DunGenPop(
+				"Wilderness Chase Complication!", () -> Tables
+						.getWildernessMishap()));
 		chases.add(urban);
 		chases.add(wilderness);
 
 		JMenu madness = new JMenu("Madness");
 		JMenuItem shortterm = new JMenuItem("Short Term");
 		shortterm.addActionListener(e -> new DunGenPop("Short Term Madness",
-				Tables.getMadness(0)));
+				() -> Tables.getMadness(0)));
 		madness.add(shortterm);
 
 		JMenuItem longterm = new JMenuItem("Long Term");
 		longterm.addActionListener(e -> new DunGenPop("Long Term Madness",
-				Tables.getMadness(1)));
+				() -> Tables.getMadness(1)));
 		madness.add(longterm);
 		JMenuItem indefinite = new JMenuItem("Indefinite");
 		indefinite.addActionListener(e -> new DunGenPop("Indefinite Madness",
-				Tables.getMadness(2)));
+				() -> Tables.getMadness(2)));
 		madness.add(indefinite);
 
 		mishaps.add(attack);
@@ -379,7 +389,6 @@ public class Controls extends JFrame {
 		contentPane.add(eastButton);
 		contentPane.add(southButton);
 
-		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(11, 110, 254, 420);
 		contentPane.add(scrollPane);
 

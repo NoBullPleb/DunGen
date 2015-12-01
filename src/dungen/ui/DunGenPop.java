@@ -1,6 +1,7 @@
 package dungen.ui;
 
 import java.awt.BorderLayout;
+import java.util.function.Supplier;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,7 +12,7 @@ import javax.swing.JTextArea;
 
 @SuppressWarnings("serial")
 public class DunGenPop extends JFrame {
-
+	JScrollPane scrollPane = new JScrollPane();
 	private JPanel contentPane;
 	JTextArea textArea = new JTextArea();
 
@@ -19,9 +20,10 @@ public class DunGenPop extends JFrame {
 		textArea.setText(text);
 		textArea.revalidate();
 		textArea.repaint();
+		scrollPane.getVerticalScrollBar().setValue(0);
 	}
 
-	public DunGenPop(String title, String text) {
+	public DunGenPop(String title, Supplier<String> text) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -29,7 +31,6 @@ public class DunGenPop extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 
-		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 		textArea.setSize(200, 200);
 		textArea.setColumns(10);
@@ -47,10 +48,17 @@ public class DunGenPop extends JFrame {
 					.getTitle().toLowerCase().contains("npc"));
 			this.dispose();
 		});
-		contentPane.add(btnAddToRoom, BorderLayout.SOUTH);
-		setText(text);
+		JButton regenerate = new JButton("Regenerate");
+		regenerate.addActionListener(e -> setText(text.get()));
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout(0, 0));
+		setText(text.get());
 		setTitle(title);
 		this.setVisible(true);
+		panel.add(btnAddToRoom, BorderLayout.EAST);
+		panel.add(regenerate, BorderLayout.WEST);
+		contentPane.add(panel, BorderLayout.SOUTH);
 	}
 
 }

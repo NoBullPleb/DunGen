@@ -14,15 +14,14 @@ public class DunGenPop extends JFrame {
 
 	private JPanel contentPane;
 	JTextArea textArea = new JTextArea();
-	
-	
+
 	public void setText(String text) {
 		textArea.setText(text);
 		textArea.revalidate();
 		textArea.repaint();
 	}
 
-	public DunGenPop() {
+	public DunGenPop(String title, String text) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -49,6 +48,9 @@ public class DunGenPop extends JFrame {
 			this.dispose();
 		});
 		contentPane.add(btnAddToRoom, BorderLayout.SOUTH);
+		setText(text);
+		setTitle(title);
+		this.setVisible(true);
 	}
 
 }

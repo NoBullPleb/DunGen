@@ -46,10 +46,6 @@ public class Room implements Serializable {
 		else
 			details = "This is the room where it all began... ";
 		neverTellMeTheOdds -= 3;
-		final StringBuilder sb = new StringBuilder();
-		sb.append("Size of room: ").append(
-				(int) Math.max(20 * Math.random(), 5));
-		sb.append("\n" + details);
 	}
 
 }

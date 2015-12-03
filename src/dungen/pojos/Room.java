@@ -36,16 +36,22 @@ public class Room implements Serializable {
 
 	public Room() {
 		numRooms++;
-		if (roomNumber > 1)
+		if (roomNumber > 1) {
 			// If it has NPCs, generate the party. 1-3 adventurers.
 			if (hasNPCs) {
-				details += new NPC().toString();
-			} else {
-				details = Tables.getEvent();
+				String npcClass = Tables.getNpcClass();
+				NPC n = null;
+				if (npcClass.equalsIgnoreCase("Wizard"))
+					n = new Wizard();
+				else if (npcClass.equalsIgnoreCase("Sorcerer"))
+					n = new Sorcerer();
+				else
+					n = new NPC(npcClass);
+				details += n.toString();
 			}
-		else
+			details += Tables.getEvent();
+		} else
 			details = "This is the room where it all began... ";
-		neverTellMeTheOdds -= 3;
+		neverTellMeTheOdds -= 2;
 	}
-
 }

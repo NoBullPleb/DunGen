@@ -1,6 +1,8 @@
 package dungen.pojos;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import dungen.generators.Dice;
 import dungen.generators.Tables;
@@ -14,6 +16,13 @@ public class NPC implements Serializable {
 	protected String interactive = Tables.getInteractiveTrait();
 	protected String specialty = Tables.getSpecialty();
 	protected String quirk = Tables.getQuirk();
+	@SuppressWarnings("unchecked")
+	protected ArrayList<String>[] spells = new ArrayList[10];
+	{
+		Arrays.parallelSetAll(spells, ArrayList<String>::new);
+	}
+	protected int[][] resources = new int[20][10];
+
 	protected int lvl = Math
 			.max(InfoPanel.partyLevel
 					+ ((int) Math.floor(Math.random() * 5) - 2), 1);
@@ -33,6 +42,10 @@ public class NPC implements Serializable {
 		return lvl;
 	}
 
+	public NPC(String npcclass) {
+		npcClass = npcclass;
+	}
+
 	public String getStats() {
 		return "(Int:" + Int + ", Wis:" + Wis + ", Cha:" + Cha + ", Str:" + Str
 				+ ", Dex:" + Dex + ", Con:" + Con + ")";
@@ -46,6 +59,17 @@ public class NPC implements Serializable {
 				.append("_").append(ideals).append("_").append(quirk)
 				.append("_").append(interactive).append("_").append(specialty)
 				.append("_").append(getStats()).append("]");
+		for (int i = 0; i < spells.length; i++) {
+			if (spells[i] != null && spells[i].size() > 0) {
+				sb.append("\n__LEVEL " + i + " SPELLS__ ");
+				if (i > 0 && resources[lvl - 1][i - 1] != 0)
+					sb.append(" uses:" + resources[lvl - 1][i - 1]);
+				spells[i].stream().forEach(
+						e -> sb.append("\n").append(
+								e.substring(e.indexOf(',') + 1)));
+			}
+		}
+
 		return sb.toString();
 	}
 

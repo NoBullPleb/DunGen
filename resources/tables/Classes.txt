@@ -7,6 +7,6 @@
 9, Paladin
 10, Ranger
 14, Rogue
-15, Sorceror
+15, Sorcerer
 16, Warlock
 20, Wizard

@@ -43,8 +43,7 @@ public class DunGenPop extends JFrame {
 			Controls.roomDetails.append(this.getTitle() + "\n"
 					+ textArea.getText());
 			Controls.mapView.addEventOnRoom(Controls.mapView.getPosition(
-					Controls.showX, Controls.showY), this.getTitle(), this
-					.getTitle().toLowerCase().contains("npc"));
+					Controls.showX, Controls.showY), this.getTitle() +"\n");
 			this.dispose();
 		});
 		JButton regenerate = new JButton("Regenerate");

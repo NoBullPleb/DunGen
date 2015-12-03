@@ -33,7 +33,19 @@ public class Dice {
 		return roll(1, sides);
 	}
 
+	public static int d100() {
+		return roll(1, 20);
+	}
+
 	public static int d20() {
 		return roll(1, 20);
+	}
+
+	public static int d6() {
+		return roll(1, 6);
+	}
+
+	public static int d4() {
+		return roll(1, 4);
 	}
 }

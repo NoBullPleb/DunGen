@@ -56,7 +56,7 @@ public class Map extends JFrame {
 				.filter(e -> !e.getIcon().equals(partyImage))
 				.collect(Collectors.toList());
 		removers.forEach(getContentPane()::remove);
-		//redraws the party icon
+		// redraws the party icon
 		moveStar(x, y);
 	}
 
@@ -66,14 +66,14 @@ public class Map extends JFrame {
 		halls.forEach(contentPane::add);
 		Controls.rooms.forEach((p, r) -> {
 			addEventOnRoom(getPosition((int) p.getX(), (int) p.getY()),
-					r.details, r.hasNPCs);
+					r.details);
 		});
 		contentPane.add(star);
 		contentPane.revalidate();
 		contentPane.repaint();
 	}
 
-	public void addEventOnRoom(Point p, String encounter, boolean hasParty) {
+	public void addEventOnRoom(Point p, String encounter) {
 		JLabel encounterLbl = new JLabel();
 		if (encounter.contains("Trap"))
 			encounterLbl.setIcon(trapImage);
@@ -81,14 +81,15 @@ public class Map extends JFrame {
 			encounterLbl.setIcon(hazardImage);
 		else if (encounter.contains("Trick"))
 			encounterLbl.setIcon(trickImage);
-		else if (hasParty)
+		else if (encounter.contains("NPC"))
 			encounterLbl.setIcon(otherPartyImage);
 		else if (encounter.contains("Encounter")) {
-			encounterLbl.setIcon(encounterImage);
 			if (encounter.contains("Deadly")) {
 				encounterLbl.setIcon(deadlyImage);
 			} else if (encounter.contains("Hard")) {
 				encounterLbl.setIcon(hardImage);
+			} else {
+				encounterLbl.setIcon(encounterImage);
 			}
 		} else {
 			return;
@@ -100,16 +101,15 @@ public class Map extends JFrame {
 		contentPane.repaint();
 	}
 
-	public void addEventOnRoom(int x, int y, String encounter, boolean hasParty) {
-		addEventOnRoom(getPosition(x, y), encounter, hasParty);
+	public void addEventOnRoom(int x, int y, String encounter) {
+		addEventOnRoom(getPosition(x, y), encounter);
 	}
 
-	public void addRoom(Integer x, Integer y, String hasEncounter,
-			boolean hasParty) {
-		addRoom(getPosition(x, y), hasEncounter, hasParty);
+	public void addRoom(Integer x, Integer y, String hasEncounter) {
+		addRoom(getPosition(x, y), hasEncounter);
 	}
 
-	public void addRoom(Point p, String details, boolean hasParty) {
+	public void addRoom(Point p, String details) {
 		if (roomsLocations != null && !roomsLocations.contains(p)) {
 			JLabel room = new JLabel();
 			room.setIcon(roomImage);
@@ -119,8 +119,8 @@ public class Map extends JFrame {
 			contentPane.add(room);
 			rooms.add(room);
 			roomsLocations.add(p);
-			if (!details.isEmpty() && !details.contains("began"))
-				addEventOnRoom(p, details, hasParty);
+			if (!details.isEmpty())
+				addEventOnRoom(p, details);
 		}
 		contentPane.repaint();
 

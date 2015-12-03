@@ -53,10 +53,16 @@ public class Tables {
 		return getResultFromTable(Dice.d20(), injuries);
 	}
 
+	public static String getSpell(Integer Level, List<String> spellList) {
+		// get spells of a particular level (0 for cantrip)
+		return getResultFromTable(spellList.parallelStream()
+				.filter(e -> e.startsWith(Level.toString()))
+				.collect(Collectors.toList()));
+	}
+
 	public static String getSpell(Integer Level) {
 		// get spells of a particular level (0 for cantrip)
-		
-		return  getResultFromTable(spellList.parallelStream()
+		return getResultFromTable(spellList.parallelStream()
 				.filter(e -> e.startsWith(Level.toString()))
 				.collect(Collectors.toList()));
 	}
@@ -80,11 +86,11 @@ public class Tables {
 	}
 
 	public static String getTrapTrigger() {
-		return getResultFromTable(Dice.roll(6), trapTriggers);
+		return getResultFromTable(Dice.d6(), trapTriggers);
 	}
 
 	public static String getTrapSeverity() {
-		String severity = getResultFromTable(Dice.roll(6), trapSeverity);
+		String severity = getResultFromTable(Dice.d6(), trapSeverity);
 		return severity + " " + getDamage(severity);
 	}
 
@@ -137,19 +143,19 @@ public class Tables {
 
 		StringBuilder ideals = new StringBuilder("Believes in ");
 		if (a1.equals('L'))
-			ideals.append(getResultFromTable(Dice.roll(6), lawfulIdeal));
+			ideals.append(getResultFromTable(Dice.d6(), lawfulIdeal));
 		else if (a1.equals('C'))
-			ideals.append(getResultFromTable(Dice.roll(6), chaoticIdeal));
+			ideals.append(getResultFromTable(Dice.d6(), chaoticIdeal));
 		else
-			ideals.append(getResultFromTable(Dice.roll(6), neutral1Ideal));
+			ideals.append(getResultFromTable(Dice.d6(), neutral1Ideal));
 		ideals.append(" and ");
 
 		if (a2.equals('G'))
-			ideals.append(getResultFromTable(Dice.roll(6), goodIdeal));
+			ideals.append(getResultFromTable(Dice.d6(), goodIdeal));
 		else if (a2.equals('E'))
-			ideals.append(getResultFromTable(Dice.roll(6), evilIdeal));
+			ideals.append(getResultFromTable(Dice.d6(), evilIdeal));
 		else
-			ideals.append(getResultFromTable(Dice.roll(6), neutral2Ideal));
+			ideals.append(getResultFromTable(Dice.d6(), neutral2Ideal));
 
 		return ideals.toString();
 
@@ -200,7 +206,7 @@ public class Tables {
 	}
 
 	private static String getTrapEffect() {
-		return getResultFromTable(Dice.roll(100), trapEffect);
+		return getResultFromTable(Dice.d100(), trapEffect);
 	}
 
 	private static int challenge = 60; // this will be used to slowly increase
@@ -208,8 +214,7 @@ public class Tables {
 
 	public static String getEvent() {
 		String event = "";
-		int result = Dice.roll(100);
-		result = Dice.roll(challenge); // roll for type of encounter
+		int result = Dice.roll(challenge); // roll for type of encounter
 		if (result > 95)
 			event = "Deadly Encounter: "
 					+ getEncounter(deadlyTable[InfoPanel.partySize]);
@@ -228,14 +233,14 @@ public class Tables {
 			event = "Trap!\n" + getTrap();
 		else if (result >= 20)
 			event = "Trick!\n" + getTrick();
-		if (challenge < 110) // caps challenge to avoid spamming deadlies
+		if (challenge < 100) // caps challenge to avoid spamming deadlies
 			challenge += 5;
 		return event;
 	}
 
 	public static String getTrick() {
 		return getResultFromTable(Dice.d20(), trickObjects) + "\n"
-				+ getResultFromTable(Dice.roll(100), trickEffects);
+				+ getResultFromTable(Dice.d100(), trickEffects);
 	}
 
 	public static String[][][] easyTable = new String[InfoPanel.maxPartySize + 1][][],
@@ -324,15 +329,15 @@ public class Tables {
 			.getTable("Melee Mishaps.txt");
 
 	public static String scrollMishap() {
-		return getResultFromTable(Dice.roll(6), scrollMishaps);
+		return getResultFromTable(Dice.d6(), scrollMishaps);
 	}
 
 	public static String meleeMishap() {
-		return getResultFromTable(Dice.roll(100), meleeMishaps);
+		return getResultFromTable(Dice.d100(), meleeMishaps);
 	}
 
 	public static String potionMishap() {
-		return getResultFromTable(Dice.roll(100), potionMishaps);
+		return getResultFromTable(Dice.d100(), potionMishaps);
 	}
 
 	public static int whichTreasureCR(Double result) {
@@ -358,11 +363,11 @@ public class Tables {
 
 	public static String getSentientItem(String item) {
 		item = "_Sentient " + item + "_";
-		item += "\nAlignment: " + getResultFromTable(Dice.roll(100), itemAlign);
+		item += "\nAlignment: " + getResultFromTable(Dice.d100(), itemAlign);
 		item += "\nPurpose: " + getResultFromTable(Dice.roll(10), itemPurpose);
 		item += "\nCommunication: "
-				+ getResultFromTable(Dice.roll(100), itemCommunication);
-		item += "\nSenses: " + getResultFromTable(Dice.roll(4), itemSenses);
+				+ getResultFromTable(Dice.d100(), itemCommunication);
+		item += "\nSenses: " + getResultFromTable(Dice.d4(), itemSenses);
 		item += "\nInt: " + Dice.statroll();
 		item += "\nWis: " + Dice.statroll();
 		item += "\nCha: " + Dice.statroll();
@@ -377,13 +382,13 @@ public class Tables {
 	public static String getMadness(int i) {
 		if (i == 1)
 			return "For " + Dice.roll(10) * 10 + " hours:\n"
-					+ getResultFromTable(Dice.roll(100), longTerm);
+					+ getResultFromTable(Dice.d100(), longTerm);
 		else if (i == 2)
 			return "Lasts until cured:\n"
-					+ getResultFromTable(Dice.roll(100), indefinite);
+					+ getResultFromTable(Dice.d100(), indefinite);
 		else
 			return "For " + Dice.roll(10) + " minutes:\n"
-					+ getResultFromTable(Dice.roll(100), shortTerm);
+					+ getResultFromTable(Dice.d100(), shortTerm);
 	}
 
 }

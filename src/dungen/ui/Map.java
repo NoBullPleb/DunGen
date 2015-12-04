@@ -51,8 +51,7 @@ public class Map extends JFrame {
 		List<JLabel> removers = Arrays.stream(contentPane.getComponents())
 				.parallel().filter(e -> e.getLocation().equals(p))
 				.filter(e -> e.getClass().equals(JLabel.class))
-				.map(e -> (JLabel) e)
-				.filter(e -> !e.getIcon().equals(roomImage))
+				.map(e -> (JLabel) e).filter(e -> !rooms.contains(e))
 				.filter(e -> !e.getIcon().equals(partyImage))
 				.collect(Collectors.toList());
 		removers.forEach(getContentPane()::remove);

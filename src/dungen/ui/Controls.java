@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 import java.awt.BorderLayout;
 
 public class Controls extends JFrame {
-	public static String version = "1.7.0";
+	public static String version = "1.7.1";
 	private static final long serialVersionUID = 7985611292217902489L;
 	transient final static JButton southButton = new JButton("Go South"),
 			eastButton = new JButton("Go East"), westButton = new JButton(

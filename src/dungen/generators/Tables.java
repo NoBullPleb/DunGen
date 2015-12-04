@@ -294,9 +294,11 @@ public class Tables {
 		List<String[]> mobs = new ArrayList<>();
 		StringBuilder encounter = new StringBuilder("");
 		int attempts = 0;
-		while (mobs.isEmpty() && attempts < 10) {
+		while (mobs.isEmpty() && attempts < 20) {
 			encounter.delete(0, encounter.length());
 			int result = Dice.roll(table[InfoPanel.getPartyLevel()].length - 2) + 1;
+			if (table[InfoPanel.getPartyLevel()][result].trim().isEmpty())
+				continue; //skips "empty" encounters.
 			encounter.append(table[InfoPanel.getPartyLevel()][result].trim());
 			encounter.append(" CR:" + CRs[result - 1]);
 			int treasureCR = whichTreasureCR(crStringToDouble(CRs[result - 1]));

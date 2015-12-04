@@ -29,6 +29,7 @@ public class ResourceLoader {
 					new InputStreamReader(in));
 			return reader.lines().collect(Collectors.toList());
 		} catch (Exception e) {
+			System.out.println("Failed to read: " + path);
 			e.printStackTrace();
 			// represents empty file if there was an error loading.
 			return new ArrayList<String>();

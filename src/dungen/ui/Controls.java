@@ -37,7 +37,7 @@ public class Controls extends JFrame {
 	private transient final static JPanel contentPane = new JPanel();
 	private static transient DunGenMenu menuBar = new DunGenMenu();
 
-	private static void hideRoom() {
+	public static void saveRoom() {
 		String temp = roomDetails.getText();
 		if (!thisRoom.details.equals(temp)) {
 			thisRoom.details = temp;
@@ -45,6 +45,10 @@ public class Controls extends JFrame {
 			mapView.addEventOnRoom(showX, showY, temp);
 		}
 		rooms.put(new Point(showX, showY), thisRoom);
+	}
+
+	public static void hideRoom() {
+		saveRoom();
 		roomDetails.setText("");
 	}
 

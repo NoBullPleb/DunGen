@@ -32,6 +32,7 @@ public class Dungeon implements Serializable {
 	public ArrayList<Boolean> types = new ArrayList<Boolean>();
 
 	public Dungeon() {
+		Controls.saveRoom();
 		rooms = Controls.rooms;
 		showX = Controls.showX;
 		showY = Controls.showY;
@@ -94,6 +95,8 @@ public class Dungeon implements Serializable {
 			ObjectOutputStream oos = new ObjectOutputStream(fileOut);
 			oos.writeObject(new Dungeon());
 			oos.close();
+		} catch (NullPointerException err) {
+			// don't care about this one. That means they selected nothing.
 		} catch (Exception err) {
 			err.printStackTrace();
 		}

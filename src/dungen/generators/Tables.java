@@ -302,13 +302,15 @@ public class Tables {
 			int treasureCR = whichTreasureCR(crStringToDouble(CRs[result - 1]));
 			encounter.append("\n" + Treasure.getTreasure(treasureCR));
 			// if it's hard or deadly, add a treasure hoard
-			if (table.equals(hardTable) || table.equals(deadlyTable)) {
+			if (Arrays.stream(hardTable).anyMatch(e -> table.equals(e))
+					|| Arrays.stream(deadlyTable)
+							.anyMatch(e -> table.equals(e))) {
 				encounter.append("\nHoard: " + Hoard.getHoard(treasureCR));
 			}
 			encounter.append("\nPossible Monsters:");
 			mobs = Arrays.stream(monsters).parallel()
 					// grab only the appropriate CR
-					.filter(e -> e[0].equals(CRs[result]))
+					.filter(e -> e[0].equals(CRs[result - 1]))
 					// and only those matching the type
 					.filter(e -> InfoPanel.getTruth(indexes.get(e[4])))
 					.collect(Collectors.toList());

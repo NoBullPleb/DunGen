@@ -17,9 +17,11 @@ public class InfoPanel extends JFrame {
 	private static transient JPanel contentPane = new JPanel();
 	private static transient JLabel lbl1 = new JLabel();
 	private static transient JList<Integer> partyLevelList = new JList<>();
+	private static transient JList<String> dungeonSizes = new JList<>();
 
-	private static transient DefaultListModel<Integer> levels = new DefaultListModel<Integer>();
-	private static transient DefaultListModel<Integer> sizes = new DefaultListModel<Integer>();
+	private static transient DefaultListModel<Integer> levels = new DefaultListModel<>();
+	private static transient DefaultListModel<Integer> sizes = new DefaultListModel<>();
+	private static transient DefaultListModel<String> dunSizes = new DefaultListModel<>();
 	private static transient JScrollPane scrollPane = null;
 	private static transient JList<Integer> sizeList = new JList<>();
 	public static int maxPartySize = 6;
@@ -28,23 +30,52 @@ public class InfoPanel extends JFrame {
 			levels.addElement(i);
 		for (int i = 1; i <= maxPartySize; i++)
 			sizes.addElement(i);
-	}
-
-	public transient static int partyLevel = 1;
-	public transient static int partySize = 4;
-
-	public static void setLevel(int i) {
-		partyLevelList.setSelectedValue(i, true);
+		dunSizes.addElement("Larger");
+		dunSizes.addElement("Normal");
+		dunSizes.addElement("Smaller");
 	}
 
 	private static JCheckBox[] types = new JCheckBox[Tables.monsterTypes.length];
+	private static JCheckBox symetryBox = new JCheckBox("Symmetric?");
+	private final JLabel lblDungeonShape = new JLabel("Dungeon Shape");
 
 	public static boolean getTruth(int i) {
 		return types[i].isSelected();
 	}
 
+	public static void setPartyLevel(int i) {
+		partyLevelList.setSelectedIndex(i - 1);
+	}
+
+	public static int getPartyLevel() {
+		return partyLevelList.getSelectedValue();
+	}
+
+	public static int getPartySize() {
+		return sizeList.getSelectedValue();
+	}
+
+	public static void setPartySize(int i) {
+		sizeList.setSelectedIndex(i - 1);
+	}
+
 	public static void setTruth(int i, boolean truth) {
 		types[i].setSelected(truth);
+	}
+
+	public static boolean isSymmmetric() {
+		return symetryBox.isSelected();
+
+	}
+
+	public static void setSymmetric(boolean truth) {
+		symetryBox.setSelected(truth);
+
+	}
+
+	public static int dungeonSize() {
+		return (dungeonSizes.getSelectedIndex()) + 1;
+
 	}
 
 	public InfoPanel() {
@@ -61,10 +92,6 @@ public class InfoPanel extends JFrame {
 		partyLevelList.setModel(levels);
 		partyLevelList.setSelectedIndex(0);
 		partyLevelList.setVisibleRowCount(1);
-		partyLevelList.addListSelectionListener(e -> {
-			partyLevel = partyLevelList.getSelectedValue();
-
-		});
 		scrollPane = new JScrollPane(partyLevelList);
 		scrollPane
 				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -86,9 +113,6 @@ public class InfoPanel extends JFrame {
 		contentPane.add(lblSize);
 
 		sizeList.setVisibleRowCount(1);
-		sizeList.addListSelectionListener(e -> {
-			partySize = sizeList.getSelectedValue();
-		});
 		sizeList.setModel(sizes);
 		sizeList.setSelectedIndex(3);
 		sizeList.setAutoscrolls(true);
@@ -97,5 +121,24 @@ public class InfoPanel extends JFrame {
 		sp2.getVerticalScrollBar().setValue(52);
 		sp2.setBounds(145, 4, 35, 20);
 		contentPane.add(sp2);
+
+		symetryBox.setBounds(5, 365, 107, 20);
+		symetryBox.setSelected(true);
+		contentPane.add(symetryBox);
+		lblDungeonShape.setBounds(6, 347, 106, 16);
+
+		contentPane.add(lblDungeonShape);
+		dungeonSizes.setModel(dunSizes);
+		dungeonSizes.setSelectedIndex(1);
+		dungeonSizes.setVisibleRowCount(1);
+
+		JScrollPane sp3 = new JScrollPane(dungeonSizes);
+		JLabel ds = new JLabel("Dungeon Size:");
+		ds.setBounds(2, 390, 106, 20);
+		sp3.setBounds(95, 390, 80, 20);
+		sp3.getVerticalScrollBar().setValue(19);
+		sp3.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		contentPane.add(ds);
+		contentPane.add(sp3);
 	}
 }

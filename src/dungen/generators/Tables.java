@@ -100,7 +100,8 @@ public class Tables {
 			index = 1;
 		else if (severity.contains("Deadly"))
 			index = 2;
-		return getResultFromTable(InfoPanel.partyLevel, trapDamage).split(",")[index];
+		return getResultFromTable(InfoPanel.getPartyLevel(), trapDamage).split(
+				",")[index];
 	}
 
 	private final static List<String> npcInteractive = ResourceLoader
@@ -217,16 +218,16 @@ public class Tables {
 		int result = Dice.roll(challenge); // roll for type of encounter
 		if (result > 95)
 			event = "Deadly Encounter: "
-					+ getEncounter(deadlyTable[InfoPanel.partySize]);
+					+ getEncounter(deadlyTable[InfoPanel.getPartySize()]);
 		else if (result > 80)
 			event = "Hard Encounter: "
-					+ getEncounter(hardTable[InfoPanel.partySize]);
+					+ getEncounter(hardTable[InfoPanel.getPartySize()]);
 		else if (result >= 60)
 			event = "Medium Encounter: "
-					+ getEncounter(mediumTable[InfoPanel.partySize]);
+					+ getEncounter(mediumTable[InfoPanel.getPartySize()]);
 		else if (result >= 50)
 			event = "Easy Encounter: "
-					+ getEncounter(easyTable[InfoPanel.partySize]);
+					+ getEncounter(easyTable[InfoPanel.getPartySize()]);
 		else if (result >= 38)
 			event = "Hazard!\n" + getHazard();
 		else if (result >= 26)
@@ -295,8 +296,8 @@ public class Tables {
 		int attempts = 0;
 		while (mobs.isEmpty() && attempts < 10) {
 			encounter.delete(0, encounter.length());
-			int result = Dice.roll(table[InfoPanel.partyLevel].length - 2) + 1;
-			encounter.append(table[InfoPanel.partyLevel][result].trim());
+			int result = Dice.roll(table[InfoPanel.getPartyLevel()].length - 2) + 1;
+			encounter.append(table[InfoPanel.getPartyLevel()][result].trim());
 			encounter.append(" CR:" + CRs[result - 1]);
 			int treasureCR = whichTreasureCR(crStringToDouble(CRs[result - 1]));
 			encounter.append("\n" + Treasure.getTreasure(treasureCR));
@@ -317,7 +318,6 @@ public class Tables {
 			});
 			attempts++;
 		}
-
 		return encounter.toString();
 	}
 

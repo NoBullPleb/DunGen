@@ -3,6 +3,7 @@ package dungen.pojos;
 import java.io.Serializable;
 
 import dungen.generators.Tables;
+import dungen.ui.InfoPanel;
 
 public class Room implements Serializable {
 
@@ -52,6 +53,6 @@ public class Room implements Serializable {
 			details += Tables.getEvent();
 		} else
 			details = "This is the room where it all began... ";
-		neverTellMeTheOdds -= 2;
+		neverTellMeTheOdds -= 2 * InfoPanel.dungeonSize();
 	}
 }

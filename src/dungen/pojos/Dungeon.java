@@ -26,6 +26,8 @@ public class Dungeon implements Serializable {
 	public Room thisRoom = null;
 	public int showX = 0, showY = 0;
 	public int partyLevel = 1;
+	public int partySize = 4;
+	public boolean symmetric = true;
 	public Map mapView = null;
 	public ArrayList<Boolean> types = new ArrayList<Boolean>();
 
@@ -35,7 +37,10 @@ public class Dungeon implements Serializable {
 		showY = Controls.showY;
 		thisRoom = Controls.thisRoom;
 		mapView = Controls.mapView;
-		partyLevel = InfoPanel.partyLevel;
+		symmetric = InfoPanel.isSymmmetric();
+		partyLevel = InfoPanel.getPartyLevel();
+		partySize = InfoPanel.getPartySize();
+
 		for (int i = 0; i < Tables.monsterTypes.length; i++) {
 			types.add(InfoPanel.getTruth(i));
 		}

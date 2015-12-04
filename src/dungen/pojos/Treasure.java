@@ -87,7 +87,7 @@ public class Treasure {
 
 	// assumes medium encounter.
 	public static String getTreasure() {
-		Double result = Dice.roll(Tables.mediumTable[InfoPanel.partyLevel].length - 2) + 1.0;
+		Double result = Dice.roll(Tables.mediumTable[InfoPanel.getPartyLevel()].length - 2) + 1.0;
 		int treasureCR = Tables.whichTreasureCR(result);
 		return "Individual Treasure: "
 				+ iTreasureByCR[treasureCR][whichTreasureSize(treasureCR)]

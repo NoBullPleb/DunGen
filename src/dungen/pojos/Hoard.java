@@ -25,7 +25,7 @@ public class Hoard {
 
 	// assumes the CR = ECL
 	public static String getHoard() {
-		return getHoard(Tables.whichTreasureCR(InfoPanel.partyLevel + 0.0));
+		return getHoard(Tables.whichTreasureCR(InfoPanel.getPartyLevel() + 0.0));
 	}
 
 	public static String getMagicItem(int number, List<String> table) {

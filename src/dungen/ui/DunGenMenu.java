@@ -47,20 +47,21 @@ public class DunGenMenu extends JMenuBar {
 		JMenuItem deadly = new JMenuItem("Deadly");
 		deadly.addActionListener(e -> {
 			new DunGenPop("Deadly Encounter Generated", () -> Tables
-					.getEncounter(Tables.deadlyTable[InfoPanel.partySize]));
+					.getEncounter(Tables.deadlyTable[InfoPanel.getPartySize()]));
 		});
 		JMenuItem hard = new JMenuItem("Hard");
 		hard.addActionListener(e -> new DunGenPop("Hard Encounter Generated",
-				() -> Tables
-						.getEncounter(Tables.hardTable[InfoPanel.partySize])));
+				() -> Tables.getEncounter(Tables.hardTable[InfoPanel
+						.getPartySize()])));
 		JMenuItem medium = new JMenuItem("Medium");
 		medium.addActionListener(e -> new DunGenPop(
 				"Medium Encounter Generated", () -> Tables
-						.getEncounter(Tables.mediumTable[InfoPanel.partySize])));
+						.getEncounter(Tables.mediumTable[InfoPanel
+								.getPartySize()])));
 		JMenuItem easy = new JMenuItem("Easy");
 		easy.addActionListener(e -> new DunGenPop("Easy Encounter Generated",
-				() -> Tables
-						.getEncounter(Tables.easyTable[InfoPanel.partySize])));
+				() -> Tables.getEncounter(Tables.easyTable[InfoPanel
+						.getPartySize()])));
 		encounter.add(deadly);
 		encounter.add(hard);
 		encounter.add(medium);

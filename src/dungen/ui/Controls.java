@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 import java.awt.BorderLayout;
 
 public class Controls extends JFrame {
-	public static String version = "1.6.0";
+	public static String version = "1.7.0";
 	private static final long serialVersionUID = 7985611292217902489L;
 	transient final static JButton southButton = new JButton("Go South"),
 			eastButton = new JButton("Go East"), westButton = new JButton(
@@ -49,9 +49,10 @@ public class Controls extends JFrame {
 	}
 
 	private static void showRoom() {
+		if (InfoPanel.isSymmmetric() && !thisRoom.drawn)
+			makeSymmetric();
 		fixDoors();
 		roomDetails.setText(thisRoom.details);
-
 		lblRoomDetails.setText("Room Details: " + thisRoom.roomNumber);
 		if (!thisRoom.drawn) {
 			mapView.addRoom(showX, showY, thisRoom.details);
@@ -75,7 +76,7 @@ public class Controls extends JFrame {
 	public static void load(ActionEvent e) {
 		Dungeon d = Dungeon.load();
 		hideRoom();
-		InfoPanel.setLevel(d.partyLevel);
+		InfoPanel.setPartyLevel(d.partyLevel);
 		Controls.mapView.star = d.mapView.star;
 		Controls.mapView.roomsLocations = d.mapView.roomsLocations;
 		Controls.mapView.halls = d.mapView.halls;
@@ -85,6 +86,8 @@ public class Controls extends JFrame {
 		Controls.rooms = d.rooms;
 		Controls.thisRoom = d.thisRoom;
 		Controls.mapView.redraw();
+		InfoPanel.setPartySize(d.partySize);
+		InfoPanel.setSymmetric(d.symmetric);
 		for (int i = 0; i < d.types.size(); i++) {
 			InfoPanel.setTruth(i, d.types.get(i));
 		}
@@ -242,5 +245,21 @@ public class Controls extends JFrame {
 			thisRoom.eastRoom = east;
 		}
 
+	}
+
+	private static void makeSymmetric() {
+		if (showX == 0) {
+			thisRoom.west = thisRoom.east;
+			return;
+		}
+		int tempX = -1 * showX;
+		Point p = new Point(tempX, showY);
+		if (rooms.containsKey(p)) {
+			Room otherRoom = rooms.get(p);
+			thisRoom.north = otherRoom.north;
+			thisRoom.west = otherRoom.east;
+			thisRoom.east = otherRoom.west;
+			thisRoom.south = otherRoom.south;
+		}
 	}
 }

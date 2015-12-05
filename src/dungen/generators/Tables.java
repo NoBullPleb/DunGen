@@ -298,10 +298,10 @@ public class Tables {
 			encounter.delete(0, encounter.length());
 			int result = Dice.roll(table[InfoPanel.getPartyLevel()].length - 2) + 1;
 			if (table[InfoPanel.getPartyLevel()][result].trim().isEmpty())
-				continue; //skips "empty" encounters.
+				continue; // skips "empty" encounters.
 			encounter.append(table[InfoPanel.getPartyLevel()][result].trim());
-			encounter.append(" CR:" + CRs[result - 1]);
-			int treasureCR = whichTreasureCR(crStringToDouble(CRs[result - 1]));
+			encounter.append(" CR:" + CRs[result]);
+			int treasureCR = whichTreasureCR(crStringToDouble(CRs[result]));
 			encounter.append("\n" + Treasure.getTreasure(treasureCR));
 			// if it's hard or deadly, add a treasure hoard
 			if (Arrays.stream(hardTable).anyMatch(e -> table.equals(e))
@@ -312,7 +312,7 @@ public class Tables {
 			encounter.append("\nPossible Monsters:");
 			mobs = Arrays.stream(monsters).parallel()
 					// grab only the appropriate CR
-					.filter(e -> e[0].equals(CRs[result - 1]))
+					.filter(e -> e[0].equals(CRs[result]))
 					// and only those matching the type
 					.filter(e -> InfoPanel.getTruth(indexes.get(e[4])))
 					.collect(Collectors.toList());

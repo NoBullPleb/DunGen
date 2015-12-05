@@ -252,8 +252,8 @@ public class Tables {
 		for (Integer i = 1; i <= InfoPanel.maxPartySize; i++) {
 			easyTable[i] = getEncounterTable(i + " Easy.txt");
 			mediumTable[i] = getEncounterTable(i + " Medium.txt");
-			hardTable[i] = getEncounterTable(i + " Easy.txt");
-			deadlyTable[i] = getEncounterTable(i + " Medium.txt");
+			hardTable[i] = getEncounterTable(i + " Hard.txt");
+			deadlyTable[i] = getEncounterTable(i + " Deadly.txt");
 		}
 	}
 
@@ -262,7 +262,8 @@ public class Tables {
 		if (table != null) {
 			String[][] result = new String[table.size()][];
 			AtomicInteger ai = new AtomicInteger(0);
-			table.forEach(e -> result[ai.getAndIncrement()] = e.split(","));
+			for (String e : table)
+				result[ai.getAndIncrement()] = e.split(",");
 			return result;
 		}
 		return null;
@@ -294,12 +295,13 @@ public class Tables {
 		List<String[]> mobs = new ArrayList<>();
 		StringBuilder encounter = new StringBuilder("");
 		int attempts = 0;
+		int partyLevel = InfoPanel.getPartyLevel();
 		while (mobs.isEmpty() && attempts < 20) {
 			encounter.delete(0, encounter.length());
-			int result = Dice.roll(table[InfoPanel.getPartyLevel()].length - 2) + 1;
-			if (table[InfoPanel.getPartyLevel()][result].trim().isEmpty())
+			int result = Dice.roll(table[partyLevel - 1].length - 2) + 1;
+			if (table[partyLevel - 1][result].trim().isEmpty())
 				continue; // skips "empty" encounters.
-			encounter.append(table[InfoPanel.getPartyLevel()][result].trim());
+			encounter.append(table[partyLevel - 1][result].trim());
 			encounter.append(" CR:" + CRs[result]);
 			int treasureCR = whichTreasureCR(crStringToDouble(CRs[result]));
 			encounter.append("\n" + Treasure.getTreasure(treasureCR));

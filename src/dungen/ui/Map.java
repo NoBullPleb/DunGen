@@ -199,9 +199,10 @@ public class Map extends JFrame {
 			locked.setVisible(true);
 			contentPane.add(locked, contentPane.highestLayer());
 			halls.add(locked);
+
 		}
 		halls.add(hall);
-
+		Controls.addToRoomDescription(direction + " door is " + doorScription);
 		contentPane.repaint();
 	}
 

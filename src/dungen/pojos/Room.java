@@ -48,7 +48,7 @@ public class Room implements Serializable {
 					n = new Sorcerer();
 				else
 					n = new NPC(npcClass);
-				details += n.toString();
+				details += n.toString() + "\n";
 			}
 			details += Tables.getEvent();
 		} else

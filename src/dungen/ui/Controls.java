@@ -52,6 +52,11 @@ public class Controls extends JFrame {
 		roomDetails.setText("");
 	}
 
+	public static void addToRoomDescription(String s) {
+		roomDetails.setText(s + "\n" + roomDetails.getText());
+
+	}
+
 	private static void showRoom() {
 		if (InfoPanel.isSymmmetric() && !thisRoom.drawn)
 			makeSymmetric();

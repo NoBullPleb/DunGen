@@ -28,15 +28,23 @@ public class Map extends JFrame {
 	private static ImageIcon roomImage = ResourceLoader.getImage("Room.png");
 	private static ImageIcon deadlyImage = ResourceLoader
 			.getImage("Deadly.png");
+	private static ImageIcon portcullis = ResourceLoader
+			.getImage("Portcullis.png");
 	private static ImageIcon hardImage = ResourceLoader.getImage("Hard.png");
 	private static ImageIcon trapImage = ResourceLoader.getImage("Trap.png");
 	private static ImageIcon hazardImage = ResourceLoader
 			.getImage("Hazard.png");
 	private static ImageIcon trickImage = ResourceLoader.getImage("Trick.png");
-	private static ImageIcon hallImage = ResourceLoader.getImage("Hall.png");
-	private static ImageIcon secret = ResourceLoader.getImage("SHall.png");
-	private static ImageIcon secret2 = ResourceLoader.getImage("SHall2.png");
-	private static ImageIcon hallImage2 = ResourceLoader.getImage("Hall2.png");
+	private static ImageIcon hallImage = ResourceLoader
+			.getImage("WoodenDoor.png");
+	private static ImageIcon stoneOrSteel = ResourceLoader
+			.getImage("StoneDoor.png");
+	private static ImageIcon stoneOrSteel2 = ResourceLoader
+			.getImage("StoneDoor2.png");
+	private static ImageIcon hallImage2 = ResourceLoader
+			.getImage("WoodenDoor2.png");
+	private static ImageIcon secret = ResourceLoader.getImage("SDoor.png");
+	private static ImageIcon secret2 = ResourceLoader.getImage("SDoor2.png");
 	private static ImageIcon partyImage = ResourceLoader.getImage("Party.png");
 	private static ImageIcon lock = ResourceLoader.getImage("Lock.png");
 	private static ImageIcon encounterImage = ResourceLoader
@@ -179,11 +187,21 @@ public class Map extends JFrame {
 				|| direction.equalsIgnoreCase("south")) {
 			if (doorScription.contains("ecret"))
 				hall.setIcon(secret);
+			else if (doorScription.contains("cullis"))
+				hall.setIcon(portcullis);
+			else if (doorScription.contains("Stone")
+					|| doorScription.contains("Iron"))
+				hall.setIcon(stoneOrSteel);
 			else
 				hall.setIcon(hallImage);
 		} else {
 			if (doorScription.contains("ecret"))
 				hall.setIcon(secret2);
+			else if (doorScription.contains("cullis"))
+				hall.setIcon(portcullis);
+			else if (doorScription.contains("Stone")
+					|| doorScription.contains("Iron"))
+				hall.setIcon(stoneOrSteel2);
 			else
 				hall.setIcon(hallImage2);
 		}

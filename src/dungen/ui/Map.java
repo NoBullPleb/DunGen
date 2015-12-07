@@ -13,6 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
+import dungen.generators.Dice;
+import dungen.generators.Tables;
 import dungen.resourceLoader.ResourceLoader;
 
 public class Map extends JFrame {
@@ -32,8 +34,11 @@ public class Map extends JFrame {
 			.getImage("Hazard.png");
 	private static ImageIcon trickImage = ResourceLoader.getImage("Trick.png");
 	private static ImageIcon hallImage = ResourceLoader.getImage("Hall.png");
+	private static ImageIcon secret = ResourceLoader.getImage("SHall.png");
+	private static ImageIcon secret2 = ResourceLoader.getImage("SHall2.png");
 	private static ImageIcon hallImage2 = ResourceLoader.getImage("Hall2.png");
 	private static ImageIcon partyImage = ResourceLoader.getImage("Party.png");
+	private static ImageIcon lock = ResourceLoader.getImage("Lock.png");
 	private static ImageIcon encounterImage = ResourceLoader
 			.getImage("Encounter.png");
 	private static ImageIcon otherPartyImage = ResourceLoader
@@ -139,18 +144,15 @@ public class Map extends JFrame {
 				* ((int) imagesize.getHeight() * 2));
 	}
 
+	private static List<String> doorTypes = ResourceLoader
+			.getTable("Door Type.txt");
+
 	public void addHall(Integer x, Integer y, String direction) {
 		Point p = getPosition(x, y);
+
 		int modX = 0, modY = 0;
+
 		JLabel room = rooms.get(roomsLocations.indexOf(p));
-		JLabel hall = new JLabel();
-		if (direction.equalsIgnoreCase("north")
-				|| direction.equalsIgnoreCase("south")) {
-			hall.setIcon(hallImage);
-		} else {
-			hall.setIcon(hallImage2);
-		}
-		hall.setSize(imagesize);
 		if (direction.equalsIgnoreCase("north")) {
 			modX = room.getX();
 			modY = room.getY() - room.getHeight();
@@ -161,14 +163,45 @@ public class Map extends JFrame {
 			modX = room.getX() + room.getWidth();
 			modY = room.getY();
 		} else if (direction.equalsIgnoreCase("west")) {
-			modX = room.getX() - hall.getWidth();
+			modX = room.getX() - room.getWidth();
 			modY = room.getY();
 		}
-		hall.setLocation(modX, modY);
 
+		final int testX = modX, testY = modY;
+		if (halls.stream().map(e -> e.getLocation())
+				.anyMatch(e -> e.getX() == testX && e.getY() == testY))
+			return;
+		JLabel hall = new JLabel();
+		hall.setSize(imagesize);
+		String doorScription = Tables.getResultFromTable(Dice.d20(), doorTypes);
+
+		if (direction.equalsIgnoreCase("north")
+				|| direction.equalsIgnoreCase("south")) {
+			if (doorScription.contains("ecret"))
+				hall.setIcon(secret);
+			else
+				hall.setIcon(hallImage);
+		} else {
+			if (doorScription.contains("ecret"))
+				hall.setIcon(secret2);
+			else
+				hall.setIcon(hallImage2);
+		}
+
+		hall.setLocation(modX, modY);
 		hall.setVisible(true);
-		contentPane.add(hall);
+		contentPane.add(hall, contentPane.lowestLayer());
+		if (doorScription.contains("lock")) {
+			JLabel locked = new JLabel();
+			locked.setIcon(lock);
+			locked.setSize(imagesize);
+			locked.setLocation(modX, modY);
+			locked.setVisible(true);
+			contentPane.add(locked, contentPane.highestLayer());
+			halls.add(locked);
+		}
 		halls.add(hall);
+
 		contentPane.repaint();
 	}
 

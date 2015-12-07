@@ -216,24 +216,31 @@ public class Tables {
 	public static String getEvent() {
 		String event = "";
 		int result = Dice.roll(challenge); // roll for type of encounter
-		if (result > 95)
-			event = "Deadly Encounter: "
-					+ getEncounter(deadlyTable[InfoPanel.getPartySize()]);
-		else if (result > 80)
-			event = "Hard Encounter: "
-					+ getEncounter(hardTable[InfoPanel.getPartySize()]);
-		else if (result >= 60)
-			event = "Medium Encounter: "
-					+ getEncounter(mediumTable[InfoPanel.getPartySize()]);
-		else if (result >= 50)
-			event = "Easy Encounter: "
-					+ getEncounter(easyTable[InfoPanel.getPartySize()]);
-		else if (result >= 38)
-			event = "Hazard!\n" + getHazard();
-		else if (result >= 26)
-			event = "Trap!\n" + getTrap();
-		else if (result >= 20)
+		if (result > 95) {
+			if (InfoPanel.getSpwnEncounters())
+				event = "Deadly Encounter: "
+						+ getEncounter(deadlyTable[InfoPanel.getPartySize()]);
+		} else if (result > 80) {
+			if (InfoPanel.getSpwnEncounters())
+				event = "Hard Encounter: "
+						+ getEncounter(hardTable[InfoPanel.getPartySize()]);
+		} else if (result >= 60) {
+			if (InfoPanel.getSpwnEncounters())
+				event = "Medium Encounter: "
+						+ getEncounter(mediumTable[InfoPanel.getPartySize()]);
+		} else if (result >= 50) {
+			if (InfoPanel.getSpwnEncounters())
+				event = "Easy Encounter: "
+						+ getEncounter(easyTable[InfoPanel.getPartySize()]);
+		} else if (result >= 38) {
+			if (InfoPanel.getSpwnHazards())
+				event = "Hazard!\n" + getHazard();
+		} else if (result >= 26) {
+			if (InfoPanel.getSpwnTraps())
+				event = "Trap!\n" + getTrap();
+		} else if (result >= 20) {
 			event = "Trick!\n" + getTrick();
+		}
 		if (challenge < 100) // caps challenge to avoid spamming deadlies
 			challenge += 5;
 		return event;

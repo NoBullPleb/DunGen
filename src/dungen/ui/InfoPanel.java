@@ -38,6 +38,26 @@ public class InfoPanel extends JFrame {
 	private static JCheckBox[] types = new JCheckBox[Tables.monsterTypes.length];
 	private static JCheckBox symetryBox = new JCheckBox("Symmetric?");
 	private final JLabel lblDungeonShape = new JLabel("Dungeon Shape");
+	static JCheckBox spwnNPCs = new JCheckBox("Spawn NPCS?");
+	static JCheckBox spwnTraps = new JCheckBox("Spawn Traps?");
+	static JCheckBox spwnEncounters = new JCheckBox("Spawn Encounters?");
+	static JCheckBox spwnHazards = new JCheckBox("Spawn Hazards?");
+
+	public static boolean getSpwnNpcs() {
+		return spwnNPCs.isSelected();
+	}
+
+	public static boolean getSpwnHazards() {
+		return spwnHazards.isSelected();
+	}
+
+	public static boolean getSpwnTraps() {
+		return spwnTraps.isSelected();
+	}
+
+	public static boolean getSpwnEncounters() {
+		return spwnEncounters.isSelected();
+	}
 
 	public static boolean getTruth(int i) {
 		return types[i].isSelected();
@@ -140,5 +160,21 @@ public class InfoPanel extends JFrame {
 		sp3.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		contentPane.add(ds);
 		contentPane.add(sp3);
+
+		spwnNPCs.setSelected(true);
+		spwnNPCs.setBounds(6, 415, 171, 20);
+		contentPane.add(spwnNPCs);
+
+		spwnTraps.setSelected(true);
+		spwnTraps.setBounds(6, 437, 171, 20);
+		contentPane.add(spwnTraps);
+
+		spwnEncounters.setSelected(true);
+		spwnEncounters.setBounds(6, 460, 171, 20);
+		contentPane.add(spwnEncounters);
+
+		spwnHazards.setSelected(true);
+		spwnHazards.setBounds(6, 483, 171, 20);
+		contentPane.add(spwnHazards);
 	}
 }

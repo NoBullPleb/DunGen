@@ -13,7 +13,8 @@ public class Room implements Serializable {
 	private static int neverTellMeTheOdds = 90;
 	public boolean drawn = false;
 	public String details = "";
-	public boolean hasNPCs = Math.random() * 100 > 98; // 2% ODDS OF NPCS
+	public boolean hasNPCs = InfoPanel.getSpwnNpcs()
+			&& Math.random() * 100 > 98; // 2% ODDS OF NPCS
 
 	public Boolean north = (Math.random() * 100) > 100 - neverTellMeTheOdds,
 			south = (Math.random() * 100) > 100 - neverTellMeTheOdds,

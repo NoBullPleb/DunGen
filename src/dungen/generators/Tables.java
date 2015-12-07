@@ -295,13 +295,13 @@ public class Tables {
 		List<String[]> mobs = new ArrayList<>();
 		StringBuilder encounter = new StringBuilder("");
 		int attempts = 0;
-		int partyLevel = InfoPanel.getPartyLevel();
+		int partyLevelIndex = InfoPanel.getPartyLevel() - 1;
 		while (mobs.isEmpty() && attempts < 20) {
 			encounter.delete(0, encounter.length());
-			int result = Dice.roll(table[partyLevel - 1].length - 2) + 1;
-			if (table[partyLevel - 1][result].trim().isEmpty())
+			int result = Dice.roll(table[partyLevelIndex].length - 1);
+			if (table[partyLevelIndex][result].trim().isEmpty())
 				continue; // skips "empty" encounters.
-			encounter.append(table[partyLevel - 1][result].trim());
+			encounter.append(table[partyLevelIndex][result].trim());
 			encounter.append(" CR:" + CRs[result]);
 			int treasureCR = whichTreasureCR(crStringToDouble(CRs[result]));
 			encounter.append("\n" + Treasure.getTreasure(treasureCR));

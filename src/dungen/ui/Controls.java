@@ -104,8 +104,6 @@ public class Controls extends JFrame {
 		setBounds(0, 50, 271, 580);
 		thisRoom.north = true;
 		thisRoom.south = false;
-		thisRoom.west = false;
-		thisRoom.east = false;
 		thisRoom.details = "This is the room where it all began... ";
 		rooms.put(new Point(showX, showY), thisRoom);
 

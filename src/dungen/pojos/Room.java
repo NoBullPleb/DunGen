@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import dungen.generators.Tables;
 import dungen.ui.InfoPanel;
+import dungen.pojos.npcs.*;
 
 public class Room implements Serializable {
 

@@ -58,7 +58,7 @@ public class Controls extends JFrame {
 	}
 
 	public static void showRoom() {
-		if (InfoPanel.isSymmmetric() && thisRoom!=null && !thisRoom.drawn)
+		if (InfoPanel.isSymmmetric() && thisRoom != null && !thisRoom.drawn)
 			makeSymmetric();
 		fixDoors();
 		roomDetails.setText(thisRoom.details);

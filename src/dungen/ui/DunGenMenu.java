@@ -8,10 +8,8 @@ import dungen.generators.Dice;
 import dungen.generators.Tables;
 import dungen.pojos.Dungeon;
 import dungen.pojos.Hoard;
-import dungen.pojos.NPC;
-import dungen.pojos.Sorcerer;
+import dungen.pojos.npcs.*;
 import dungen.pojos.Treasure;
-import dungen.pojos.Wizard;
 
 @SuppressWarnings("serial")
 public class DunGenMenu extends JMenuBar {

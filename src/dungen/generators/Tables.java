@@ -298,6 +298,13 @@ public class Tables {
 		}
 	}
 
+	private static boolean isHardOrDeadlyEncounter(String[][] table) {
+		return Arrays.stream(hardTable).parallel()
+				.anyMatch(e -> table.equals(e))
+				|| Arrays.stream(deadlyTable).parallel()
+						.anyMatch(e -> table.equals(e));
+	}
+
 	public static String getEncounter(String[][] table) {
 		List<String[]> mobs = new ArrayList<>();
 		StringBuilder encounter = new StringBuilder("");
@@ -313,22 +320,19 @@ public class Tables {
 			int treasureCR = whichTreasureCR(crStringToDouble(CRs[result]));
 			encounter.append("\n" + Treasure.getTreasure(treasureCR));
 			// if it's hard or deadly, add a treasure hoard
-			if (Arrays.stream(hardTable).anyMatch(e -> table.equals(e))
-					|| Arrays.stream(deadlyTable)
-							.anyMatch(e -> table.equals(e))) {
+			if (isHardOrDeadlyEncounter(table)) {
 				encounter.append("\nHoard: " + Hoard.getHoard(treasureCR));
 			}
 			encounter.append("\nPossible Monsters:");
-			mobs = Arrays.stream(monsters).parallel()
+			mobs = Arrays.stream(monsters).parallel().unordered()
 					// grab only the appropriate CR
 					.filter(e -> e[0].equals(CRs[result]))
 					// and only those matching the type
 					.filter(e -> InfoPanel.getTruth(indexes.get(e[4])))
 					.collect(Collectors.toList());
-			mobs.forEach(e -> {
-				encounter.append("\n" + e[1] + " XP: " + e[2] + " Book: "
-						+ e[6]);
-			});
+			for (int i = 0; (i < 10 && i < mobs.size()); i++)
+				encounter.append("\n" + mobs.get(i)[1] + " XP: "
+						+ mobs.get(i)[2] + " Book: " + mobs.get(i)[6]);
 			attempts++;
 		}
 		return encounter.toString();

@@ -1,4 +1,4 @@
-package dungen.pojos;
+package dungen.pojos.npcs;
 
 import java.io.Serializable;
 import java.util.ArrayList;

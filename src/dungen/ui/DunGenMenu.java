@@ -25,11 +25,11 @@ public class DunGenMenu extends JMenuBar {
 		New.addActionListener(e -> {
 			Controls.hideRoom();
 			Controls.rooms = new HashMap<>();
+			Room.numRooms = 1;
 			Controls.thisRoom = new Room();
 			Controls.thisRoom.addDoor("north");
 			Controls.thisRoom.south = "";
 			Controls.rooms.put(new Point(0, 0), Controls.thisRoom);
-
 			InfoPanel.setPartyLevel(1);
 			Controls.showX = 0;
 			Controls.showY = 0;

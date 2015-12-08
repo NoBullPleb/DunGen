@@ -17,7 +17,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import dungen.generators.Tables;
 import dungen.ui.Controls;
 import dungen.ui.InfoPanel;
-import dungen.ui.Map;
 
 //used for serialization
 public class Dungeon implements Serializable {
@@ -28,7 +27,6 @@ public class Dungeon implements Serializable {
 	public int partyLevel = 1;
 	public int partySize = 4;
 	public boolean symmetric = true;
-	public Map mapView = null;
 	public ArrayList<Boolean> types = new ArrayList<Boolean>();
 
 	public Dungeon() {
@@ -37,7 +35,6 @@ public class Dungeon implements Serializable {
 		showX = Controls.showX;
 		showY = Controls.showY;
 		thisRoom = Controls.thisRoom;
-		mapView = Controls.mapView;
 		symmetric = InfoPanel.isSymmmetric();
 		partyLevel = InfoPanel.getPartyLevel();
 		partySize = InfoPanel.getPartySize();
@@ -81,6 +78,7 @@ public class Dungeon implements Serializable {
 			in.close();
 			fileIn.close();
 		} catch (Exception err) {
+
 			err.printStackTrace();
 		}
 		return returnable;

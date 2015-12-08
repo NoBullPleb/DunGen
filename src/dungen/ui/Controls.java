@@ -78,10 +78,6 @@ public class Controls extends JFrame {
 		Dungeon d = Dungeon.load();
 		hideRoom();
 		InfoPanel.setPartyLevel(d.partyLevel);
-		Controls.mapView.star = d.mapView.star;
-		Controls.mapView.roomsLocations = d.mapView.roomsLocations;
-		Controls.mapView.halls = d.mapView.halls;
-		Controls.mapView.rooms = d.mapView.rooms;
 		Controls.showX = d.showX;
 		Controls.showY = d.showY;
 		Controls.rooms = d.rooms;

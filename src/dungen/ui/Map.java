@@ -16,8 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
-import dungen.generators.Dice;
-import dungen.generators.Tables;
+import dungen.pojos.Room;
 import dungen.resourceLoader.ResourceLoader;
 
 public class Map extends JFrame {
@@ -78,11 +77,11 @@ public class Map extends JFrame {
 
 	public void redraw() {
 		contentPane.removeAll();
-		rooms.forEach(contentPane::add);
-		halls.forEach(contentPane::add);
+		roomsLocations = new ArrayList<>();
+		rooms = new ArrayList<>();
+		halls = new ArrayList<>();
 		Controls.rooms.forEach((p, r) -> {
-			addEventOnRoom(getPosition((int) p.getX(), (int) p.getY()),
-					r.details);
+			addRoom((int) p.getX(), (int) p.getY(), r);
 		});
 		contentPane.add(star);
 		contentPane.revalidate();
@@ -128,11 +127,11 @@ public class Map extends JFrame {
 		contentPane.repaint();
 	}
 
-	public void addEventOnRoom(int x, int y, String encounter) {
-		addEventOnRoom(getPosition(x, y), encounter);
+	public void addEventOnRoom(int x, int y, String details) {
+		addEventOnRoom(getPosition(x, y), details);
 	}
 
-	public void addRoom(Integer x, Integer y, String details) {
+	public void addRoom(Integer x, Integer y, Room r) {
 		Point p = getPosition(x, y);
 		if (roomsLocations != null && !roomsLocations.contains(p)) {
 			JLabel room = new JLabel();
@@ -157,8 +156,18 @@ public class Map extends JFrame {
 			if (!roomsLocations.contains(p)) {
 				roomsLocations.add(p);
 			}
-			if (!details.isEmpty())
-				addEventOnRoom(p, details);
+			if (!r.details.isEmpty())
+				addEventOnRoom(p, r.details);
+			
+			System.out.println("r.north="+r.north);
+			if (!r.north.isEmpty())
+				addHall(x, y, "north", r.north);
+			if (!r.south.isEmpty())
+				addHall(x, y, "south", r.south);
+			if (!r.east.isEmpty())
+				addHall(x, y, "east", r.east);
+			if (!r.west.isEmpty())
+				addHall(x, y, "west", r.west);
 
 		}
 		contentPane.repaint();
@@ -183,10 +192,12 @@ public class Map extends JFrame {
 				* ((int) imagesize.getHeight() * 2));
 	}
 
-	private static List<String> doorTypes = ResourceLoader
-			.getTable("Door Type.txt");
+	public void addLock() {
 
-	public void addHall(Integer x, Integer y, String direction) {
+	}
+
+	public void addHall(Integer x, Integer y, String direction,
+			String doorScription) {
 		Point p = getPosition(x, y);
 
 		int modX = 0, modY = 0;
@@ -212,7 +223,6 @@ public class Map extends JFrame {
 			return;
 		JLabel hall = new JLabel();
 		hall.setSize(imagesize);
-		String doorScription = Tables.getResultFromTable(Dice.d20(), doorTypes);
 
 		if (direction.equalsIgnoreCase("north")
 				|| direction.equalsIgnoreCase("south")) {

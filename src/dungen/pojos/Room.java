@@ -1,10 +1,13 @@
 package dungen.pojos;
 
 import java.io.Serializable;
+import java.util.List;
 
+import dungen.generators.Dice;
 import dungen.generators.Tables;
 import dungen.ui.InfoPanel;
 import dungen.pojos.npcs.*;
+import dungen.resourceLoader.ResourceLoader;
 
 public class Room implements Serializable {
 
@@ -16,23 +19,29 @@ public class Room implements Serializable {
 	public String details = "";
 	public boolean hasNPCs = InfoPanel.getSpwnNpcs()
 			&& Math.random() * 100 > 98; // 2% ODDS OF NPCS
-
-	public Boolean north = (Math.random() * 100) > 100 - neverTellMeTheOdds,
-			south = (Math.random() * 100) > 100 - neverTellMeTheOdds,
-			east = (Math.random() * 100) > 100 - neverTellMeTheOdds,
-			west = (Math.random() * 100) > 100 - neverTellMeTheOdds;
+	private static List<String> doorTypes = ResourceLoader
+			.getTable("Door Type.txt");
+	public String north = maybeDoor(), south = maybeDoor(), east = maybeDoor(),
+			west = maybeDoor();
 	public Room northRoom = null, southRoom = null, westRoom = null,
 			eastRoom = null;
 
+	private String maybeDoor() {
+		if ((Math.random() * 100) > 100 - neverTellMeTheOdds)
+			return Tables.getResultFromTable(Dice.d20(), doorTypes);
+		else
+			return "";
+	}
+
 	public void addDoor(String direction) {
 		if (direction.equalsIgnoreCase("north")) {
-			north = true;
+			north = Tables.getResultFromTable(Dice.d20(), doorTypes);
 		} else if (direction.equalsIgnoreCase("south")) {
-			south = true;
+			south = Tables.getResultFromTable(Dice.d20(), doorTypes);
 		} else if (direction.equalsIgnoreCase("east")) {
-			east = true;
+			east = Tables.getResultFromTable(Dice.d20(), doorTypes);
 		} else if (direction.equalsIgnoreCase("west")) {
-			west = true;
+			west = Tables.getResultFromTable(Dice.d20(), doorTypes);
 		}
 
 	}

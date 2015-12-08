@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 import java.awt.BorderLayout;
 
 public class Controls extends JFrame {
-	public static String version = "1.7.1";
+	public static String version = "1.8.0";
 	private static final long serialVersionUID = 7985611292217902489L;
 	public transient final static JButton southButton = new JButton("Go South"),
 			eastButton = new JButton("Go East"), westButton = new JButton(
@@ -64,22 +64,14 @@ public class Controls extends JFrame {
 		roomDetails.setText(thisRoom.details);
 		lblRoomDetails.setText("Room Details: " + thisRoom.roomNumber);
 		if (!thisRoom.drawn) {
-			mapView.addRoom(showX, showY, thisRoom.details);
-			if (thisRoom.north)
-				mapView.addHall(showX, showY, "north");
-			if (thisRoom.south)
-				mapView.addHall(showX, showY, "south");
-			if (thisRoom.east)
-				mapView.addHall(showX, showY, "east");
-			if (thisRoom.west)
-				mapView.addHall(showX, showY, "west");
+			mapView.addRoom(showX, showY, thisRoom);
 			thisRoom.drawn = true;
 		}
 		mapView.moveStar(showX, showY);
-		northButton.setEnabled(thisRoom.north);
-		westButton.setEnabled(thisRoom.west);
-		eastButton.setEnabled(thisRoom.east);
-		southButton.setEnabled(thisRoom.south);
+		northButton.setEnabled(!thisRoom.north.isEmpty());
+		westButton.setEnabled(!thisRoom.west.isEmpty());
+		eastButton.setEnabled(!thisRoom.east.isEmpty());
+		southButton.setEnabled(!thisRoom.south.isEmpty());
 	}
 
 	public static void load(ActionEvent e) {
@@ -107,8 +99,8 @@ public class Controls extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("DunGen v" + version);
 		setBounds(0, 50, 271, 580);
-		thisRoom.north = true;
-		thisRoom.south = false;
+		thisRoom.addDoor("north");
+		thisRoom.south = "";
 		thisRoom.details = "This is the room where it all began... ";
 		rooms.put(new Point(showX, showY), thisRoom);
 
@@ -125,11 +117,11 @@ public class Controls extends JFrame {
 					thisRoom.eastRoom = new Room();
 				}
 				if (showY <= 0)
-					thisRoom.eastRoom.south = false;
+					thisRoom.eastRoom.south = "";
 				else if (showY >= yLimit)
-					thisRoom.eastRoom.north = false;
+					thisRoom.eastRoom.north = "";
 				if (showX >= xLimit)
-					thisRoom.eastRoom.east = false;
+					thisRoom.eastRoom.east = "";
 				rooms.put(p, thisRoom.eastRoom);
 			}
 			thisRoom = thisRoom.eastRoom;
@@ -146,11 +138,11 @@ public class Controls extends JFrame {
 					thisRoom.westRoom = new Room();
 				}
 				if (showY <= 0)
-					thisRoom.westRoom.south = false;
+					thisRoom.westRoom.south = "";
 				else if (showY >= yLimit)
-					thisRoom.westRoom.north = false;
+					thisRoom.westRoom.north = "";
 				if (showX <= -xLimit)
-					thisRoom.westRoom.west = false;
+					thisRoom.westRoom.west = "";
 			}
 			thisRoom = thisRoom.westRoom;
 			showRoom();
@@ -166,11 +158,11 @@ public class Controls extends JFrame {
 					thisRoom.northRoom = new Room();
 				}
 				if (showY >= yLimit)
-					thisRoom.northRoom.north = false;
+					thisRoom.northRoom.north = "";
 				if (showX >= xLimit)
-					thisRoom.northRoom.east = false;
+					thisRoom.northRoom.east = "";
 				else if (showX <= -xLimit)
-					thisRoom.northRoom.west = false;
+					thisRoom.northRoom.west = "";
 			}
 			thisRoom = thisRoom.northRoom;
 			showRoom();
@@ -186,11 +178,11 @@ public class Controls extends JFrame {
 					thisRoom.southRoom = new Room();
 				}
 				if (showY <= 0)
-					thisRoom.southRoom.south = false;
+					thisRoom.southRoom.south = "";
 				if (showX >= xLimit)
-					thisRoom.southRoom.east = false;
+					thisRoom.southRoom.east = "";
 				else if (showX <= -xLimit)
-					thisRoom.southRoom.west = false;
+					thisRoom.southRoom.west = "";
 			}
 			thisRoom = thisRoom.southRoom;
 			showRoom();

@@ -81,7 +81,7 @@ public class Controls extends JFrame {
 		Controls.showX = d.showX;
 		Controls.showY = d.showY;
 		Controls.rooms = d.rooms;
-		Controls.mapView.redraw();
+		Controls.mapView.redraw(true);
 		InfoPanel.setPartySize(d.partySize);
 		InfoPanel.setSymmetric(d.symmetric);
 		for (int i = 0; i < d.types.size(); i++) {

@@ -33,7 +33,7 @@ public class DunGenMenu extends JMenuBar {
 			InfoPanel.setPartyLevel(1);
 			Controls.showX = 0;
 			Controls.showY = 0;
-			Controls.mapView.redraw();
+			Controls.mapView.redraw(true);
 			InfoPanel.setPartySize(4);
 			InfoPanel.setSymmetric(true);
 			InfoPanel.setAllTypesFalse();
@@ -234,5 +234,23 @@ public class DunGenMenu extends JMenuBar {
 		mishaps.add(scroll);
 
 		this.add(mishaps);
+
+		JMenu map = new JMenu("Map");
+		JMenuItem DMView = new JMenuItem("DM View");
+		DMView.addActionListener(e -> {
+			Controls.hideRoom();
+			Controls.mapView.redraw(true);
+			Controls.mapView.moveStar(Controls.showX, Controls.showY);
+		});
+		JMenuItem playerView = new JMenuItem("Player View");
+		playerView.addActionListener(e -> {
+			Controls.hideRoom();
+			Controls.mapView.redraw(false);
+			Controls.mapView.moveStar(Controls.showX, Controls.showY);
+		});
+		map.add(DMView);
+		map.add(playerView);
+		this.add(map);
+
 	}
 }

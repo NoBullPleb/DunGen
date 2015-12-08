@@ -75,22 +75,23 @@ public class Map extends JFrame {
 		moveStar(x, y);
 	}
 
-	public void redraw() {
+	public void redraw(boolean showSecrets) {
 		contentPane.removeAll();
 		roomsLocations = new ArrayList<>();
 		rooms = new ArrayList<>();
 		halls = new ArrayList<>();
-		Controls.rooms.forEach((p, r) -> {
-			addRoom((int) p.getX(), (int) p.getY(), r);
-		});
+		Controls.rooms.forEach((p, r) -> addRoom((int) p.getX(),
+				(int) p.getY(), r, showSecrets));
 		contentPane.add(star);
 		contentPane.revalidate();
 		contentPane.repaint();
 	}
 
-	public void addEventOnRoom(Point p, String encounter) {
+	public void addEventOnRoom(Point p, String encounter, boolean showSecrets) {
 		JLabel encounterLbl = new JLabel();
 		encounter = encounter.toLowerCase();
+		if (!showSecrets)
+			return;
 		if (encounter.contains("npc"))
 			encounterLbl.setIcon(otherPartyImage);
 		else if (encounter.contains("trap"))
@@ -128,10 +129,14 @@ public class Map extends JFrame {
 	}
 
 	public void addEventOnRoom(int x, int y, String details) {
-		addEventOnRoom(getPosition(x, y), details);
+		addEventOnRoom(getPosition(x, y), details, true);
 	}
 
 	public void addRoom(Integer x, Integer y, Room r) {
+		addRoom(x, y, r, true);
+	}
+
+	public void addRoom(Integer x, Integer y, Room r, boolean showSecret) {
 		Point p = getPosition(x, y);
 		if (roomsLocations != null && !roomsLocations.contains(p)) {
 			JLabel room = new JLabel();
@@ -157,16 +162,16 @@ public class Map extends JFrame {
 				roomsLocations.add(p);
 			}
 			if (!r.details.isEmpty())
-				addEventOnRoom(p, r.details);
+				addEventOnRoom(p, r.details, showSecret);
 
 			if (!r.north.isEmpty())
-				addHall(x, y, "north", r.north);
+				addHall(x, y, "north", r.north, showSecret);
 			if (!r.south.isEmpty())
-				addHall(x, y, "south", r.south);
+				addHall(x, y, "south", r.south, showSecret);
 			if (!r.east.isEmpty())
-				addHall(x, y, "east", r.east);
+				addHall(x, y, "east", r.east, showSecret);
 			if (!r.west.isEmpty())
-				addHall(x, y, "west", r.west);
+				addHall(x, y, "west", r.west, showSecret);
 
 		}
 		contentPane.repaint();
@@ -196,7 +201,7 @@ public class Map extends JFrame {
 	}
 
 	public void addHall(Integer x, Integer y, String direction,
-			String doorScription) {
+			String doorScription, boolean showSecrets) {
 		Point p = getPosition(x, y);
 
 		int modX = 0, modY = 0;
@@ -225,9 +230,10 @@ public class Map extends JFrame {
 
 		if (direction.equalsIgnoreCase("north")
 				|| direction.equalsIgnoreCase("south")) {
-			if (doorScription.contains("ecret"))
-				hall.setIcon(secret);
-			else if (doorScription.contains("cullis"))
+			if (doorScription.contains("ecret")) {
+				if (showSecrets)
+					hall.setIcon(secret);
+			} else if (doorScription.contains("cullis"))
 				hall.setIcon(portcullis);
 			else if (doorScription.contains("Stone")
 					|| doorScription.contains("Iron"))
@@ -235,9 +241,10 @@ public class Map extends JFrame {
 			else
 				hall.setIcon(hallImage);
 		} else {
-			if (doorScription.contains("ecret"))
-				hall.setIcon(secret2);
-			else if (doorScription.contains("cullis"))
+			if (doorScription.contains("ecret")) {
+				if (showSecrets)
+					hall.setIcon(secret2);
+			} else if (doorScription.contains("cullis"))
 				hall.setIcon(portcullis);
 			else if (doorScription.contains("Stone")
 					|| doorScription.contains("Iron"))
@@ -253,7 +260,7 @@ public class Map extends JFrame {
 		locked.setIcon(lock);
 		locked.setSize(imagesize);
 		locked.setLocation(modX, modY);
-		if (doorScription.contains("lock")) {
+		if (doorScription.contains("lock") && (!doorScription.contains("ecret") || showSecrets)) {
 			locked.setVisible(true);
 		} else
 			locked.setVisible(false);

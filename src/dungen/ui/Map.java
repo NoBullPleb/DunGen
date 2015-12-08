@@ -3,8 +3,6 @@ package dungen.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -242,38 +240,11 @@ public class Map extends JFrame {
 				locked.setVisible(false);
 		}));
 
-		ActionListener eastA = Controls.eastButton.getActionListeners()[0];
-		ActionListener westA = Controls.westButton.getActionListeners()[0];
-		ActionListener northA = Controls.northButton.getActionListeners()[0];
-		ActionListener southA = Controls.southButton.getActionListeners()[0];
-		hall.addMouseListener(new ClickListener(
-				e -> {
-					if (e.getButton() == MouseEvent.BUTTON3)
-						locked.setVisible(true);
-					else if (e.getButton() == MouseEvent.BUTTON1
-							&& !locked.isVisible()) {
-						System.out.println("Clicked!");
-						switch (direction) {
-						case "east":
-							eastA.actionPerformed(new ActionEvent(
-									ActionEvent.MOUSE_EVENT_MASK, 0, ""));
-							break;
-						case "west":
-							westA.actionPerformed(new ActionEvent(
-									ActionEvent.MOUSE_EVENT_MASK, 0, ""));
-							break;
-						case "north":
-							northA.actionPerformed(new ActionEvent(
-									ActionEvent.MOUSE_EVENT_MASK, 0, ""));
-							break;
-						case "south":
-							southA.actionPerformed(new ActionEvent(
-									ActionEvent.MOUSE_EVENT_MASK, 0, ""));
-							break;
-						}
-
-					}
-				}));
+		hall.addMouseListener(new ClickListener(e -> {
+			if (e.getButton() == MouseEvent.BUTTON3) {
+				locked.setVisible(true);
+			}
+		}));
 		contentPane.add(hall, contentPane.lowestLayer());
 		contentPane.add(locked, contentPane.highestLayer());
 

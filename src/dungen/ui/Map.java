@@ -133,7 +133,7 @@ public class Map extends JFrame {
 			room.setSize(imagesize);
 			room.setLocation((int) p.getX(), (int) p.getY());
 			room.setVisible(true);
-			room.addMouseListener(new ClickListener(e -> {
+			room.addMouseListener(new PressListener(e -> {
 				Controls.hideRoom();
 				Controls.thisRoom = Controls.rooms.get(new Point(x, y));
 				Controls.showX = x;
@@ -235,12 +235,12 @@ public class Map extends JFrame {
 			locked.setVisible(true);
 		} else
 			locked.setVisible(false);
-		locked.addMouseListener(new ClickListener(e -> {
+		locked.addMouseListener(new PressListener(e -> {
 			if (e.getButton() == MouseEvent.BUTTON3)
 				locked.setVisible(false);
 		}));
 
-		hall.addMouseListener(new ClickListener(e -> {
+		hall.addMouseListener(new PressListener(e -> {
 			if (e.getButton() == MouseEvent.BUTTON3) {
 				locked.setVisible(true);
 			}
@@ -266,10 +266,10 @@ public class Map extends JFrame {
 
 }
 
-class ClickListener implements MouseListener {
+class PressListener implements MouseListener {
 	Consumer<MouseEvent> whenClicked = null;
 
-	public ClickListener(Consumer<MouseEvent> e) {
+	public PressListener(Consumer<MouseEvent> e) {
 		whenClicked = e;
 	}
 

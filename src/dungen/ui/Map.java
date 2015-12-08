@@ -50,6 +50,7 @@ public class Map extends JFrame {
 	private static ImageIcon secret2 = ResourceLoader.getImage("SDoor2.png");
 	private static ImageIcon partyImage = ResourceLoader.getImage("Party.png");
 	private static ImageIcon lock = ResourceLoader.getImage("Lock.png");
+	private static ImageIcon lootImage = ResourceLoader.getImage("Loot.png");
 	private static ImageIcon encounterImage = ResourceLoader
 			.getImage("Encounter.png");
 	private static ImageIcon otherPartyImage = ResourceLoader
@@ -90,22 +91,27 @@ public class Map extends JFrame {
 
 	public void addEventOnRoom(Point p, String encounter) {
 		JLabel encounterLbl = new JLabel();
-		if (encounter.contains("Trap"))
-			encounterLbl.setIcon(trapImage);
-		else if (encounter.contains("Hazard"))
-			encounterLbl.setIcon(hazardImage);
-		else if (encounter.contains("Trick"))
-			encounterLbl.setIcon(trickImage);
-		else if (encounter.contains("NPC"))
+		encounter = encounter.toLowerCase();
+		if (encounter.contains("npc"))
 			encounterLbl.setIcon(otherPartyImage);
-		else if (encounter.contains("Encounter")) {
-			if (encounter.contains("Deadly")) {
+		else if (encounter.contains("trap"))
+			encounterLbl.setIcon(trapImage);
+		else if (encounter.contains("hazard"))
+			encounterLbl.setIcon(hazardImage);
+		else if (encounter.contains("trick"))
+			encounterLbl.setIcon(trickImage);
+
+		else if (encounter.contains("ncounter") || encounter.contains("boss")) {
+			if (encounter.contains("deadly") || encounter.contains("boss")) {
 				encounterLbl.setIcon(deadlyImage);
-			} else if (encounter.contains("Hard")) {
+			} else if (encounter.contains("hard")) {
 				encounterLbl.setIcon(hardImage);
 			} else {
 				encounterLbl.setIcon(encounterImage);
 			}
+		} else if (encounter.contains("hoard") || encounter.contains("item")
+				|| encounter.contains("treasure")) {
+			encounterLbl.setIcon(lootImage);
 		} else {
 			return;
 		}
@@ -115,8 +121,9 @@ public class Map extends JFrame {
 		JLabel room = rooms.parallelStream()
 				.filter(e -> e.getLocation().equals(p)).findFirst().get();
 		MouseListener[] parentListeners = room.getMouseListeners();
-		encounterLbl
-				.addMouseListener(parentListeners[parentListeners.length - 1]);
+		if (parentListeners.length > 0)
+			encounterLbl
+					.addMouseListener(parentListeners[parentListeners.length - 1]);
 		contentPane.add(encounterLbl, contentPane.highestLayer());
 		contentPane.repaint();
 	}
@@ -134,16 +141,22 @@ public class Map extends JFrame {
 			room.setLocation((int) p.getX(), (int) p.getY());
 			room.setVisible(true);
 			room.addMouseListener(new PressListener(e -> {
-				Controls.hideRoom();
-				Controls.thisRoom = Controls.rooms.get(new Point(x, y));
-				Controls.showX = x;
-				Controls.showY = y;
-				Controls.showRoom();
-				this.moveStar(p);
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					Controls.hideRoom();
+					Controls.thisRoom = Controls.rooms.get(new Point(x, y));
+					Controls.showX = x;
+					Controls.showY = y;
+					Controls.showRoom();
+					this.moveStar(p);
+				}
 			}));
 			contentPane.add(room);
-			rooms.add(room);
-			roomsLocations.add(p);
+			if (!rooms.contains(room)) {
+				rooms.add(room);
+			}
+			if (!roomsLocations.contains(p)) {
+				roomsLocations.add(p);
+			}
 			if (!details.isEmpty())
 				addEventOnRoom(p, details);
 

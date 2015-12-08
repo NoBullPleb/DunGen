@@ -24,6 +24,7 @@ public class DunGenMenu extends JMenuBar {
 		JMenuItem New = new JMenuItem("New");
 		New.addActionListener(e -> {
 			Controls.hideRoom();
+			Controls.showSecrets = true;
 			Controls.rooms = new HashMap<>();
 			Room.numRooms = 1;
 			Controls.thisRoom = new Room();
@@ -238,14 +239,16 @@ public class DunGenMenu extends JMenuBar {
 		JMenu map = new JMenu("Map");
 		JMenuItem DMView = new JMenuItem("DM View");
 		DMView.addActionListener(e -> {
+			Controls.showSecrets = true;
 			Controls.hideRoom();
-			Controls.mapView.redraw(true);
+			Controls.mapView.redraw(Controls.showSecrets);
 			Controls.mapView.moveStar(Controls.showX, Controls.showY);
 		});
 		JMenuItem playerView = new JMenuItem("Player View");
 		playerView.addActionListener(e -> {
+			Controls.showSecrets = false;
 			Controls.hideRoom();
-			Controls.mapView.redraw(false);
+			Controls.mapView.redraw(Controls.showSecrets);
 			Controls.mapView.moveStar(Controls.showX, Controls.showY);
 		});
 		map.add(DMView);

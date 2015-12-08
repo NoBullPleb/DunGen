@@ -90,8 +90,6 @@ public class Map extends JFrame {
 	public void addEventOnRoom(Point p, String encounter, boolean showSecrets) {
 		JLabel encounterLbl = new JLabel();
 		encounter = encounter.toLowerCase();
-		if (!showSecrets)
-			return;
 		if (encounter.contains("npc"))
 			encounterLbl.setIcon(otherPartyImage);
 		else if (encounter.contains("trap"))
@@ -117,7 +115,7 @@ public class Map extends JFrame {
 		}
 		encounterLbl.setSize(imagesize);
 		encounterLbl.setLocation(p);
-		encounterLbl.setVisible(true);
+		encounterLbl.setVisible(showSecrets);
 		JLabel room = rooms.parallelStream()
 				.filter(e -> e.getLocation().equals(p)).findFirst().get();
 		MouseListener[] parentListeners = room.getMouseListeners();
@@ -129,11 +127,11 @@ public class Map extends JFrame {
 	}
 
 	public void addEventOnRoom(int x, int y, String details) {
-		addEventOnRoom(getPosition(x, y), details, true);
+		addEventOnRoom(getPosition(x, y), details, Controls.showSecrets);
 	}
 
 	public void addRoom(Integer x, Integer y, Room r) {
-		addRoom(x, y, r, true);
+		addRoom(x, y, r, Controls.showSecrets);
 	}
 
 	public void addRoom(Integer x, Integer y, Room r, boolean showSecret) {
@@ -260,7 +258,8 @@ public class Map extends JFrame {
 		locked.setIcon(lock);
 		locked.setSize(imagesize);
 		locked.setLocation(modX, modY);
-		if (doorScription.contains("lock") && (!doorScription.contains("ecret") || showSecrets)) {
+		if (doorScription.contains("lock")
+				&& (!doorScription.contains("ecret") || showSecrets)) {
 			locked.setVisible(true);
 		} else
 			locked.setVisible(false);

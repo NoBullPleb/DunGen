@@ -36,6 +36,7 @@ public class Controls extends JFrame {
 	public static InfoPanel ip = new InfoPanel();
 	private transient final static JPanel contentPane = new JPanel();
 	private static transient DunGenMenu menuBar = new DunGenMenu();
+	public static boolean showSecrets = true;
 
 	public static void saveRoom() {
 		String temp = roomDetails.getText();

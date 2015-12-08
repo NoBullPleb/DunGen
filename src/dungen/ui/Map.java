@@ -3,9 +3,12 @@ package dungen.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
@@ -107,8 +110,13 @@ public class Map extends JFrame {
 			return;
 		}
 		encounterLbl.setSize(imagesize);
-		encounterLbl.setLocation((int) p.getX(), (int) p.getY());
+		encounterLbl.setLocation(p);
 		encounterLbl.setVisible(true);
+		JLabel room = rooms.parallelStream()
+				.filter(e -> e.getLocation().equals(p)).findFirst().get();
+		MouseListener[] parentListeners = room.getMouseListeners();
+		encounterLbl
+				.addMouseListener(parentListeners[parentListeners.length - 1]);
 		contentPane.add(encounterLbl, contentPane.highestLayer());
 		contentPane.repaint();
 	}
@@ -117,22 +125,28 @@ public class Map extends JFrame {
 		addEventOnRoom(getPosition(x, y), encounter);
 	}
 
-	public void addRoom(Integer x, Integer y, String hasEncounter) {
-		addRoom(getPosition(x, y), hasEncounter);
-	}
-
-	public void addRoom(Point p, String details) {
+	public void addRoom(Integer x, Integer y, String details) {
+		Point p = getPosition(x, y);
 		if (roomsLocations != null && !roomsLocations.contains(p)) {
 			JLabel room = new JLabel();
 			room.setIcon(roomImage);
 			room.setSize(imagesize);
 			room.setLocation((int) p.getX(), (int) p.getY());
 			room.setVisible(true);
+			room.addMouseListener(new ClickListener(e -> {
+				Controls.hideRoom();
+				Controls.thisRoom = Controls.rooms.get(new Point(x, y));
+				Controls.showX = x;
+				Controls.showY = y;
+				Controls.showRoom();
+				this.moveStar(p);
+			}));
 			contentPane.add(room);
 			rooms.add(room);
 			roomsLocations.add(p);
 			if (!details.isEmpty())
 				addEventOnRoom(p, details);
+
 		}
 		contentPane.repaint();
 
@@ -140,6 +154,10 @@ public class Map extends JFrame {
 
 	public void moveStar(int x, int y) {
 		Point p = getPosition(x, y);
+		moveStar(p);
+	}
+
+	public void moveStar(Point p) {
 		star.setLocation(p);
 		star.setVisible(true);
 		contentPane.add(star, contentPane.highestLayer());
@@ -208,19 +226,27 @@ public class Map extends JFrame {
 
 		hall.setLocation(modX, modY);
 		hall.setVisible(true);
-		contentPane.add(hall, contentPane.lowestLayer());
-		if (doorScription.contains("lock")) {
-			JLabel locked = new JLabel();
-			locked.setIcon(lock);
-			locked.setSize(imagesize);
-			locked.setLocation(modX, modY);
-			locked.setVisible(true);
-			contentPane.add(locked, contentPane.highestLayer());
-			halls.add(locked);
 
-		}
+		JLabel locked = new JLabel();
+		locked.setIcon(lock);
+		locked.setSize(imagesize);
+		locked.setLocation(modX, modY);
+		if (doorScription.contains("lock")) {
+			locked.setVisible(true);
+		} else
+			locked.setVisible(false);
+		locked.addMouseListener(new ClickListener(e -> {
+			locked.setVisible(false);
+		}));
+		hall.addMouseListener(new ClickListener(e -> {
+			locked.setVisible(true);
+		}));
+		contentPane.add(hall, contentPane.lowestLayer());
+		contentPane.add(locked, contentPane.highestLayer());
+
+		halls.add(locked);
+
 		halls.add(hall);
-		Controls.addToRoomDescription(direction + " door is " + doorScription);
 		contentPane.repaint();
 	}
 
@@ -231,6 +257,42 @@ public class Map extends JFrame {
 		setBounds(271, 50, 580, 580);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+
+	}
+
+}
+
+class ClickListener implements MouseListener {
+	Consumer<MouseEvent> whenClicked = null;
+
+	public ClickListener(Consumer<MouseEvent> e) {
+		whenClicked = e;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		whenClicked.accept(e);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 

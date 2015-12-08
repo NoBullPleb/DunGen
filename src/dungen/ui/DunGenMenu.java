@@ -1,5 +1,8 @@
 package dungen.ui;
 
+import java.awt.Point;
+import java.util.HashMap;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -8,6 +11,7 @@ import dungen.generators.Dice;
 import dungen.generators.Tables;
 import dungen.pojos.Dungeon;
 import dungen.pojos.Hoard;
+import dungen.pojos.Room;
 import dungen.pojos.npcs.*;
 import dungen.pojos.Treasure;
 
@@ -17,6 +21,25 @@ public class DunGenMenu extends JMenuBar {
 	public DunGenMenu() {
 		JMenu file = new JMenu("File");
 		this.add(file);
+		JMenuItem New = new JMenuItem("New");
+		New.addActionListener(e -> {
+			Controls.hideRoom();
+			Controls.rooms = new HashMap<>();
+			Controls.thisRoom = new Room();
+			Controls.thisRoom.addDoor("north");
+			Controls.thisRoom.south = "";
+			Controls.rooms.put(new Point(0, 0), Controls.thisRoom);
+
+			InfoPanel.setPartyLevel(1);
+			Controls.showX = 0;
+			Controls.showY = 0;
+			Controls.mapView.redraw();
+			InfoPanel.setPartySize(4);
+			InfoPanel.setSymmetric(true);
+			InfoPanel.setAllTypesFalse();
+			Controls.showRoom();
+		});
+		file.add(New);
 		JMenuItem Save = new JMenuItem("Save");
 		Save.addActionListener(new Dungeon()::save);
 		file.add(Save);
@@ -212,5 +235,4 @@ public class DunGenMenu extends JMenuBar {
 
 		this.add(mishaps);
 	}
-
 }

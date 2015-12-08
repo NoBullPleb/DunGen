@@ -22,7 +22,6 @@ import dungen.ui.InfoPanel;
 public class Dungeon implements Serializable {
 	private static final long serialVersionUID = 1586842009404988176L;
 	public HashMap<Point, Room> rooms = null;
-	public Room thisRoom = null;
 	public int showX = 0, showY = 0;
 	public int partyLevel = 1;
 	public int partySize = 4;
@@ -34,7 +33,6 @@ public class Dungeon implements Serializable {
 		rooms = Controls.rooms;
 		showX = Controls.showX;
 		showY = Controls.showY;
-		thisRoom = Controls.thisRoom;
 		symmetric = InfoPanel.isSymmmetric();
 		partyLevel = InfoPanel.getPartyLevel();
 		partySize = InfoPanel.getPartySize();

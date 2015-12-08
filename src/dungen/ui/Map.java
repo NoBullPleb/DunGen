@@ -158,8 +158,7 @@ public class Map extends JFrame {
 			}
 			if (!r.details.isEmpty())
 				addEventOnRoom(p, r.details);
-			
-			System.out.println("r.north="+r.north);
+
 			if (!r.north.isEmpty())
 				addHall(x, y, "north", r.north);
 			if (!r.south.isEmpty())

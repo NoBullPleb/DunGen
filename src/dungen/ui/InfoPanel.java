@@ -98,6 +98,12 @@ public class InfoPanel extends JFrame {
 
 	}
 
+	public static void setAllTypesFalse() {
+		for (int i = 0; i < types.length; i++) {
+			types[i].setSelected(false);
+		}
+	}
+
 	public InfoPanel() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(Controls.mapView.getX() + Controls.mapView.getWidth(), 50);

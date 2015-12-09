@@ -3,6 +3,8 @@ package dungen.pojos;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import dungen.generators.Dice;
 import dungen.generators.Tables;
@@ -22,7 +24,7 @@ public class Room implements Serializable {
 			&& Math.random() * 100 > 98; // 2% ODDS OF NPCS
 	private static List<String> doorTypes = ResourceLoader
 			.getTable("Door Type.txt");
-	public HashMap<String, String> doors = new HashMap<String, String>();
+	private HashMap<String, String> doors = new HashMap<String, String>();
 
 	public Room northRoom = null, southRoom = null, westRoom = null,
 			eastRoom = null;
@@ -34,8 +36,24 @@ public class Room implements Serializable {
 			return "";
 	}
 
+	public Set<Entry<String, String>> getDoors() {
+		return doors.entrySet();
+	}
+
+	public String setDoor(String direction, String description) {
+		return doors.put(direction, description);
+	}
+
+	public String getDoor(String direction) {
+		return doors.getOrDefault(direction, "");
+	}
+
 	public void addDoor(String direction) {
 		doors.put(direction, Tables.getResultFromTable(Dice.d20(), doorTypes));
+	}
+
+	public void removeDoor(String direction) {
+		doors.put(direction, "");
 	}
 
 	public Room() {

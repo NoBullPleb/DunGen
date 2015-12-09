@@ -64,7 +64,7 @@ public class Controls extends JFrame {
 			makeSymmetric();
 		fixDoors();
 		roomDetails.setText(thisRoom.details);
-		lblRoomDetails.setText("Room Details: " + thisRoom.roomNumber);
+		lblRoomDetails.setText("Details for Room: " + thisRoom.roomNumber);
 		if (!thisRoom.drawn) {
 			mapView.addRoom(showX, showY, thisRoom);
 			thisRoom.drawn = true;
@@ -97,7 +97,7 @@ public class Controls extends JFrame {
 		setTitle("DunGen v" + version);
 		setBounds(0, 50, 271, 580);
 		thisRoom.addDoor("north");
-		thisRoom.doors.put("south", "");
+		thisRoom.removeDoor("south");
 		thisRoom.details = "This is the room where it all began... ";
 		rooms.put(new Point(showX, showY), thisRoom);
 
@@ -114,11 +114,11 @@ public class Controls extends JFrame {
 					thisRoom.eastRoom = new Room();
 				}
 				if (showY <= 0)
-					thisRoom.eastRoom.doors.put("south", "");
+					thisRoom.eastRoom.removeDoor("south");
 				else if (showY >= yLimit)
-					thisRoom.eastRoom.doors.put("north", "");
+					thisRoom.eastRoom.removeDoor("north");
 				if (showX >= xLimit)
-					thisRoom.eastRoom.doors.put("east", "");
+					thisRoom.eastRoom.removeDoor("east");
 				rooms.put(p, thisRoom.eastRoom);
 			}
 			thisRoom = thisRoom.eastRoom;
@@ -135,11 +135,11 @@ public class Controls extends JFrame {
 					thisRoom.westRoom = new Room();
 				}
 				if (showY <= 0)
-					thisRoom.westRoom.doors.put("south", "");
+					thisRoom.westRoom.removeDoor("south");
 				else if (showY >= yLimit)
-					thisRoom.westRoom.doors.put("north", "");
+					thisRoom.westRoom.removeDoor("north");
 				if (showX <= -xLimit)
-					thisRoom.westRoom.doors.put("west", "");
+					thisRoom.westRoom.removeDoor("west");
 			}
 			thisRoom = thisRoom.westRoom;
 			showRoom();
@@ -155,11 +155,11 @@ public class Controls extends JFrame {
 					thisRoom.northRoom = new Room();
 				}
 				if (showY >= yLimit)
-					thisRoom.northRoom.doors.put("north", "");
+					thisRoom.northRoom.removeDoor("north");
 				if (showX >= xLimit)
-					thisRoom.northRoom.doors.put("east", "");
+					thisRoom.northRoom.removeDoor("east");
 				else if (showX <= -xLimit)
-					thisRoom.northRoom.doors.put("west", "");
+					thisRoom.northRoom.removeDoor("west");
 			}
 			thisRoom = thisRoom.northRoom;
 			showRoom();
@@ -175,11 +175,11 @@ public class Controls extends JFrame {
 					thisRoom.southRoom = new Room();
 				}
 				if (showY <= 0)
-					thisRoom.southRoom.doors.put("south", "");
+					thisRoom.southRoom.removeDoor("south");
 				if (showX >= xLimit)
-					thisRoom.southRoom.doors.put("east", "");
+					thisRoom.southRoom.removeDoor("east");
 				else if (showX <= -xLimit)
-					thisRoom.southRoom.doors.put("west", "");
+					thisRoom.southRoom.removeDoor("west");
 			}
 			thisRoom = thisRoom.southRoom;
 			showRoom();
@@ -225,19 +225,19 @@ public class Controls extends JFrame {
 				.getOrDefault(new Point(showX - 1, showY), null);
 
 		if (north != null) {
-			thisRoom.doors.put("north", north.doors.getOrDefault("south", ""));
+			thisRoom.setDoor("north", north.getDoor("south"));
 			thisRoom.northRoom = north;
 		}
 		if (south != null) {
-			thisRoom.doors.put("south", south.doors.getOrDefault("north", ""));
+			thisRoom.setDoor("south", south.getDoor("north"));
 			thisRoom.southRoom = south;
 		}
 		if (west != null) {
-			thisRoom.doors.put("west", west.doors.getOrDefault("east", ""));
+			thisRoom.setDoor("west", west.getDoor("east"));
 			thisRoom.westRoom = west;
 		}
 		if (east != null) {
-			thisRoom.doors.put("east", east.doors.getOrDefault("west", ""));
+			thisRoom.setDoor("east", east.getDoor("west"));
 			thisRoom.eastRoom = east;
 		}
 
@@ -245,7 +245,7 @@ public class Controls extends JFrame {
 
 	private static void makeSymmetric() {
 		if (showX == 0) {
-			thisRoom.doors.put("west", thisRoom.doors.get("east"));
+			thisRoom.setDoor("west", thisRoom.getDoor("east"));
 			return;
 		}
 		int tempX = -1 * showX;
@@ -253,8 +253,8 @@ public class Controls extends JFrame {
 		if (rooms.containsKey(p)) {
 			Room otherRoom = rooms.get(p);
 			// clone the room over
-			for (Entry<String, String> e : thisRoom.doors.entrySet()) {
-				thisRoom.doors.put(e.getKey(), otherRoom.doors.get(e.getKey()));
+			for (Entry<String, String> e : thisRoom.getDoors()) {
+				thisRoom.setDoor(e.getKey(), otherRoom.getDoor(e.getKey()));
 			}
 		}
 	}

@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -156,9 +157,9 @@ public class Map extends JFrame {
 			}
 			if (!r.details.isEmpty())
 				addEventOnRoom(p, r.details, showSecret);
-			for (String direction : r.doors.keySet())
-				if (r.hasDoor(direction))
-					addHall(x, y, direction, r, showSecret);
+			for (Entry<String, String> direction : r.getDoors())
+				if (r.hasDoor(direction.getKey()))
+					addHall(x, y, direction.getKey(), r, showSecret);
 		}
 		contentPane.repaint();
 
@@ -185,7 +186,7 @@ public class Map extends JFrame {
 	public void addHall(Integer x, Integer y, String direction, Room r,
 			boolean showSecrets) {
 		Point p = getPosition(x, y);
-		String doorScription = r.doors.get(direction);
+		String doorScription = r.getDoor(direction);
 		int modX = 0, modY = 0;
 
 		JLabel room = rooms.get(roomsLocations.indexOf(p));
@@ -251,20 +252,21 @@ public class Map extends JFrame {
 		locked.addMouseListener(new PressListener(e -> {
 			if (e.getButton() == MouseEvent.BUTTON3) {
 				locked.setVisible(false);
-				r.doors.put(direction, doorScription.replaceAll("lock", "~"));
+				r.setDoor(direction, doorScription.replaceAll("lock", "~"));
 			}
 		}));
 
-		hall.addMouseListener(new PressListener(e -> {
-			if (e.getButton() == MouseEvent.BUTTON3) {
-				locked.setVisible(true);
-				if (doorScription.contains("~"))
-					r.doors.put(direction,
-							doorScription.replaceAll("~", "lock"));
-				else
-					r.doors.put(direction, doorScription + " locked");
-			}
-		}));
+		hall.addMouseListener(new PressListener(
+				e -> {
+					if (e.getButton() == MouseEvent.BUTTON3) {
+						locked.setVisible(true);
+						if (doorScription.contains("~"))
+							r.setDoor(direction,
+									doorScription.replaceAll("~", "lock"));
+						else
+							r.setDoor(direction, doorScription + " locked");
+					}
+				}));
 		contentPane.add(hall, contentPane.lowestLayer());
 		contentPane.add(locked, contentPane.highestLayer());
 

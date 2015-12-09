@@ -1,7 +1,9 @@
 package dungen.ui;
 
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -214,8 +216,20 @@ public class Controls extends JFrame {
 		roomPanel.add(scrollPane, BorderLayout.CENTER);
 		roomPanel.add(lblRoomDetails, BorderLayout.NORTH);
 		contentPane.add(roomPanel, BorderLayout.CENTER);
-
+		setButtonBehaviors(mapView);
 		Controls.showRoom();
+	}
+
+	// makes each key match up to their respective button
+	public void setButtonBehaviors(Component c) {
+		c.addKeyListener(new KeyPressListenerImp(Controls.northButton,
+				KeyEvent.VK_UP, "north"));
+		c.addKeyListener(new KeyPressListenerImp(Controls.southButton,
+				KeyEvent.VK_DOWN, "south"));
+		c.addKeyListener(new KeyPressListenerImp(Controls.eastButton,
+				KeyEvent.VK_RIGHT, "east"));
+		c.addKeyListener(new KeyPressListenerImp(Controls.westButton,
+				KeyEvent.VK_LEFT, "west"));
 	}
 
 	private static void fixDoors() {

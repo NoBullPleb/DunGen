@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
@@ -138,7 +137,7 @@ public class Map extends JFrame {
 			room.setSize(imagesize);
 			room.setLocation((int) p.getX(), (int) p.getY());
 			room.setVisible(true);
-			room.addMouseListener(new PressListener(e -> {
+			room.addMouseListener((PressListener) e -> {
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					Controls.hideRoom();
 					Controls.thisRoom = Controls.rooms.get(new Point(x, y));
@@ -147,7 +146,7 @@ public class Map extends JFrame {
 					Controls.showRoom();
 					this.moveStar(p);
 				}
-			}));
+			});
 			contentPane.add(room);
 			if (!rooms.contains(room)) {
 				rooms.add(room);
@@ -249,24 +248,22 @@ public class Map extends JFrame {
 
 		} else
 			locked.setVisible(false);
-		locked.addMouseListener(new PressListener(e -> {
+		locked.addMouseListener((PressListener) e -> {
 			if (e.getButton() == MouseEvent.BUTTON3) {
 				locked.setVisible(false);
 				r.setDoor(direction, doorScription.replaceAll("lock", "~"));
 			}
-		}));
+		});
 
-		hall.addMouseListener(new PressListener(
-				e -> {
-					if (e.getButton() == MouseEvent.BUTTON3) {
-						locked.setVisible(true);
-						if (doorScription.contains("~"))
-							r.setDoor(direction,
-									doorScription.replaceAll("~", "lock"));
-						else
-							r.setDoor(direction, doorScription + " locked");
-					}
-				}));
+		hall.addMouseListener((PressListener) e -> {
+			if (e.getButton() == MouseEvent.BUTTON3) {
+				locked.setVisible(true);
+				if (doorScription.contains("~"))
+					r.setDoor(direction, doorScription.replaceAll("~", "lock"));
+				else
+					r.setDoor(direction, doorScription + " locked");
+			}
+		});
 		contentPane.add(hall, contentPane.lowestLayer());
 		contentPane.add(locked, contentPane.highestLayer());
 
@@ -286,36 +283,29 @@ public class Map extends JFrame {
 		this.setBackground(Color.BLACK);
 		star.setSize(imagesize);
 		star.setIcon(partyImage);
+
 	}
 
+	
 }
 
-class PressListener implements MouseListener {
-	Consumer<MouseEvent> whenClicked = null;
+@FunctionalInterface
+interface PressListener extends MouseListener {
 
-	public PressListener(Consumer<MouseEvent> e) {
-		whenClicked = e;
+	@Override
+	default public void mouseClicked(MouseEvent e) {
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	default public void mouseReleased(MouseEvent e) {
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		whenClicked.accept(e);
+	default public void mouseEntered(MouseEvent e) {
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
+	default public void mouseExited(MouseEvent e) {
 	}
 
 }

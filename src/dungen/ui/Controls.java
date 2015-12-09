@@ -3,6 +3,7 @@ package dungen.ui;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -18,16 +19,16 @@ import javax.swing.JLabel;
 import java.awt.BorderLayout;
 
 public class Controls extends JFrame {
-	public static String version = "1.8.0";
+	public static String version = "1.8.1";
 	private static final long serialVersionUID = 7985611292217902489L;
 	public transient final static JButton southButton = new JButton("Go South"),
 			eastButton = new JButton("Go East"), westButton = new JButton(
 					"Go West"), northButton = new JButton("Go North");
-	// used to track where rooms are. If one is already at that location, we can
-	// load it.
 	static JScrollPane scrollPane = new JScrollPane();
 	public static JTextArea roomDetails = new JTextArea();
 	private static JLabel lblRoomDetails = new JLabel("Room Details");
+	// used to track where rooms are. If one is already at that location, we can
+	// load it.
 	public static HashMap<Point, Room> rooms = new HashMap<>();
 	public static Room thisRoom = new Room();
 	public static int showX = 0, showY = 0;
@@ -69,10 +70,10 @@ public class Controls extends JFrame {
 			thisRoom.drawn = true;
 		}
 		mapView.moveStar(showX, showY);
-		northButton.setEnabled(!thisRoom.north.isEmpty());
-		westButton.setEnabled(!thisRoom.west.isEmpty());
-		eastButton.setEnabled(!thisRoom.east.isEmpty());
-		southButton.setEnabled(!thisRoom.south.isEmpty());
+		northButton.setEnabled(thisRoom.hasDoor("north"));
+		westButton.setEnabled(thisRoom.hasDoor("west"));
+		eastButton.setEnabled(thisRoom.hasDoor("east"));
+		southButton.setEnabled(thisRoom.hasDoor("south"));
 	}
 
 	public static void load(ActionEvent e) {
@@ -96,7 +97,7 @@ public class Controls extends JFrame {
 		setTitle("DunGen v" + version);
 		setBounds(0, 50, 271, 580);
 		thisRoom.addDoor("north");
-		thisRoom.south = "";
+		thisRoom.doors.put("south", "");
 		thisRoom.details = "This is the room where it all began... ";
 		rooms.put(new Point(showX, showY), thisRoom);
 
@@ -113,11 +114,11 @@ public class Controls extends JFrame {
 					thisRoom.eastRoom = new Room();
 				}
 				if (showY <= 0)
-					thisRoom.eastRoom.south = "";
+					thisRoom.eastRoom.doors.put("south", "");
 				else if (showY >= yLimit)
-					thisRoom.eastRoom.north = "";
+					thisRoom.eastRoom.doors.put("north", "");
 				if (showX >= xLimit)
-					thisRoom.eastRoom.east = "";
+					thisRoom.eastRoom.doors.put("east", "");
 				rooms.put(p, thisRoom.eastRoom);
 			}
 			thisRoom = thisRoom.eastRoom;
@@ -134,11 +135,11 @@ public class Controls extends JFrame {
 					thisRoom.westRoom = new Room();
 				}
 				if (showY <= 0)
-					thisRoom.westRoom.south = "";
+					thisRoom.westRoom.doors.put("south", "");
 				else if (showY >= yLimit)
-					thisRoom.westRoom.north = "";
+					thisRoom.westRoom.doors.put("north", "");
 				if (showX <= -xLimit)
-					thisRoom.westRoom.west = "";
+					thisRoom.westRoom.doors.put("west", "");
 			}
 			thisRoom = thisRoom.westRoom;
 			showRoom();
@@ -154,11 +155,11 @@ public class Controls extends JFrame {
 					thisRoom.northRoom = new Room();
 				}
 				if (showY >= yLimit)
-					thisRoom.northRoom.north = "";
+					thisRoom.northRoom.doors.put("north", "");
 				if (showX >= xLimit)
-					thisRoom.northRoom.east = "";
+					thisRoom.northRoom.doors.put("east", "");
 				else if (showX <= -xLimit)
-					thisRoom.northRoom.west = "";
+					thisRoom.northRoom.doors.put("west", "");
 			}
 			thisRoom = thisRoom.northRoom;
 			showRoom();
@@ -174,11 +175,11 @@ public class Controls extends JFrame {
 					thisRoom.southRoom = new Room();
 				}
 				if (showY <= 0)
-					thisRoom.southRoom.south = "";
+					thisRoom.southRoom.doors.put("south", "");
 				if (showX >= xLimit)
-					thisRoom.southRoom.east = "";
+					thisRoom.southRoom.doors.put("east", "");
 				else if (showX <= -xLimit)
-					thisRoom.southRoom.west = "";
+					thisRoom.southRoom.doors.put("west", "");
 			}
 			thisRoom = thisRoom.southRoom;
 			showRoom();
@@ -224,19 +225,19 @@ public class Controls extends JFrame {
 				.getOrDefault(new Point(showX - 1, showY), null);
 
 		if (north != null) {
-			thisRoom.north = north.south;
+			thisRoom.doors.put("north", north.doors.getOrDefault("south", ""));
 			thisRoom.northRoom = north;
 		}
 		if (south != null) {
-			thisRoom.south = south.north;
+			thisRoom.doors.put("south", south.doors.getOrDefault("north", ""));
 			thisRoom.southRoom = south;
 		}
 		if (west != null) {
-			thisRoom.west = west.east;
+			thisRoom.doors.put("west", west.doors.getOrDefault("east", ""));
 			thisRoom.westRoom = west;
 		}
 		if (east != null) {
-			thisRoom.east = east.west;
+			thisRoom.doors.put("east", east.doors.getOrDefault("west", ""));
 			thisRoom.eastRoom = east;
 		}
 
@@ -244,17 +245,17 @@ public class Controls extends JFrame {
 
 	private static void makeSymmetric() {
 		if (showX == 0) {
-			thisRoom.west = thisRoom.east;
+			thisRoom.doors.put("west", thisRoom.doors.get("east"));
 			return;
 		}
 		int tempX = -1 * showX;
 		Point p = new Point(tempX, showY);
 		if (rooms.containsKey(p)) {
 			Room otherRoom = rooms.get(p);
-			thisRoom.north = otherRoom.north;
-			thisRoom.west = otherRoom.east;
-			thisRoom.east = otherRoom.west;
-			thisRoom.south = otherRoom.south;
+			// clone the room over
+			for (Entry<String, String> e : thisRoom.doors.entrySet()) {
+				thisRoom.doors.put(e.getKey(), otherRoom.doors.get(e.getKey()));
+			}
 		}
 	}
 }

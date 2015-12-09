@@ -1,6 +1,7 @@
 package dungen.pojos;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 import dungen.generators.Dice;
@@ -21,8 +22,8 @@ public class Room implements Serializable {
 			&& Math.random() * 100 > 98; // 2% ODDS OF NPCS
 	private static List<String> doorTypes = ResourceLoader
 			.getTable("Door Type.txt");
-	public String north = maybeDoor(), south = maybeDoor(), east = maybeDoor(),
-			west = maybeDoor();
+	public HashMap<String, String> doors = new HashMap<String, String>();
+
 	public Room northRoom = null, southRoom = null, westRoom = null,
 			eastRoom = null;
 
@@ -34,16 +35,7 @@ public class Room implements Serializable {
 	}
 
 	public void addDoor(String direction) {
-		if (direction.equalsIgnoreCase("north")) {
-			north = Tables.getResultFromTable(Dice.d20(), doorTypes);
-		} else if (direction.equalsIgnoreCase("south")) {
-			south = Tables.getResultFromTable(Dice.d20(), doorTypes);
-		} else if (direction.equalsIgnoreCase("east")) {
-			east = Tables.getResultFromTable(Dice.d20(), doorTypes);
-		} else if (direction.equalsIgnoreCase("west")) {
-			west = Tables.getResultFromTable(Dice.d20(), doorTypes);
-		}
-
+		doors.put(direction, Tables.getResultFromTable(Dice.d20(), doorTypes));
 	}
 
 	public Room() {
@@ -65,5 +57,13 @@ public class Room implements Serializable {
 		} else
 			details = "This is the room where it all began... ";
 		neverTellMeTheOdds -= 2 * InfoPanel.dungeonSize();
+		doors.put("north", maybeDoor());
+		doors.put("west", maybeDoor());
+		doors.put("east", maybeDoor());
+		doors.put("south", maybeDoor());
+	}
+
+	public boolean hasDoor(String string) {
+		return !doors.getOrDefault(string, "").isEmpty();
 	}
 }

@@ -29,7 +29,7 @@ public class DunGenMenu extends JMenuBar {
 			Room.numRooms = 1;
 			Controls.thisRoom = new Room();
 			Controls.thisRoom.addDoor("north");
-			Controls.thisRoom.south = "";
+			Controls.thisRoom.doors.put("south", "");
 			Controls.rooms.put(new Point(0, 0), Controls.thisRoom);
 			InfoPanel.setPartyLevel(1);
 			Controls.showX = 0;
@@ -243,6 +243,7 @@ public class DunGenMenu extends JMenuBar {
 			Controls.hideRoom();
 			Controls.mapView.redraw(Controls.showSecrets);
 			Controls.mapView.moveStar(Controls.showX, Controls.showY);
+			Controls.showRoom();
 		});
 		JMenuItem playerView = new JMenuItem("Player View");
 		playerView.addActionListener(e -> {
@@ -250,6 +251,7 @@ public class DunGenMenu extends JMenuBar {
 			Controls.hideRoom();
 			Controls.mapView.redraw(Controls.showSecrets);
 			Controls.mapView.moveStar(Controls.showX, Controls.showY);
+			Controls.showRoom();
 		});
 		map.add(DMView);
 		map.add(playerView);

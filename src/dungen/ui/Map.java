@@ -56,11 +56,6 @@ public class Map extends JFrame {
 			.getImage("npcs.png");
 	public JLayeredPane contentPane = new JLayeredPane();
 	private static Dimension imagesize = new Dimension(20, 20);
-	{
-		this.setBackground(Color.BLACK);
-		star.setSize(imagesize);
-		star.setIcon(partyImage);
-	}
 
 	public void clearRoom(int x, int y) {
 		final Point p = getPosition(x, y);
@@ -161,16 +156,9 @@ public class Map extends JFrame {
 			}
 			if (!r.details.isEmpty())
 				addEventOnRoom(p, r.details, showSecret);
-
-			if (!r.north.isEmpty())
-				addHall(x, y, "north", r.north, showSecret);
-			if (!r.south.isEmpty())
-				addHall(x, y, "south", r.south, showSecret);
-			if (!r.east.isEmpty())
-				addHall(x, y, "east", r.east, showSecret);
-			if (!r.west.isEmpty())
-				addHall(x, y, "west", r.west, showSecret);
-
+			for (String direction : r.doors.keySet())
+				if (r.hasDoor(direction))
+					addHall(x, y, direction, r, showSecret);
 		}
 		contentPane.repaint();
 
@@ -194,14 +182,10 @@ public class Map extends JFrame {
 				* ((int) imagesize.getHeight() * 2));
 	}
 
-	public void addLock() {
-
-	}
-
-	public void addHall(Integer x, Integer y, String direction,
-			String doorScription, boolean showSecrets) {
+	public void addHall(Integer x, Integer y, String direction, Room r,
+			boolean showSecrets) {
 		Point p = getPosition(x, y);
-
+		String doorScription = r.doors.get(direction);
 		int modX = 0, modY = 0;
 
 		JLabel room = rooms.get(roomsLocations.indexOf(p));
@@ -261,16 +245,24 @@ public class Map extends JFrame {
 		if (doorScription.contains("lock")
 				&& (!doorScription.contains("ecret") || showSecrets)) {
 			locked.setVisible(true);
+
 		} else
 			locked.setVisible(false);
 		locked.addMouseListener(new PressListener(e -> {
-			if (e.getButton() == MouseEvent.BUTTON3)
+			if (e.getButton() == MouseEvent.BUTTON3) {
 				locked.setVisible(false);
+				r.doors.put(direction, doorScription.replaceAll("lock", "~"));
+			}
 		}));
 
 		hall.addMouseListener(new PressListener(e -> {
 			if (e.getButton() == MouseEvent.BUTTON3) {
 				locked.setVisible(true);
+				if (doorScription.contains("~"))
+					r.doors.put(direction,
+							doorScription.replaceAll("~", "lock"));
+				else
+					r.doors.put(direction, doorScription + " locked");
 			}
 		}));
 		contentPane.add(hall, contentPane.lowestLayer());
@@ -289,7 +281,9 @@ public class Map extends JFrame {
 		setBounds(271, 50, 580, 580);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
+		this.setBackground(Color.BLACK);
+		star.setSize(imagesize);
+		star.setIcon(partyImage);
 	}
 
 }

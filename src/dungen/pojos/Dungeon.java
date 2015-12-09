@@ -57,7 +57,7 @@ public class Dungeon implements Serializable {
 				fileChooser.showOpenDialog(null);
 
 			File file = fileChooser.getSelectedFile();
-			if (!file.getName().endsWith("dgn"))
+			if (!filter.accept(file))
 				file = new File(file.getAbsolutePath() + ".dgn");
 			return file;
 		} catch (Exception err) {
@@ -85,14 +85,14 @@ public class Dungeon implements Serializable {
 	public void save(ActionEvent e) {
 		try {
 			File f = getFile(true);
-			f.delete();
-			f.createNewFile();
-			FileOutputStream fileOut = new FileOutputStream(f);
-			ObjectOutputStream oos = new ObjectOutputStream(fileOut);
-			oos.writeObject(new Dungeon());
-			oos.close();
-		} catch (NullPointerException err) {
-			// don't care about this one. That means they selected nothing.
+			if (f != null) {
+				f.delete();
+				f.createNewFile();
+				FileOutputStream fileOut = new FileOutputStream(f);
+				ObjectOutputStream oos = new ObjectOutputStream(fileOut);
+				oos.writeObject(new Dungeon());
+				oos.close();
+			}
 		} catch (Exception err) {
 			err.printStackTrace();
 		}

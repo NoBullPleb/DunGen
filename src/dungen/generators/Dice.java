@@ -24,8 +24,7 @@ public class Dice {
 		int sides = Integer.parseInt(params[1].split(" ")[0].trim());
 		String items = s.substring(params.length + 1
 				+ params[1].split(" ").length);
-		for (int i = 0; i < dice; i++)
-			result += (int) Math.floor(Math.random() * sides) + 1;
+		result = roll(dice, sides);
 		return result + " " + items;
 	}
 

@@ -3,22 +3,16 @@ package dungen.generators;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 public class Dice {
 	public static int roll(int dice, int sides) {
-		int result = 0;
-		for (int i = 0; i < dice; i++)
-			try {
-				result += (Math.abs(SecureRandom.getInstanceStrong().nextInt()) % sides) + 1;
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			}
-		return result;
+		return IntStream.generate(() -> roll(sides)).limit(dice).sum();
 	}
 
 	public final static int statroll() {
 		int[] rolls = new int[4];
-		Arrays.setAll(rolls, e -> roll(6));
+		Arrays.parallelSetAll(rolls, e -> roll(6));
 		Arrays.sort(rolls);
 		return (rolls[3] + rolls[2] + rolls[1]);
 	}
@@ -35,22 +29,27 @@ public class Dice {
 	}
 
 	public static int roll(int sides) {
-		return roll(1, sides);
+		try {
+			return (Math.abs(SecureRandom.getInstanceStrong().nextInt()) % sides) + 1;
+		} catch (NoSuchAlgorithmException err) {
+			err.printStackTrace();
+			return 0;
+		}
 	}
 
 	public static int d100() {
-		return roll(1, 20);
+		return roll(100);
 	}
 
 	public static int d20() {
-		return roll(1, 20);
+		return roll(20);
 	}
 
 	public static int d6() {
-		return roll(1, 6);
+		return roll(6);
 	}
 
 	public static int d4() {
-		return roll(1, 4);
+		return roll(4);
 	}
 }

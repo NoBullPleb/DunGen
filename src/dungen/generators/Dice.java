@@ -2,26 +2,24 @@ package dungen.generators;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class Dice {
+
 	public static int roll(int dice, int sides) {
 		return IntStream.generate(() -> roll(sides)).limit(dice).sum();
 	}
 
 	public final static int statroll() {
-		int[] rolls = new int[4];
-		Arrays.parallelSetAll(rolls, e -> roll(6));
-		Arrays.sort(rolls);
-		return (rolls[3] + rolls[2] + rolls[1]);
+		return IntStream.generate(() -> roll(6)).limit(4).sorted().skip(1)
+				.sum();
 	}
 
 	public static String roll(String s) {
 		int result = 0;
 		String[] params = s.split("d");
-		int dice = Integer.parseInt(params[0].trim());
-		int sides = Integer.parseInt(params[1].split(" ")[0].trim());
+		int dice = Integer.parseInt(params[0].trim()), sides = Integer
+				.parseInt(params[1].split(" ")[0].trim());
 		String items = s.substring(params.length + 1
 				+ params[1].split(" ").length);
 		result = roll(dice, sides);

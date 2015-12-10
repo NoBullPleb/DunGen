@@ -11,7 +11,6 @@ public class Dice {
 			try {
 				result += (Math.abs(SecureRandom.getInstanceStrong().nextInt()) % sides) + 1;
 			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		return result;

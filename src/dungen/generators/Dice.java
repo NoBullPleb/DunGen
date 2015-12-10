@@ -1,18 +1,25 @@
 package dungen.generators;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Arrays;
 
 public class Dice {
 	public static int roll(int dice, int sides) {
 		int result = 0;
 		for (int i = 0; i < dice; i++)
-			result += (int) Math.floor(Math.random() * sides) + 1;
+			try {
+				result += (Math.abs(SecureRandom.getInstanceStrong().nextInt()) % sides) + 1;
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		return result;
 	}
 
 	public final static int statroll() {
 		int[] rolls = new int[4];
-		Arrays.setAll(rolls, e -> (int) (Math.random() * 6) + 1);
+		Arrays.setAll(rolls, e -> roll(6));
 		Arrays.sort(rolls);
 		return (rolls[3] + rolls[2] + rolls[1]);
 	}

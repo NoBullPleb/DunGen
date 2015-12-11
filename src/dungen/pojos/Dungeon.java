@@ -25,6 +25,7 @@ public class Dungeon implements Serializable {
 	public int showX = 0, showY = 0;
 	public int partyLevel = 1;
 	public int partySize = 4;
+	public int neverTellMeTheOdds = 90;
 	public boolean symmetric = true;
 	public ArrayList<Boolean> types = new ArrayList<Boolean>();
 
@@ -33,6 +34,7 @@ public class Dungeon implements Serializable {
 		rooms = Controls.rooms;
 		showX = Controls.showX;
 		showY = Controls.showY;
+		neverTellMeTheOdds = Room.neverTellMeTheOdds;
 		symmetric = InfoPanel.isSymmmetric();
 		partyLevel = InfoPanel.getPartyLevel();
 		partySize = InfoPanel.getPartySize();

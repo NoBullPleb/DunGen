@@ -27,6 +27,7 @@ public class DunGenMenu extends JMenuBar {
 			Controls.showSecrets = true;
 			Controls.rooms = new HashMap<>();
 			Room.numRooms = 1;
+			Room.neverTellMeTheOdds = 90;
 			Controls.thisRoom = new Room();
 			Controls.thisRoom.addDoor("north");
 			Controls.thisRoom.removeDoor("south");

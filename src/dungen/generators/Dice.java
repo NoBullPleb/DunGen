@@ -5,7 +5,6 @@ import java.security.SecureRandom;
 import java.util.stream.IntStream;
 
 public class Dice {
-
 	public static int roll(int dice, int sides) {
 		return IntStream.generate(() -> roll(sides)).limit(dice).sum();
 	}

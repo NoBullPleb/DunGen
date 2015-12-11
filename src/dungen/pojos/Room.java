@@ -17,7 +17,7 @@ public class Room implements Serializable {
 	private static final long serialVersionUID = -4916367751063974331L;
 	public static int numRooms = 1;
 	public int roomNumber = numRooms;
-	private static int neverTellMeTheOdds = 90;
+	public static int neverTellMeTheOdds = 90;
 	public boolean drawn = false;
 	public String details = "";
 	public boolean hasNPCs = InfoPanel.getSpwnNpcs()

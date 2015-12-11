@@ -266,10 +266,8 @@ public class Controls extends JFrame {
 		if (rooms.containsKey(p)) {
 			Room otherRoom = rooms.get(p);
 			// clone the room over
-			if (showY <= yLimit)
-				thisRoom.setDoor("north", otherRoom.getDoor("south"));
-			if (showY <= 0)
-				thisRoom.setDoor("south", otherRoom.getDoor("north"));
+			thisRoom.setDoor("north", otherRoom.getDoor("north"));
+			thisRoom.setDoor("south", otherRoom.getDoor("south"));
 			thisRoom.setDoor("east", otherRoom.getDoor("west"));
 			thisRoom.setDoor("west", otherRoom.getDoor("east"));
 		}

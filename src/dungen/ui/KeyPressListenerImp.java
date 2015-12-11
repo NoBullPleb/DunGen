@@ -28,6 +28,7 @@ public class KeyPressListenerImp implements KeyPressListener {
 			try {
 				Thread.sleep(10);
 			} catch (Exception err) {
+				
 			}
 			performing = false;
 		}

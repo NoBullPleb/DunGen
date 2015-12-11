@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,10 +22,10 @@ import java.awt.BorderLayout;
 public class Controls extends JFrame {
 	public static String version = "1.8.1";
 	private static final long serialVersionUID = 7985611292217902489L;
-	public transient final static JButton southButton = new JButton("Go South"),
+	private transient final static JButton southButton = new JButton("Go South"),
 			eastButton = new JButton("Go East"), westButton = new JButton(
 					"Go West"), northButton = new JButton("Go North");
-	static JScrollPane scrollPane = new JScrollPane();
+	private static JScrollPane scrollPane = new JScrollPane();
 	public static JTextArea roomDetails = new JTextArea();
 	private static JLabel lblRoomDetails = new JLabel("Room Details");
 	// used to track where rooms are. If one is already at that location, we can
@@ -62,7 +61,7 @@ public class Controls extends JFrame {
 	}
 
 	public static void showRoom() {
-		if (InfoPanel.isSymmmetric() && thisRoom != null && !thisRoom.drawn)
+		if (InfoPanel.isSymmmetric() && !thisRoom.drawn)
 			makeSymmetric();
 		fixDoors();
 		roomDetails.setText(thisRoom.details);
@@ -267,9 +266,12 @@ public class Controls extends JFrame {
 		if (rooms.containsKey(p)) {
 			Room otherRoom = rooms.get(p);
 			// clone the room over
-			for (Entry<String, String> e : thisRoom.getDoors()) {
-				thisRoom.setDoor(e.getKey(), otherRoom.getDoor(e.getKey()));
-			}
+			if (showY <= yLimit)
+				thisRoom.setDoor("north", otherRoom.getDoor("south"));
+			if (showY <= 0)
+				thisRoom.setDoor("south", otherRoom.getDoor("north"));
+			thisRoom.setDoor("east", otherRoom.getDoor("west"));
+			thisRoom.setDoor("west", otherRoom.getDoor("east"));
 		}
 	}
 }

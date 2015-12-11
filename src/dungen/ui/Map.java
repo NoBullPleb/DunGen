@@ -30,23 +30,24 @@ public class Map extends JFrame {
 	private static ImageIcon roomImage = ResourceLoader.getImage("Room.png");
 	private static ImageIcon deadlyImage = ResourceLoader
 			.getImage("Deadly.png");
-	private static ImageIcon portcullis = ResourceLoader
-			.getImage("Portcullis.png");
 	private static ImageIcon hardImage = ResourceLoader.getImage("Hard.png");
 	private static ImageIcon trapImage = ResourceLoader.getImage("Trap.png");
 	private static ImageIcon hazardImage = ResourceLoader
 			.getImage("Hazard.png");
 	private static ImageIcon trickImage = ResourceLoader.getImage("Trick.png");
-	private static ImageIcon hallImage = ResourceLoader
-			.getImage("WoodenDoor.png");
-	private static ImageIcon stoneOrSteel = ResourceLoader
-			.getImage("StoneDoor.png");
-	private static ImageIcon stoneOrSteel2 = ResourceLoader
-			.getImage("StoneDoor2.png");
-	private static ImageIcon hallImage2 = ResourceLoader
-			.getImage("WoodenDoor2.png");
-	private static ImageIcon secret = ResourceLoader.getImage("SDoor.png");
-	private static ImageIcon secret2 = ResourceLoader.getImage("SDoor2.png");
+	private static ArrayList<ImageIcon> NSdoorImages = new ArrayList<ImageIcon>();
+	private static ArrayList<ImageIcon> EWdoorImages = new ArrayList<ImageIcon>();
+	static {
+		NSdoorImages.add(ResourceLoader.getImage("WoodenDoor.png"));
+		EWdoorImages.add(ResourceLoader.getImage("WoodenDoor2.png"));
+		NSdoorImages.add(ResourceLoader.getImage("StoneDoor.png"));
+		EWdoorImages.add(ResourceLoader.getImage("StoneDoor2.png"));
+		NSdoorImages.add(ResourceLoader.getImage("SDoor.png"));
+		EWdoorImages.add(ResourceLoader.getImage("SDoor2.png"));
+		NSdoorImages.add(ResourceLoader.getImage("Portcullis.png"));
+		EWdoorImages.add(ResourceLoader.getImage("Portcullis.png"));
+	}
+
 	private static ImageIcon partyImage = ResourceLoader.getImage("Party.png");
 	private static ImageIcon lock = ResourceLoader.getImage("Lock.png");
 	private static ImageIcon lootImage = ResourceLoader.getImage("Loot.png");
@@ -182,10 +183,12 @@ public class Map extends JFrame {
 				* ((int) imagesize.getHeight() * 2));
 	}
 
-	public void addHall(Integer x, Integer y, String direction, Room r,
+	public void addHall(Integer x, Integer y, final String direction, Room r,
 			boolean showSecrets) {
 		Point p = getPosition(x, y);
 		String doorScription = r.getDoor(direction);
+		final boolean isNorthSouth = direction.equalsIgnoreCase("north")
+				|| direction.equalsIgnoreCase("south");
 		int modX = 0, modY = 0;
 
 		JLabel room = rooms.get(roomsLocations.indexOf(p));
@@ -210,31 +213,29 @@ public class Map extends JFrame {
 		JLabel hall = new JLabel();
 		hall.setSize(imagesize);
 
-		if (direction.equalsIgnoreCase("north")
-				|| direction.equalsIgnoreCase("south")) {
+		if (isNorthSouth) {
 			if (doorScription.contains("ecret")) {
 				if (showSecrets)
-					hall.setIcon(secret);
+					hall.setIcon(NSdoorImages.get(2));
 			} else if (doorScription.contains("cullis"))
-				hall.setIcon(portcullis);
+				hall.setIcon(NSdoorImages.get(3));
 			else if (doorScription.contains("Stone")
 					|| doorScription.contains("Iron"))
-				hall.setIcon(stoneOrSteel);
+				hall.setIcon(NSdoorImages.get(1));
 			else
-				hall.setIcon(hallImage);
+				hall.setIcon(NSdoorImages.get(0));
 		} else {
 			if (doorScription.contains("ecret")) {
 				if (showSecrets)
-					hall.setIcon(secret2);
+					hall.setIcon(EWdoorImages.get(2));
 			} else if (doorScription.contains("cullis"))
-				hall.setIcon(portcullis);
+				hall.setIcon(EWdoorImages.get(3));
 			else if (doorScription.contains("Stone")
 					|| doorScription.contains("Iron"))
-				hall.setIcon(stoneOrSteel2);
+				hall.setIcon(EWdoorImages.get(1));
 			else
-				hall.setIcon(hallImage2);
+				hall.setIcon(EWdoorImages.get(0));
 		}
-
 		hall.setLocation(modX, modY);
 		hall.setVisible(true);
 
@@ -245,13 +246,38 @@ public class Map extends JFrame {
 		if (doorScription.contains("lock")
 				&& (!doorScription.contains("ecret") || showSecrets)) {
 			locked.setVisible(true);
-
 		} else
 			locked.setVisible(false);
 		locked.addMouseListener((PressListener) e -> {
 			if (e.getButton() == MouseEvent.BUTTON3) {
 				locked.setVisible(false);
 				r.setDoor(direction, doorScription.replaceAll("lock", "~"));
+			} else if (e.getButton() == MouseEvent.BUTTON1) {
+				int i = 0;
+				if (isNorthSouth) {
+					i = NSdoorImages.indexOf(hall.getIcon()) + 1;
+					i %= NSdoorImages.size();
+					hall.setIcon(NSdoorImages.get(i));
+				} else {
+					i = EWdoorImages.indexOf(hall.getIcon()) + 1;
+					i %= EWdoorImages.size();
+					hall.setIcon(EWdoorImages.get(i));
+				}
+				StringBuilder description = new StringBuilder();
+				if (i == 0) {
+					description.append("wooden");
+				} else if (i == 1) {
+					description.append("stone or iron");
+				} else if (i == 2) {
+					description.append("secret");
+				} else if (i == 3) {
+					description.append("portcullis");
+				}
+				if (doorScription.contains("lock")
+						&& (!doorScription.contains("ecret") || showSecrets)) {
+					description.append("lock");
+				}
+				r.setDoor(direction, description.toString());
 			}
 		});
 
@@ -262,6 +288,32 @@ public class Map extends JFrame {
 					r.setDoor(direction, doorScription.replaceAll("~", "lock"));
 				else
 					r.setDoor(direction, doorScription + " locked");
+			} else if (e.getButton() == MouseEvent.BUTTON1) {
+				int i = 0;
+				if (isNorthSouth) {
+					i = NSdoorImages.indexOf(hall.getIcon()) + 1;
+					i %= NSdoorImages.size();
+					hall.setIcon(NSdoorImages.get(i));
+				} else {
+					i = EWdoorImages.indexOf(hall.getIcon()) + 1;
+					i %= EWdoorImages.size();
+					hall.setIcon(EWdoorImages.get(i));
+				}
+				StringBuilder description = new StringBuilder();
+				if (i == 0) {
+					description.append("wooden");
+				} else if (i == 1) {
+					description.append("stone or iron");
+				} else if (i == 2) {
+					description.append("secret");
+				} else if (i == 3) {
+					description.append("portcullis");
+				}
+				if (doorScription.contains("lock")
+						&& (!doorScription.contains("ecret") || showSecrets)) {
+					description.append("lock");
+				}
+				r.setDoor(direction, description.toString());
 			}
 		});
 		contentPane.add(hall, contentPane.lowestLayer());

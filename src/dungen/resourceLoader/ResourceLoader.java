@@ -3,6 +3,8 @@ package dungen.resourceLoader;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +21,24 @@ public class ResourceLoader {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	public static void main(String[] args) {
+		getMonsters().forEach(System.out::println);
+	}
+
+	public static List<String> getMonsters() {
+		try {
+			List<String> mobs = Files
+					.walk(Paths.get(cl.getResource("monsters").toURI()))
+					.skip(1)
+					.map(e -> e.getFileName().toString().replace(".txt", ""))
+					.collect(Collectors.toList());
+			return mobs;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<String>();
 		}
 	}
 

@@ -318,9 +318,7 @@ public class Map extends JFrame {
 		});
 		contentPane.add(hall, contentPane.lowestLayer());
 		contentPane.add(locked, contentPane.highestLayer());
-
 		halls.add(locked);
-
 		halls.add(hall);
 		contentPane.repaint();
 	}
@@ -329,13 +327,12 @@ public class Map extends JFrame {
 		setTitle("Dungeon Map");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(271, 50, 580, 580);
+		setBounds(290, 50, 580, 580);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		this.setBackground(Color.BLACK);
 		star.setSize(imagesize);
 		star.setIcon(partyImage);
-
 	}
 
 }

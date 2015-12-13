@@ -257,6 +257,10 @@ public class DunGenMenu extends JMenuBar {
 		map.add(DMView);
 		map.add(playerView);
 		this.add(map);
-
+		JMenu tools = new JMenu("Tools");
+		JMenuItem monPop = new JMenuItem("Monster Stats");
+		monPop.addActionListener(e -> new MonsterPop().setVisible(true));
+		tools.add(monPop);
+		this.add(tools);
 	}
 }

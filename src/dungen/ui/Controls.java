@@ -96,7 +96,7 @@ public class Controls extends JFrame {
 	public Controls() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("DunGen v" + version);
-		setBounds(0, 50, 271, 580);
+		setBounds(0, 50, 290, 580);
 		thisRoom.addDoor("north");
 		thisRoom.removeDoor("south");
 		thisRoom.details = "This is the room where it all began... ";

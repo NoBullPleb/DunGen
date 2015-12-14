@@ -20,8 +20,7 @@ public class Room implements Serializable {
 	public static int neverTellMeTheOdds = 90;
 	public boolean drawn = false;
 	public String details = "";
-	public boolean hasNPCs = InfoPanel.getSpwnNpcs()
-			&& Math.random() * 100 > 98; // 2% ODDS OF NPCS
+	public boolean hasNPCs = InfoPanel.getSpwnNpcs() && Dice.d100() > 98;
 	private static List<String> doorTypes = ResourceLoader
 			.getTable("Door Type.txt");
 	private HashMap<String, String> doors = new HashMap<String, String>();
@@ -30,7 +29,7 @@ public class Room implements Serializable {
 			eastRoom = null;
 
 	private String maybeDoor() {
-		if ((Math.random() * 100) > 100 - neverTellMeTheOdds)
+		if (Dice.d100() > 100 - neverTellMeTheOdds)
 			return Tables.getResultFromTable(Dice.d20(), doorTypes);
 		else
 			return "";

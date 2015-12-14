@@ -23,9 +23,9 @@ public class NPC implements Serializable {
 	}
 	protected int[][] resources = new int[20][10];
 
-	protected int lvl = Math
-			.max(InfoPanel.getPartySize()
-					+ ((int) Math.floor(Math.random() * 5) - 2), 1);
+	protected int lvl = Math.max(
+			InfoPanel.getPartyLevel()
+					+ (Dice.roll(5) - 3), 1);
 	public int Int = Dice.statroll(), Wis = Dice.statroll(), Cha = Dice
 			.statroll(), Dex = Dice.statroll(), Str = Dice.statroll(),
 			Con = Dice.statroll();

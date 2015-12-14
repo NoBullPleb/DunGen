@@ -135,8 +135,9 @@ public class Tables {
 		return getResultFromTable(Dice.d20(), alignments);
 	}
 
+	// gets a random result with even odds distribution.
 	private static String getResultFromTable(List<String> table) {
-		return table.get((int) Math.floor(Math.random() * table.size()));
+		return table.get(Dice.roll(table.size()) - 1);
 	}
 
 	public static String getIdeals(String alignment) {
@@ -160,7 +161,6 @@ public class Tables {
 			ideals.append(getResultFromTable(Dice.d6(), neutral2Ideal));
 
 		return ideals.toString();
-
 	}
 
 	private final static List<String> chaoticIdeal = ResourceLoader

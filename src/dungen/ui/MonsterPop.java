@@ -52,11 +52,12 @@ public class MonsterPop extends JFrame {
 		textPane.setWrapStyleWord(true);
 		textPane.setEditable(false);
 		sp.setViewportView(textPane);
-		comboBox.addActionListener(e -> {
+		comboBox.addItemListener(e -> {
 			String x = comboBox.getSelectedItem().toString();
 			if (!x.trim().isEmpty())
 				textPane.setText(ResourceLoader.getMonster(x));
 		});
+		AutoCompletion.enable(comboBox);
 		splitPane.setRightComponent(comboBox);
 		comboBox.setEditable(true);
 		ResourceLoader.getMonsters()//

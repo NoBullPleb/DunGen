@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import dungen.pojos.Hoard;
+import dungen.pojos.Monster;
 import dungen.pojos.Treasure;
 import dungen.resourceLoader.ResourceLoader;
 import dungen.ui.InfoPanel;
@@ -306,7 +307,7 @@ public class Tables {
 	}
 
 	public static String getEncounter(String[][] table) {
-		List<String[]> mobs = new ArrayList<>();
+		List<Monster> mobs = new ArrayList<>();
 		StringBuilder encounter = new StringBuilder("");
 		int attempts = 0;
 		int partyLevelIndex = InfoPanel.getPartyLevel() - 1;
@@ -325,14 +326,15 @@ public class Tables {
 			}
 			encounter.append("\nPossible Monsters:");
 			mobs = Arrays.stream(monsters).parallel().unordered()
+					.map(e -> new Monster(e))
 					// grab only the appropriate CR
-					.filter(e -> e[0].equals(CRs[result]))
+					.filter(e -> e.CR.equals(CRs[result]))
 					// and only those matching the type
-					.filter(e -> InfoPanel.getTruth(indexes.get(e[4])))
+					.filter(e -> InfoPanel.getTruth(indexes.get(e.type)))
 					.collect(Collectors.toList());
-			for (int i = 0; (i < 10 && i < mobs.size()); i++)
-				encounter.append("\n" + mobs.get(i)[1] + " XP: "
-						+ mobs.get(i)[2] + " Book: " + mobs.get(i)[6]);
+			for (Monster m : mobs)
+				encounter.append("\n" + m.name + " XP: " + m.XPvalue
+						+ " Book: " + m.source);
 			attempts++;
 		}
 		return encounter.toString();

@@ -113,6 +113,18 @@ public class DunGenMenu extends JMenuBar {
 				() -> Hoard.getHoard()));
 
 		JMenu items = new JMenu("Items");
+		JMenu scrolls = new JMenu("Scrolls");
+		JMenuItem[] levels = new JMenuItem[10];
+		int i = 0;
+		while (i < levels.length) {
+			final int x = i;
+			levels[x] = new JMenuItem("Level " + x);
+			levels[x].addActionListener(e -> new DunGenPop("Scroll Level " + x,
+					() -> Hoard.generateScroll(x)));
+			scrolls.add(levels[x]);
+			i++;
+		}
+
 		JMenuItem anyItem = new JMenuItem("Any Magic Item");
 		anyItem.addActionListener(e -> new DunGenPop("Item Generated",
 				() -> Hoard.getMagicItem("")));
@@ -142,6 +154,7 @@ public class DunGenMenu extends JMenuBar {
 				"Common Item Generated", () -> Hoard.getMagicItem("Common")));
 
 		items.add(anyItem);
+		items.add(scrolls);
 		items.add(sentientItem);
 		items.add(legendaryItem);
 		items.add(veryRareItem);

@@ -78,7 +78,11 @@ public class Hoard {
 				.findAny().orElse(item);
 	}
 
-	private static String generateScroll(String item) {
+	public static String generateScroll(int level) {
+		return "Scroll (" + Tables.getSpell(level)+")";
+	}
+
+	public static String generateScroll(String item) {
 		if (item.contains("cantrip")) {
 			item = item.replace("cantrip", Tables.getSpell(0));
 		} else if (item.contains("1st level")) {

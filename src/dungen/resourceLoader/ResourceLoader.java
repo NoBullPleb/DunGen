@@ -33,10 +33,7 @@ public class ResourceLoader {
 					.forEachOrdered(e -> sb.append(e + "\n"));
 			return sb.toString();
 		} catch (Exception e) {
-			System.out.println("Failed to find stats for: " + path);
-			e.printStackTrace();
-			// represents empty file if there was an error loading.
-			return "Error loading monster: " + path + "\n";
+			return path + " not found in database. Sorry!\n";
 		}
 	}
 

@@ -79,12 +79,13 @@ public class Controls extends JFrame {
 
 	public static void load(ActionEvent e) {
 		Dungeon d = Dungeon.load();
-		hideRoom();
+
 		InfoPanel.setPartyLevel(d.partyLevel);
-		Controls.showX = d.showX;
-		Controls.showY = d.showY;
-		Controls.rooms = d.rooms;
-		Controls.mapView.redraw(true);
+		showX = d.showX;
+		showY = d.showY;
+		rooms = d.rooms;
+		thisRoom = d.rooms.get(new Point(showX, showY));
+		mapView.redraw(true);
 		InfoPanel.setPartySize(d.partySize);
 		InfoPanel.setSymmetric(d.symmetric);
 		for (int i = 0; i < d.types.size(); i++) {

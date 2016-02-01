@@ -41,7 +41,7 @@
 81,Gloves of swimming and climbing
 82,Gloves of thievery
 83,Headband of intellect
-84,Helm oftelepathy
+84,Helm of telepathy
 85,Instrument of the bards (Doss lute)
 86,Instrument of the bards (Fochlucan bandore)
 87,Instrument of the bards (Mac-Fuimidh cittern)

@@ -37,7 +37,6 @@ public class DunGenMenu extends JMenuBar {
 			Controls.showY = 0;
 			Controls.mapView.redraw(true);
 			InfoPanel.setPartySize(4);
-			InfoPanel.setSymmetric(true);
 			InfoPanel.setAllTypesFalse();
 			Controls.showRoom();
 		});

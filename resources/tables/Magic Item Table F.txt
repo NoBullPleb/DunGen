@@ -15,7 +15,7 @@
 45,Pearl of power
 47,Rod of the pact keeper +1
 49,Slippers of spider climbing
-51, Staff of the adder
+51,Staff of the adder
 53,Staff of the python
 55,Sword of vengeance
 57,Trident of fish command
@@ -52,9 +52,9 @@
 92,Pipes of the sewers
 93,Ring of jumping
 94,Ring of mind shielding 
-95, Ring of warmth
-96,Ring ofwater walking
-97, Quiver of Ehlonna
+95,Ring of warmth
+96,Ring of water walking
+97,Quiver of Ehlonna
 98,Stone of good luck
 99,Wind fan
 100,Winged boots

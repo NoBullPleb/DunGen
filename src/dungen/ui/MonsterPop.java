@@ -2,8 +2,6 @@ package dungen.ui;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -66,13 +64,5 @@ public class MonsterPop extends JFrame {
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		contentPane.add(sp, BorderLayout.CENTER);
 		this.setTitle("Monster Stat Lookup!");
-	}
-}
-
-interface typeListener extends KeyListener {
-	default public void keyTyped(KeyEvent e) {
-	}
-
-	default @Override public void keyReleased(KeyEvent e) {
 	}
 }

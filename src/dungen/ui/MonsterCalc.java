@@ -50,10 +50,13 @@ public class MonsterCalc extends JFrame {
 	private void updateFields() {
 		int in1 = CRs[0].getSelectedIndex(), in2 = CRs[1].getSelectedIndex();
 		for (int i = 1; i < numStats; i++) {
-			Integer stat = Integer.parseInt(statsB[i].getText());
-			Double maxCurrent = chart[in1][i], maxFuture = chart[in2][i];
-			stat = (int) Math.round((stat / maxCurrent) * maxFuture);
-			statsA[i].setText(stat.toString());
+			try {
+				Integer stat = Integer.parseInt(statsB[i].getText());
+				Double maxCurrent = chart[in1][i], maxFuture = chart[in2][i];
+				stat = (int) Math.round((stat / maxCurrent) * maxFuture);
+				statsA[i].setText(stat.toString());
+			} catch (Exception e) {
+			}
 		}
 	}
 

@@ -101,7 +101,7 @@ public class MonsterCalc extends JFrame {
 
 	private void guessCR() {
 		Double cr = 0d;
-		int devBy = 0;
+		int devBy = numStats - 1;
 		System.out.println();
 		for (int i = 1; i < numStats; i++) {
 			Integer stat = Integer.parseInt(statsB[i].getText());
@@ -114,13 +114,13 @@ public class MonsterCalc extends JFrame {
 			for (; x < chart.length; x++) {
 				Double maxVale = chart[x][i];
 				if (maxVale >= stat && (!foundMax || maxVale.equals(previousMax))) {
-
 					thiscr = chart[x][0];
 					previousMax = maxVale;
-					devBy++;
 					foundMax = true;
 				}
 			}
+			if (!foundMax)
+				thiscr = 30.0;
 			System.out.println(" CR: " + thiscr);
 			cr += thiscr;
 		}

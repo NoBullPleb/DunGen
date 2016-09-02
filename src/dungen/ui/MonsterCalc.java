@@ -2,6 +2,7 @@ package dungen.ui;
 
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -9,6 +10,7 @@ import javax.swing.JPanel;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 import javax.swing.ScrollPaneConstants;
 
 import dungen.resourceLoader.ResourceLoader;
@@ -28,6 +30,13 @@ public class MonsterCalc extends JFrame {
 	private static JTextField[] statsA = new JTextField[numStats];
 	private static List<String> crChart = ResourceLoader.getTable("cr chart.txt");
 	private static Double[][] chart = new Double[34][numStats];
+
+	public static void main(String[] args) {
+		MonsterCalc mc = new MonsterCalc();
+		mc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mc.setVisible(true);
+
+	}
 
 	static {
 		for (int x = 0; x < 34; x++) {
@@ -50,7 +59,7 @@ public class MonsterCalc extends JFrame {
 
 	public MonsterCalc() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 200, 210);
+		setBounds(100, 100, 200, 230);
 		contentPane = new JPanel();
 		contentPane.setLayout(null);
 		for (int i = 0; i < 2; i++) {
@@ -58,6 +67,7 @@ public class MonsterCalc extends JFrame {
 			CRs[i].setListData(c);
 			CRs[i].setSelectedIndex(0);
 			CRs[i].setVisibleRowCount(1);
+			CRs[i].setAutoscrolls(true);
 			sp[i] = new JScrollPane(CRs[i]);
 			sp[i].setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			sp[i].setBounds(40 + (80 * i), 5, 60, 20);
@@ -81,8 +91,50 @@ public class MonsterCalc extends JFrame {
 				contentPane.add(statsA[i]);
 			}
 		}
-
+		JButton guess = new JButton("Guess the CR on the left");
+		guess.setBounds(10, 185, 170, 15);
+		guess.addActionListener(e -> guessCR());
+		contentPane.add(guess);
 		this.setTitle("Adjust monster's CR");
 		setContentPane(contentPane);
+	}
+
+	private void guessCR() {
+		Double cr = 0d;
+		int devBy = 0;
+		System.out.println();
+		for (int i = 1; i < numStats; i++) {
+			Integer stat = Integer.parseInt(statsB[i].getText());
+			System.out.print(labels[i] + "=" + stat);
+			int x = 0;
+			// find the minCR
+			Double previousMax = 0d;
+			boolean foundMax = false;
+			Double thiscr = 0d;
+			for (; x < chart.length; x++) {
+				Double maxVale = chart[x][i];
+				if (maxVale >= stat && (!foundMax || maxVale.equals(previousMax))) {
+
+					thiscr = chart[x][0];
+					previousMax = maxVale;
+					devBy++;
+					foundMax = true;
+				}
+			}
+			System.out.println(" CR: " + thiscr);
+			cr += thiscr;
+		}
+		cr /= devBy;
+		System.out.println("REAL CR: " + cr);
+		ListModel<Double> list = CRs[0].getModel();
+		for (int i = 0; i < list.getSize(); i++) {
+			if ((cr < 1 && list.getElementAt(i) >= cr) || (Math.round(cr) == list.getElementAt(i))) {
+				CRs[0].setSelectedIndex(i);
+				int height = CRs[0].getPreferredScrollableViewportSize().height * i;
+				sp[0].getVerticalScrollBar().setValue(height);
+				CRs[0].repaint();
+				break;
+			}
+		}
 	}
 }

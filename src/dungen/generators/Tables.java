@@ -359,9 +359,10 @@ public class Tables {
 
 	public static String getDescription() {
 		String result = "", DunType = InfoPanel.getRoomType();
-		if (DunType!=null)
+		if (DunType!=null) {
 			result = getResultFromTable(roomTypes.get(DunType));
-
+		} else 
+			return "";
 		return "**" + result.substring(result.indexOf(",") + 1) + "**\n";
 	}
 

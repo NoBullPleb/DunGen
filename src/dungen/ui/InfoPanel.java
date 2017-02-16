@@ -30,7 +30,8 @@ public class InfoPanel extends JFrame {
 	private static transient JList<Integer> sizeList = new JList<>();
 	public static int maxPartySize = 6;
 	public static List<String> RoomTypes = Arrays.asList("Death Trap", "Lair", 
-			"Maze", "Mine", "Planar Gate", "Stronghold", "Temple or Shrine");
+			"Maze", "Mine", "Planar Gate", "Stronghold", "Temple or Shrine",
+			"Tomb", "Treasure Vault", "General Dungeon");
 	static {
 		for (int i = 1; i < 21; i++)
 			levels.addElement(i);
@@ -150,7 +151,7 @@ public class InfoPanel extends JFrame {
 		JScrollPane sp4 = new JScrollPane(dunType);
 		sp4.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp4.getVerticalScrollBar().setValue(0);
-		sp4.setBounds(120, 415, 90, 20);
+		sp4.setBounds(150, 415, 130, 100);
 		contentPane.add(sp4);
 
 		JLabel lblInclude = new JLabel("Include: ");
@@ -196,15 +197,15 @@ public class InfoPanel extends JFrame {
 		contentPane.add(spwnNPCs);
 
 		spwnTraps.setSelected(true);
-		spwnTraps.setBounds(6, 437, 100, 20);
+		spwnTraps.setBounds(6, 437, 120, 20);
 		contentPane.add(spwnTraps);
 
 		spwnEncounters.setSelected(true);
-		spwnEncounters.setBounds(6, 460, 171, 20);
+		spwnEncounters.setBounds(6, 460, 151, 20);
 		contentPane.add(spwnEncounters);
 
 		spwnHazards.setSelected(true);
-		spwnHazards.setBounds(6, 483, 100, 20);
+		spwnHazards.setBounds(6, 483, 150, 20);
 		contentPane.add(spwnHazards);
 	}
 }

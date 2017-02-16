@@ -1,6 +1,7 @@
 package dungen.ui;
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
@@ -28,6 +29,8 @@ public class InfoPanel extends JFrame {
 	private static transient JScrollPane scrollPane = null;
 	private static transient JList<Integer> sizeList = new JList<>();
 	public static int maxPartySize = 6;
+	public static List<String> RoomTypes = Arrays.asList("Death Trap", "Lair", 
+			"Maze", "Mine", "Planar Gate", "Stronghold", "Temple or Shrine");
 	static {
 		for (int i = 1; i < 21; i++)
 			levels.addElement(i);
@@ -37,7 +40,7 @@ public class InfoPanel extends JFrame {
 		dunSizes.addElement("Normal");
 		dunSizes.addElement("Smaller");
 
-		for (String s : Arrays.asList("Death Trap", "Lair"))
+		for (String s : RoomTypes)
 			roomTypes.addElement(s);
 
 	}
@@ -139,7 +142,7 @@ public class InfoPanel extends JFrame {
 			types[i].setSelected(false);
 			contentPane.add(types[i]);
 		}
-		
+
 		dunType.setVisibleRowCount(1);
 		dunType.setModel(roomTypes);
 		dunType.setSelectedIndex(0);
@@ -149,7 +152,7 @@ public class InfoPanel extends JFrame {
 		sp4.getVerticalScrollBar().setValue(0);
 		sp4.setBounds(120, 415, 90, 20);
 		contentPane.add(sp4);
-		
+
 		JLabel lblInclude = new JLabel("Include: ");
 		lblInclude.setBounds(6, 25, 61, 16);
 		contentPane.add(lblInclude);

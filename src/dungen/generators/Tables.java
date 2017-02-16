@@ -341,13 +341,13 @@ public class Tables {
 		return getResultFromTable(Dice.d20(), wildernessChase);
 	}
 
-	private final static List<String> deathTrap = ResourceLoader.getTable("DeathTrap.txt");
-	private final static List<String> lair = ResourceLoader.getTable("Lair.txt");
-
-	public static String getDeathTrap() {
-		return getResultFromTable(Dice.d20(), deathTrap);
+	private final static HashMap<String, List<String>> roomTypes = new HashMap<>();
+	static {
+		for (String s : InfoPanel.RoomTypes){
+			roomTypes.put(s, ResourceLoader.getTable(s+".txt"));
+		}
 	}
-
+	
 	public static String getMadness(int i) {
 		if (i == 1)
 			return "For " + Dice.roll(10) * 10 + " hours:\n" + getResultFromTable(Dice.d100(), longTerm);
@@ -359,15 +359,8 @@ public class Tables {
 
 	public static String getDescription() {
 		String result = "", DunType = InfoPanel.getRoomType();
-		if (DunType != null)
-			switch (DunType) {
-			case "Death Trap":
-				result = getResultFromTable(deathTrap);
-				break;
-			case "Lair":
-				result = getResultFromTable(lair);
-				break;
-			}
+		if (DunType!=null)
+			result = getResultFromTable(roomTypes.get(DunType));
 
 		return "**" + result.substring(result.indexOf(",") + 1) + "**\n";
 	}

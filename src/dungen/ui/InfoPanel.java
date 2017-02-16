@@ -37,7 +37,7 @@ public class InfoPanel extends JFrame {
 		dunSizes.addElement("Normal");
 		dunSizes.addElement("Smaller");
 
-		for (String s : Arrays.asList("Death Trap"))
+		for (String s : Arrays.asList("Death Trap", "Lair"))
 			roomTypes.addElement(s);
 
 	}
@@ -49,10 +49,9 @@ public class InfoPanel extends JFrame {
 	static JCheckBox spwnTraps = new JCheckBox("Spawn Traps?");
 	static JCheckBox spwnEncounters = new JCheckBox("Spawn Encounters?");
 	static JCheckBox spwnHazards = new JCheckBox("Spawn Hazards?");
-	static JCheckBox isDeathTrap = new JCheckBox("Is Death Trap?");
 
-	public static boolean isDeathTrap() {
-		return isDeathTrap.isSelected();
+	public static String getRoomType() {
+		return dunType.getSelectedValue();
 	}
 
 	public static boolean getSpwnNpcs() {

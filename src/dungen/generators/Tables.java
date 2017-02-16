@@ -179,7 +179,7 @@ public class Tables {
 	public static String getEvents() {
 		String event = "";
 		int result = Dice.roll(challenge); // roll for type of encounter
-		
+
 		if (result > 95) {
 			if (InfoPanel.getSpwnEncounters())
 				event = "Deadly Encounter: " + getEncounter(deadlyTable[InfoPanel.getPartySize()]);
@@ -342,6 +342,7 @@ public class Tables {
 	}
 
 	private final static List<String> deathTrap = ResourceLoader.getTable("DeathTrap.txt");
+	private final static List<String> lair = ResourceLoader.getTable("Lair.txt");
 
 	public static String getDeathTrap() {
 		return getResultFromTable(Dice.d20(), deathTrap);
@@ -357,11 +358,18 @@ public class Tables {
 	}
 
 	public static String getDescription() {
-		String result = "";
-		if (InfoPanel.isDeathTrap())
-			result= getResultFromTable(deathTrap);
+		String result = "", DunType = InfoPanel.getRoomType();
+		if (DunType != null)
+			switch (DunType) {
+			case "Death Trap":
+				result = getResultFromTable(deathTrap);
+				break;
+			case "Lair":
+				result = getResultFromTable(lair);
+				break;
+			}
 
-		return "**"+result.substring(result.indexOf(",")+1)+"**";
+		return "**" + result.substring(result.indexOf(",") + 1) + "**\n";
 	}
 
 }

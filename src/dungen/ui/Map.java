@@ -28,12 +28,10 @@ public class Map extends JFrame {
 
 	public JLabel star = new JLabel();
 	private static ImageIcon roomImage = ResourceLoader.getImage("Room.png");
-	private static ImageIcon deadlyImage = ResourceLoader
-			.getImage("Deadly.png");
+	private static ImageIcon deadlyImage = ResourceLoader.getImage("Deadly.png");
 	private static ImageIcon hardImage = ResourceLoader.getImage("Hard.png");
 	private static ImageIcon trapImage = ResourceLoader.getImage("Trap.png");
-	private static ImageIcon hazardImage = ResourceLoader
-			.getImage("Hazard.png");
+	private static ImageIcon hazardImage = ResourceLoader.getImage("Hazard.png");
 	private static ImageIcon trickImage = ResourceLoader.getImage("Trick.png");
 	private static ArrayList<ImageIcon> NSdoorImages = new ArrayList<ImageIcon>();
 	private static ArrayList<ImageIcon> EWdoorImages = new ArrayList<ImageIcon>();
@@ -51,20 +49,16 @@ public class Map extends JFrame {
 	private static ImageIcon partyImage = ResourceLoader.getImage("Party.png");
 	private static ImageIcon lock = ResourceLoader.getImage("Lock.png");
 	private static ImageIcon lootImage = ResourceLoader.getImage("Loot.png");
-	private static ImageIcon encounterImage = ResourceLoader
-			.getImage("Encounter.png");
-	private static ImageIcon otherPartyImage = ResourceLoader
-			.getImage("npcs.png");
+	private static ImageIcon encounterImage = ResourceLoader.getImage("Encounter.png");
+	private static ImageIcon otherPartyImage = ResourceLoader.getImage("npcs.png");
 	public JLayeredPane contentPane = new JLayeredPane();
 	private static Dimension imagesize = new Dimension(20, 20);
 
 	public void clearRoom(int x, int y) {
 		final Point p = getPosition(x, y);
-		List<JLabel> removers = Arrays.stream(contentPane.getComponents())
-				.parallel().filter(e -> e.getLocation().equals(p))
-				.filter(e -> e.getClass().equals(JLabel.class))
-				.map(e -> (JLabel) e).filter(e -> !rooms.contains(e))
-				.filter(e -> !e.getIcon().equals(partyImage))
+		List<JLabel> removers = Arrays.stream(contentPane.getComponents()).parallel()
+				.filter(e -> e.getLocation().equals(p)).filter(e -> e.getClass().equals(JLabel.class))
+				.map(e -> (JLabel) e).filter(e -> !rooms.contains(e)).filter(e -> !e.getIcon().equals(partyImage))
 				.collect(Collectors.toList());
 		removers.forEach(getContentPane()::remove);
 		// redraws the party icon
@@ -76,8 +70,7 @@ public class Map extends JFrame {
 		roomsLocations = new ArrayList<>();
 		rooms = new ArrayList<>();
 		halls = new ArrayList<>();
-		Controls.rooms.forEach((p, r) -> addRoom((int) p.getX(),
-				(int) p.getY(), r, showSecrets));
+		Controls.rooms.forEach((p, r) -> addRoom((int) p.getX(), (int) p.getY(), r, showSecrets));
 		contentPane.add(star);
 		contentPane.revalidate();
 		contentPane.repaint();
@@ -88,13 +81,6 @@ public class Map extends JFrame {
 		encounter = encounter.toLowerCase();
 		if (encounter.contains("npc"))
 			encounterLbl.setIcon(otherPartyImage);
-		else if (encounter.contains("trap"))
-			encounterLbl.setIcon(trapImage);
-		else if (encounter.contains("hazard"))
-			encounterLbl.setIcon(hazardImage);
-		else if (encounter.contains("trick"))
-			encounterLbl.setIcon(trickImage);
-
 		else if (encounter.contains("ncounter") || encounter.contains("boss")) {
 			if (encounter.contains("deadly") || encounter.contains("boss")) {
 				encounterLbl.setIcon(deadlyImage);
@@ -103,8 +89,14 @@ public class Map extends JFrame {
 			} else {
 				encounterLbl.setIcon(encounterImage);
 			}
-		} else if (encounter.contains("hoard") || encounter.contains("item")
-				|| encounter.contains("treasure")) {
+		} else if (encounter.contains("trap"))
+			encounterLbl.setIcon(trapImage);
+		else if (encounter.contains("hazard"))
+			encounterLbl.setIcon(hazardImage);
+		else if (encounter.contains("trick"))
+			encounterLbl.setIcon(trickImage);
+
+		else if (encounter.contains("hoard") || encounter.contains("item") || encounter.contains("treasure")) {
 			encounterLbl.setIcon(lootImage);
 		} else {
 			return;
@@ -112,12 +104,10 @@ public class Map extends JFrame {
 		encounterLbl.setSize(imagesize);
 		encounterLbl.setLocation(p);
 		encounterLbl.setVisible(showSecrets);
-		JLabel room = rooms.parallelStream()
-				.filter(e -> e.getLocation().equals(p)).findFirst().get();
+		JLabel room = rooms.parallelStream().filter(e -> e.getLocation().equals(p)).findFirst().get();
 		MouseListener[] parentListeners = room.getMouseListeners();
 		if (parentListeners.length > 0)
-			encounterLbl
-					.addMouseListener(parentListeners[parentListeners.length - 1]);
+			encounterLbl.addMouseListener(parentListeners[parentListeners.length - 1]);
 		contentPane.add(encounterLbl, contentPane.highestLayer());
 		contentPane.repaint();
 	}
@@ -178,17 +168,14 @@ public class Map extends JFrame {
 	}
 
 	public Point getPosition(int x, int y) {
-		return new Point((this.getWidth() / 2) + x
-				* ((int) imagesize.getWidth() * 2), (this.getHeight() - 45) - y
-				* ((int) imagesize.getHeight() * 2));
+		return new Point((this.getWidth() / 2) + x * ((int) imagesize.getWidth() * 2),
+				(this.getHeight() - 45) - y * ((int) imagesize.getHeight() * 2));
 	}
 
-	public void addHall(Integer x, Integer y, final String direction, Room r,
-			boolean showSecrets) {
+	public void addHall(Integer x, Integer y, final String direction, Room r, boolean showSecrets) {
 		Point p = getPosition(x, y);
 		String doorScription = r.getDoor(direction);
-		final boolean isNorthSouth = direction.equalsIgnoreCase("north")
-				|| direction.equalsIgnoreCase("south");
+		final boolean isNorthSouth = direction.equalsIgnoreCase("north") || direction.equalsIgnoreCase("south");
 		int modX = 0, modY = 0;
 
 		JLabel room = rooms.get(roomsLocations.indexOf(p));
@@ -207,8 +194,7 @@ public class Map extends JFrame {
 		}
 
 		final int testX = modX, testY = modY;
-		if (halls.stream().map(e -> e.getLocation())
-				.anyMatch(e -> e.getX() == testX && e.getY() == testY))
+		if (halls.stream().map(e -> e.getLocation()).anyMatch(e -> e.getX() == testX && e.getY() == testY))
 			return;
 		JLabel hall = new JLabel();
 		hall.setSize(imagesize);
@@ -219,8 +205,7 @@ public class Map extends JFrame {
 					hall.setIcon(NSdoorImages.get(2));
 			} else if (doorScription.contains("cullis"))
 				hall.setIcon(NSdoorImages.get(3));
-			else if (doorScription.contains("Stone")
-					|| doorScription.contains("Iron"))
+			else if (doorScription.contains("Stone") || doorScription.contains("Iron"))
 				hall.setIcon(NSdoorImages.get(1));
 			else
 				hall.setIcon(NSdoorImages.get(0));
@@ -230,8 +215,7 @@ public class Map extends JFrame {
 					hall.setIcon(EWdoorImages.get(2));
 			} else if (doorScription.contains("cullis"))
 				hall.setIcon(EWdoorImages.get(3));
-			else if (doorScription.contains("Stone")
-					|| doorScription.contains("Iron"))
+			else if (doorScription.contains("Stone") || doorScription.contains("Iron"))
 				hall.setIcon(EWdoorImages.get(1));
 			else
 				hall.setIcon(EWdoorImages.get(0));
@@ -243,8 +227,7 @@ public class Map extends JFrame {
 		locked.setIcon(lock);
 		locked.setSize(imagesize);
 		locked.setLocation(modX, modY);
-		if (doorScription.contains("lock")
-				&& (!doorScription.contains("ecret") || showSecrets)) {
+		if (doorScription.contains("lock") && (!doorScription.contains("ecret") || showSecrets)) {
 			locked.setVisible(true);
 		} else
 			locked.setVisible(false);
@@ -273,8 +256,7 @@ public class Map extends JFrame {
 				} else if (i == 3) {
 					description.append("portcullis");
 				}
-				if (doorScription.contains("lock")
-						&& (!doorScription.contains("ecret") || showSecrets)) {
+				if (doorScription.contains("lock") && (!doorScription.contains("ecret") || showSecrets)) {
 					description.append("lock");
 				}
 				r.setDoor(direction, description.toString());
@@ -309,8 +291,7 @@ public class Map extends JFrame {
 				} else if (i == 3) {
 					description.append("portcullis");
 				}
-				if (doorScription.contains("lock")
-						&& (!doorScription.contains("ecret") || showSecrets)) {
+				if (doorScription.contains("lock") && (!doorScription.contains("ecret") || showSecrets)) {
 					description.append("lock");
 				}
 				r.setDoor(direction, description.toString());

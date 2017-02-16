@@ -1,5 +1,7 @@
 package dungen.ui;
 
+import java.util.Arrays;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -18,8 +20,9 @@ public class InfoPanel extends JFrame {
 	private static transient JLabel lbl1 = new JLabel();
 	private static transient JList<Integer> partyLevelList = new JList<>();
 	private static transient JList<String> dungeonSizes = new JList<>();
-
+	private static transient JList<String> dunType = new JList<>();
 	private static transient DefaultListModel<Integer> levels = new DefaultListModel<>();
+	private static transient DefaultListModel<String> roomTypes = new DefaultListModel<>();
 	private static transient DefaultListModel<Integer> sizes = new DefaultListModel<>();
 	private static transient DefaultListModel<String> dunSizes = new DefaultListModel<>();
 	private static transient JScrollPane scrollPane = null;
@@ -33,6 +36,10 @@ public class InfoPanel extends JFrame {
 		dunSizes.addElement("Larger");
 		dunSizes.addElement("Normal");
 		dunSizes.addElement("Smaller");
+
+		for (String s : Arrays.asList("Death Trap"))
+			roomTypes.addElement(s);
+
 	}
 
 	private static JCheckBox[] types = new JCheckBox[Tables.monsterTypes.length];
@@ -42,6 +49,11 @@ public class InfoPanel extends JFrame {
 	static JCheckBox spwnTraps = new JCheckBox("Spawn Traps?");
 	static JCheckBox spwnEncounters = new JCheckBox("Spawn Encounters?");
 	static JCheckBox spwnHazards = new JCheckBox("Spawn Hazards?");
+	static JCheckBox isDeathTrap = new JCheckBox("Is Death Trap?");
+
+	public static boolean isDeathTrap() {
+		return isDeathTrap.isSelected();
+	}
 
 	public static boolean getSpwnNpcs() {
 		return spwnNPCs.isSelected();
@@ -107,7 +119,7 @@ public class InfoPanel extends JFrame {
 	public InfoPanel() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(Controls.mapView.getX() + Controls.mapView.getWidth(), 50);
-		setSize(183, 580);
+		setSize(300, 580);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -119,8 +131,7 @@ public class InfoPanel extends JFrame {
 		partyLevelList.setSelectedIndex(0);
 		partyLevelList.setVisibleRowCount(1);
 		scrollPane = new JScrollPane(partyLevelList);
-		scrollPane
-				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(77, 4, 35, 20);
 		contentPane.add(scrollPane);
 		for (int i = 0; i < types.length; i++) {
@@ -129,6 +140,17 @@ public class InfoPanel extends JFrame {
 			types[i].setSelected(false);
 			contentPane.add(types[i]);
 		}
+		
+		dunType.setVisibleRowCount(1);
+		dunType.setModel(roomTypes);
+		dunType.setSelectedIndex(0);
+		dunType.setAutoscrolls(true);
+		JScrollPane sp4 = new JScrollPane(dunType);
+		sp4.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		sp4.getVerticalScrollBar().setValue(0);
+		sp4.setBounds(120, 415, 90, 20);
+		contentPane.add(sp4);
+		
 		JLabel lblInclude = new JLabel("Include: ");
 		lblInclude.setBounds(6, 25, 61, 16);
 		contentPane.add(lblInclude);
@@ -168,11 +190,11 @@ public class InfoPanel extends JFrame {
 		contentPane.add(sp3);
 
 		spwnNPCs.setSelected(true);
-		spwnNPCs.setBounds(6, 415, 171, 20);
+		spwnNPCs.setBounds(6, 415, 110, 20);
 		contentPane.add(spwnNPCs);
 
 		spwnTraps.setSelected(true);
-		spwnTraps.setBounds(6, 437, 171, 20);
+		spwnTraps.setBounds(6, 437, 100, 20);
 		contentPane.add(spwnTraps);
 
 		spwnEncounters.setSelected(true);
@@ -180,7 +202,7 @@ public class InfoPanel extends JFrame {
 		contentPane.add(spwnEncounters);
 
 		spwnHazards.setSelected(true);
-		spwnHazards.setBounds(6, 483, 171, 20);
+		spwnHazards.setBounds(6, 483, 100, 20);
 		contentPane.add(spwnHazards);
 	}
 }

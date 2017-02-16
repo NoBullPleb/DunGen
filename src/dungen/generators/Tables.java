@@ -15,40 +15,24 @@ import dungen.ui.InfoPanel;
 
 public class Tables {
 
-	private final static List<String> trapSeverity = ResourceLoader
-			.getTable("Trap Severity.txt");
-	private final static List<String> trapTriggers = ResourceLoader
-			.getTable("Trap Triggers.txt");
-	private final static List<String> trapDamage = ResourceLoader
-			.getTable("Trap Damage.txt");
-	private final static List<String> trapEffect = ResourceLoader
-			.getTable("Trap Effects.txt");
-	private final static List<String> hazards = ResourceLoader
-			.getTable("Hazards.txt");
-	private final static List<String> trickObjects = ResourceLoader
-			.getTable("Trick Objects.txt");
-	private final static List<String> trickEffects = ResourceLoader
-			.getTable("Trick Effects.txt");
-	private final static List<String> alignments = ResourceLoader
-			.getTable("Alignments.txt");
-	private final static List<String> classes = ResourceLoader
-			.getTable("Classes.txt");
-	private final static List<String> urbanChase = ResourceLoader
-			.getTable("Urban Chase.txt");
-	private final static List<String> wildernessChase = ResourceLoader
-			.getTable("Wilderness Chase.txt");
+	private final static List<String> trapSeverity = ResourceLoader.getTable("Trap Severity.txt");
+	private final static List<String> trapTriggers = ResourceLoader.getTable("Trap Triggers.txt");
+	private final static List<String> trapDamage = ResourceLoader.getTable("Trap Damage.txt");
+	private final static List<String> trapEffect = ResourceLoader.getTable("Trap Effects.txt");
+	private final static List<String> hazards = ResourceLoader.getTable("Hazards.txt");
+	private final static List<String> trickObjects = ResourceLoader.getTable("Trick Objects.txt");
+	private final static List<String> trickEffects = ResourceLoader.getTable("Trick Effects.txt");
+	private final static List<String> alignments = ResourceLoader.getTable("Alignments.txt");
+	private final static List<String> classes = ResourceLoader.getTable("Classes.txt");
+	private final static List<String> urbanChase = ResourceLoader.getTable("Urban Chase.txt");
+	private final static List<String> wildernessChase = ResourceLoader.getTable("Wilderness Chase.txt");
 
-	private final static List<String> shortTerm = ResourceLoader
-			.getTable("Short Mad.txt");
-	private final static List<String> longTerm = ResourceLoader
-			.getTable("Long Mad.txt");
-	private final static List<String> indefinite = ResourceLoader
-			.getTable("Indefinite Mad.txt");
+	private final static List<String> shortTerm = ResourceLoader.getTable("Short Mad.txt");
+	private final static List<String> longTerm = ResourceLoader.getTable("Long Mad.txt");
+	private final static List<String> indefinite = ResourceLoader.getTable("Indefinite Mad.txt");
 
-	private final static List<String> spellList = ResourceLoader
-			.getTable("Spells.txt");
-	private final static List<String> injuries = ResourceLoader
-			.getTable("Injuries.txt");
+	private final static List<String> spellList = ResourceLoader.getTable("Spells.txt");
+	private final static List<String> injuries = ResourceLoader.getTable("Injuries.txt");
 
 	public static String getInjury() {
 		return getResultFromTable(Dice.d20(), injuries);
@@ -56,25 +40,21 @@ public class Tables {
 
 	public static String getSpell(Integer Level, List<String> spellList) {
 		// get spells of a particular level (0 for cantrip)
-		return getResultFromTable(spellList.parallelStream()
-				.filter(e -> e.startsWith(Level.toString()))
-				.collect(Collectors.toList()));
+		return getResultFromTable(
+				spellList.parallelStream().filter(e -> e.startsWith(Level.toString())).collect(Collectors.toList()));
 	}
 
 	public static String getSpell(Integer Level) {
 		// get spells of a particular level (0 for cantrip)
-		return getResultFromTable(spellList.parallelStream()
-				.filter(e -> e.startsWith(Level.toString()))
-				.collect(Collectors.toList()));
+		return getResultFromTable(
+				spellList.parallelStream().filter(e -> e.startsWith(Level.toString())).collect(Collectors.toList()));
 	}
 
-	private final static List<String> poisons = ResourceLoader
-			.getTable("Poisons.txt");
+	private final static List<String> poisons = ResourceLoader.getTable("Poisons.txt");
 
 	public static String getPoison(String x) {
 		String poison = getResultFromTable(poisons.parallelStream()
-				.filter(e -> e.toLowerCase().contains(x.toLowerCase()))
-				.collect(Collectors.toList()));
+				.filter(e -> e.toLowerCase().contains(x.toLowerCase())).collect(Collectors.toList()));
 		return poison;
 	}
 
@@ -101,16 +81,12 @@ public class Tables {
 			index = 1;
 		else if (severity.contains("Deadly"))
 			index = 2;
-		return getResultFromTable(InfoPanel.getPartyLevel(), trapDamage).split(
-				",")[index];
+		return getResultFromTable(InfoPanel.getPartyLevel(), trapDamage).split(",")[index];
 	}
 
-	private final static List<String> npcInteractive = ResourceLoader
-			.getTable("NPC Interactive Trait.txt");
-	private final static List<String> npcSpecialty = ResourceLoader
-			.getTable("NPC Specialty.txt");
-	private final static List<String> npcQuirks = ResourceLoader
-			.getTable("NPC quirks.txt");
+	private final static List<String> npcInteractive = ResourceLoader.getTable("NPC Interactive Trait.txt");
+	private final static List<String> npcSpecialty = ResourceLoader.getTable("NPC Specialty.txt");
+	private final static List<String> npcQuirks = ResourceLoader.getTable("NPC quirks.txt");
 
 	public static String getInteractiveTrait() {
 		return getResultFromTable(Dice.roll(12), npcInteractive);
@@ -120,8 +96,7 @@ public class Tables {
 		return getResultFromTable(Dice.d20(), npcQuirks);
 	}
 
-	private final static List<String> insults = ResourceLoader
-			.getTable("Trash Talk.txt");
+	private final static List<String> insults = ResourceLoader.getTable("Trash Talk.txt");
 
 	public static String getInsult() {
 		return getResultFromTable(insults);
@@ -163,33 +138,20 @@ public class Tables {
 		return ideals.toString();
 	}
 
-	private final static List<String> chaoticIdeal = ResourceLoader
-			.getTable("Chaos Ideal.txt");
-	private final static List<String> evilIdeal = ResourceLoader
-			.getTable("Evil Ideal.txt");
-	private final static List<String> goodIdeal = ResourceLoader
-			.getTable("Good Ideal.txt");
-	private final static List<String> lawfulIdeal = ResourceLoader
-			.getTable("Law Ideal.txt");
-	private final static List<String> neutral1Ideal = ResourceLoader
-			.getTable("Neutral 1 Ideal.txt");
-	private final static List<String> neutral2Ideal = ResourceLoader
-			.getTable("Neutral 2 Ideal.txt");
+	private final static List<String> chaoticIdeal = ResourceLoader.getTable("Chaos Ideal.txt");
+	private final static List<String> evilIdeal = ResourceLoader.getTable("Evil Ideal.txt");
+	private final static List<String> goodIdeal = ResourceLoader.getTable("Good Ideal.txt");
+	private final static List<String> lawfulIdeal = ResourceLoader.getTable("Law Ideal.txt");
+	private final static List<String> neutral1Ideal = ResourceLoader.getTable("Neutral 1 Ideal.txt");
+	private final static List<String> neutral2Ideal = ResourceLoader.getTable("Neutral 2 Ideal.txt");
 
 	public static String getResultFromTable(int result, List<String> table) {
 		final StringBuilder items = new StringBuilder();
 		try {
-			table.parallelStream()
-					.map(e -> e.split(","))
-					.filter(e -> e.length > 1)
-					.filter(e -> {
-						Integer max = new Integer(e[0].trim());
-						return result <= max;
-					})
-					.findFirst()
-					.ifPresent(
-							e -> items.append(String.join(",", e).substring(
-									e[0].length() + 1)));
+			table.parallelStream().map(e -> e.split(",")).filter(e -> e.length > 1).filter(e -> {
+				Integer max = new Integer(e[0].trim());
+				return result <= max;
+			}).findFirst().ifPresent(e -> items.append(String.join(",", e).substring(e[0].length() + 1)));
 			return items.toString().trim();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -199,8 +161,8 @@ public class Tables {
 	}
 
 	public static String getTrap() {
-		return "Severity: " + getTrapSeverity() + "\nTrigger: "
-				+ getTrapTrigger() + "\nDescription: " + getTrapEffect();
+		return "Severity: " + getTrapSeverity() + "\nTrigger: " + getTrapTrigger() + "\nDescription: "
+				+ getTrapEffect();
 	}
 
 	public static String getHazard() {
@@ -214,25 +176,22 @@ public class Tables {
 	private static int challenge = 60; // this will be used to slowly increase
 										// difficulty.
 
-	public static String getEvent() {
+	public static String getEvents() {
 		String event = "";
 		int result = Dice.roll(challenge); // roll for type of encounter
+		
 		if (result > 95) {
 			if (InfoPanel.getSpwnEncounters())
-				event = "Deadly Encounter: "
-						+ getEncounter(deadlyTable[InfoPanel.getPartySize()]);
+				event = "Deadly Encounter: " + getEncounter(deadlyTable[InfoPanel.getPartySize()]);
 		} else if (result > 80) {
 			if (InfoPanel.getSpwnEncounters())
-				event = "Hard Encounter: "
-						+ getEncounter(hardTable[InfoPanel.getPartySize()]);
+				event = "Hard Encounter: " + getEncounter(hardTable[InfoPanel.getPartySize()]);
 		} else if (result >= 60) {
 			if (InfoPanel.getSpwnEncounters())
-				event = "Medium Encounter: "
-						+ getEncounter(mediumTable[InfoPanel.getPartySize()]);
+				event = "Medium Encounter: " + getEncounter(mediumTable[InfoPanel.getPartySize()]);
 		} else if (result >= 50) {
 			if (InfoPanel.getSpwnEncounters())
-				event = "Easy Encounter: "
-						+ getEncounter(easyTable[InfoPanel.getPartySize()]);
+				event = "Easy Encounter: " + getEncounter(easyTable[InfoPanel.getPartySize()]);
 		} else if (result >= 38) {
 			if (InfoPanel.getSpwnHazards())
 				event = "Hazard!\n" + getHazard();
@@ -248,8 +207,7 @@ public class Tables {
 	}
 
 	public static String getTrick() {
-		return getResultFromTable(Dice.d20(), trickObjects) + "\n"
-				+ getResultFromTable(Dice.d100(), trickEffects);
+		return getResultFromTable(Dice.d20(), trickObjects) + "\n" + getResultFromTable(Dice.d100(), trickEffects);
 	}
 
 	public static String[][][] easyTable = new String[InfoPanel.maxPartySize + 1][][],
@@ -277,8 +235,7 @@ public class Tables {
 		return null;
 	}
 
-	private static String[] CRs = ",0,1/8,1/4,1/2,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20"
-			.split(",");
+	private static String[] CRs = ",0,1/8,1/4,1/2,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20".split(",");
 	public static String[] monsterTypes = "Beast,Plant,Undead,Construct,Fiend,Aberration,Humanoid,Fey,Elemental,Dragon,Monstrosity,Ooze,Giant,Celestial"
 			.split(",");
 	private static HashMap<String, Integer> indexes = new HashMap<String, Integer>();
@@ -294,16 +251,13 @@ public class Tables {
 			return Double.parseDouble(CR);
 		} else {
 			String[] params = CR.split("/");
-			return Double.parseDouble(params[0])
-					/ Double.parseDouble(params[1]);
+			return Double.parseDouble(params[0]) / Double.parseDouble(params[1]);
 		}
 	}
 
 	private static boolean isHardOrDeadlyEncounter(String[][] table) {
-		return Arrays.stream(hardTable).parallel()
-				.anyMatch(e -> table.equals(e))
-				|| Arrays.stream(deadlyTable).parallel()
-						.anyMatch(e -> table.equals(e));
+		return Arrays.stream(hardTable).parallel().anyMatch(e -> table.equals(e))
+				|| Arrays.stream(deadlyTable).parallel().anyMatch(e -> table.equals(e));
 	}
 
 	public static String getEncounter(String[][] table) {
@@ -325,27 +279,21 @@ public class Tables {
 				encounter.append("\nHoard: " + Hoard.getHoard(treasureCR));
 			}
 			encounter.append("\nPossible Monsters:");
-			mobs = Arrays.stream(monsters).parallel().unordered()
-					.map(e -> new Monster(e))
+			mobs = Arrays.stream(monsters).parallel().unordered().map(e -> new Monster(e))
 					// grab only the appropriate CR
 					.filter(e -> e.CR.equals(CRs[result]))
 					// and only those matching the type
-					.filter(e -> InfoPanel.getTruth(indexes.get(e.type)))
-					.collect(Collectors.toList());
+					.filter(e -> InfoPanel.getTruth(indexes.get(e.type))).collect(Collectors.toList());
 			for (Monster m : mobs)
-				encounter.append("\n" + m.name + " XP: " + m.XPvalue
-						+ " Book: " + m.source);
+				encounter.append("\n" + m.name + " XP: " + m.XPvalue + " Book: " + m.source);
 			attempts++;
 		}
 		return encounter.toString();
 	}
 
-	private final static List<String> scrollMishaps = ResourceLoader
-			.getTable("ScrollMishaps.txt");
-	private final static List<String> potionMishaps = ResourceLoader
-			.getTable("Potion Mishaps.txt");
-	private final static List<String> meleeMishaps = ResourceLoader
-			.getTable("Melee Mishaps.txt");
+	private final static List<String> scrollMishaps = ResourceLoader.getTable("ScrollMishaps.txt");
+	private final static List<String> potionMishaps = ResourceLoader.getTable("Potion Mishaps.txt");
+	private final static List<String> meleeMishaps = ResourceLoader.getTable("Melee Mishaps.txt");
 
 	public static String scrollMishap() {
 		return getResultFromTable(Dice.d6(), scrollMishaps);
@@ -371,21 +319,16 @@ public class Tables {
 			return 3;
 	}
 
-	private final static List<String> itemCommunication = ResourceLoader
-			.getTable("Item Communication.txt");
-	private final static List<String> itemSenses = ResourceLoader
-			.getTable("Item Senses.txt");
-	private final static List<String> itemAlign = ResourceLoader
-			.getTable("Item Alignment.txt");
-	private final static List<String> itemPurpose = ResourceLoader
-			.getTable("Item Purpose.txt");
+	private final static List<String> itemCommunication = ResourceLoader.getTable("Item Communication.txt");
+	private final static List<String> itemSenses = ResourceLoader.getTable("Item Senses.txt");
+	private final static List<String> itemAlign = ResourceLoader.getTable("Item Alignment.txt");
+	private final static List<String> itemPurpose = ResourceLoader.getTable("Item Purpose.txt");
 
 	public static String getSentientItem(String item) {
 		item = "_Sentient " + item + "_";
 		item += "\nAlignment: " + getResultFromTable(Dice.d100(), itemAlign);
 		item += "\nPurpose: " + getResultFromTable(Dice.roll(10), itemPurpose);
-		item += "\nCommunication: "
-				+ getResultFromTable(Dice.d100(), itemCommunication);
+		item += "\nCommunication: " + getResultFromTable(Dice.d100(), itemCommunication);
 		item += "\nSenses: " + getResultFromTable(Dice.d4(), itemSenses);
 		item += "\nInt: " + Dice.statroll();
 		item += "\nWis: " + Dice.statroll();
@@ -398,16 +341,27 @@ public class Tables {
 		return getResultFromTable(Dice.d20(), wildernessChase);
 	}
 
+	private final static List<String> deathTrap = ResourceLoader.getTable("DeathTrap.txt");
+
+	public static String getDeathTrap() {
+		return getResultFromTable(Dice.d20(), deathTrap);
+	}
+
 	public static String getMadness(int i) {
 		if (i == 1)
-			return "For " + Dice.roll(10) * 10 + " hours:\n"
-					+ getResultFromTable(Dice.d100(), longTerm);
+			return "For " + Dice.roll(10) * 10 + " hours:\n" + getResultFromTable(Dice.d100(), longTerm);
 		else if (i == 2)
-			return "Lasts until cured:\n"
-					+ getResultFromTable(Dice.d100(), indefinite);
+			return "Lasts until cured:\n" + getResultFromTable(Dice.d100(), indefinite);
 		else
-			return "For " + Dice.roll(10) + " minutes:\n"
-					+ getResultFromTable(Dice.d100(), shortTerm);
+			return "For " + Dice.roll(10) + " minutes:\n" + getResultFromTable(Dice.d100(), shortTerm);
+	}
+
+	public static String getDescription() {
+		String result = "";
+		if (InfoPanel.isDeathTrap())
+			result= getResultFromTable(deathTrap);
+
+		return "**"+result.substring(result.indexOf(",")+1)+"**";
 	}
 
 }

@@ -151,7 +151,7 @@ public class InfoPanel extends JFrame {
 		JScrollPane sp4 = new JScrollPane(dunType);
 		sp4.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp4.getVerticalScrollBar().setValue(0);
-		sp4.setBounds(150, 415, 130, 100);
+		sp4.setBounds(160, 415, 130, 100);
 		contentPane.add(sp4);
 
 		JLabel lblInclude = new JLabel("Include: ");

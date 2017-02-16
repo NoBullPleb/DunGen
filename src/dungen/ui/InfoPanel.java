@@ -29,9 +29,8 @@ public class InfoPanel extends JFrame {
 	private static transient JScrollPane scrollPane = null;
 	private static transient JList<Integer> sizeList = new JList<>();
 	public static int maxPartySize = 6;
-	public static List<String> RoomTypes = Arrays.asList("Death Trap", "Lair", 
-			"Maze", "Mine", "Planar Gate", "Stronghold", "Temple or Shrine",
-			"Tomb", "Treasure Vault", "General Dungeon");
+	public static List<String> RoomTypes = Arrays.asList("Death Trap", "Lair", "Maze", "Mine", "Planar Gate",
+			"Stronghold", "Temple or Shrine", "Tomb", "Treasure Vault", "General Dungeon");
 	static {
 		for (int i = 1; i < 21; i++)
 			levels.addElement(i);

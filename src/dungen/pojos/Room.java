@@ -21,12 +21,10 @@ public class Room implements Serializable {
 	public boolean drawn = false;
 	public String details = "";
 	public boolean hasNPCs = InfoPanel.getSpwnNpcs() && Dice.d100() > 98;
-	private static List<String> doorTypes = ResourceLoader
-			.getTable("Door Type.txt");
+	private static List<String> doorTypes = ResourceLoader.getTable("Door Type.txt");
 	private HashMap<String, String> doors = new HashMap<String, String>();
 
-	public Room northRoom = null, southRoom = null, westRoom = null,
-			eastRoom = null;
+	public Room northRoom = null, southRoom = null, westRoom = null, eastRoom = null;
 
 	private String maybeDoor() {
 		if (Dice.d100() > 100 - neverTellMeTheOdds)
@@ -57,10 +55,9 @@ public class Room implements Serializable {
 
 	public Room() {
 		numRooms++;
-		details += Tables.getDescription() +"\n";
+		details += Tables.getDescription() + "\n";
 		if (roomNumber > 1) {
 			// If it has NPCs, generate the party. 1-3 adventurers.
-			
 			if (hasNPCs) {
 				String npcClass = Tables.getNpcClass();
 				NPC n = null;

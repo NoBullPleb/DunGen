@@ -24,8 +24,7 @@ public final class DunGenLauncher {
 	private static final JFrame jd = new JFrame();;
 	private static final JButton updater = new JButton();
 	private static final JFileChooser fileChooser = new JFileChooser();
-	private static final JLabel waitMessage = new JLabel(
-			"Please wait while it finishes");
+	private static final JLabel waitMessage = new JLabel("Please wait while it finishes");
 	// version members
 	private static String currentVersion;
 	private static final String version = currentVersion = Controls.version;
@@ -83,8 +82,7 @@ public final class DunGenLauncher {
 			download(file + "/DunGen v" + currentVersion + ".jar");
 			jd.setTitle("Complete!");
 			jd.remove(waitMessage);
-			jd.add(new JLabel("Your download is complete. Please run that jar."),
-					BorderLayout.CENTER);
+			jd.add(new JLabel("Your download is complete. Please run that jar."), BorderLayout.CENTER);
 			jd.revalidate();
 			jd.repaint();
 		} catch (Exception err) {
@@ -100,20 +98,15 @@ public final class DunGenLauncher {
 	}
 
 	private final static void download(String target) throws IOException {
-		Files.copy(
-				new URL(
-						"https://dl.dropboxusercontent.com/u/11902673/DunGen%20Launcher.jar")
-						.openStream(), Paths.get(target),
-				StandardCopyOption.REPLACE_EXISTING);
+		Files.copy(new URL("https://dl.dropboxusercontent.com/u/11902673/DunGen%20Launcher.jar").openStream(),
+				Paths.get(target), StandardCopyOption.REPLACE_EXISTING);
 
 	}
 
 	private final static String getCurrentVersion() throws IOException {
 		String subversion = "-1";
-		URL oracle = new URL(
-				"https://dl.dropboxusercontent.com/u/11902673/DunGenversion.txt");
-		BufferedReader in = new BufferedReader(new InputStreamReader(
-				oracle.openStream()));
+		URL oracle = new URL("https://dl.dropboxusercontent.com/u/11902673/DunGenversion.txt");
+		BufferedReader in = new BufferedReader(new InputStreamReader(oracle.openStream()));
 		subversion = (in.readLine()).trim();
 		in.close();
 		return subversion;

@@ -112,6 +112,12 @@ public class Tables {
 
 	// gets a random result with even odds distribution.
 	private static String getResultFromTable(List<String> table) {
+		String max = table.get(table.size()-1);
+		try {
+			Integer maxValue = Integer.parseInt(max.split(",")[0]);
+			return getResultFromTable(Dice.roll(maxValue) - 1, table);
+		} catch (Exception e){}
+		
 		return table.get(Dice.roll(table.size()) - 1);
 	}
 

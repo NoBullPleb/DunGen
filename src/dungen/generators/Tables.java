@@ -112,12 +112,13 @@ public class Tables {
 
 	// gets a random result with even odds distribution.
 	private static String getResultFromTable(List<String> table) {
-		String max = table.get(table.size()-1);
+		String max = table.get(table.size() - 1);
 		try {
 			Integer maxValue = Integer.parseInt(max.split(",")[0]);
 			return getResultFromTable(Dice.roll(maxValue) - 1, table);
-		} catch (Exception e){}
-		
+		} catch (Exception e) {
+		}
+
 		return table.get(Dice.roll(table.size()) - 1);
 	}
 
@@ -182,33 +183,35 @@ public class Tables {
 	private static int challenge = 60; // this will be used to slowly increase
 										// difficulty.
 
-	public static String getEvents() {
+	public static String getEvents(String desc) {
 		String event = "";
-		int result = Dice.roll(challenge); // roll for type of encounter
+		desc = desc.toLowerCase();
 
-		if (result > 95) {
-			if (InfoPanel.getSpwnEncounters())
-				event = "Deadly Encounter: " + getEncounter(deadlyTable[InfoPanel.getPartySize()]);
-		} else if (result > 80) {
-			if (InfoPanel.getSpwnEncounters())
-				event = "Hard Encounter: " + getEncounter(hardTable[InfoPanel.getPartySize()]);
-		} else if (result >= 60) {
-			if (InfoPanel.getSpwnEncounters())
-				event = "Medium Encounter: " + getEncounter(mediumTable[InfoPanel.getPartySize()]);
-		} else if (result >= 50) {
-			if (InfoPanel.getSpwnEncounters())
-				event = "Easy Encounter: " + getEncounter(easyTable[InfoPanel.getPartySize()]);
-		} else if (result >= 38) {
-			if (InfoPanel.getSpwnHazards())
-				event = "Hazard!\n" + getHazard();
-		} else if (result >= 26) {
-			if (InfoPanel.getSpwnTraps())
-				event = "Trap!\n" + getTrap();
+		if (desc.contains("trap")) {
+			event += "__TRAP__\n" + getTrap() + "\n";
+		}
+		if (desc.contains("monster") || desc.contains("encounter") || desc.contains("beasts")) {
+			event += "__Monster__\n" + getEncounter(mediumTable[InfoPanel.getPartySize()]) + "\n";
+		}
+
+		int result = Dice.roll(challenge); // roll for additional event
+		if (result > 95 && InfoPanel.getSpwnEncounters()) {
+			event = "Deadly Encounter: " + getEncounter(deadlyTable[InfoPanel.getPartySize()]);
+		} else if (result > 80 && InfoPanel.getSpwnEncounters()) {
+			event = "Hard Encounter: " + getEncounter(hardTable[InfoPanel.getPartySize()]);
+		} else if (result >= 60 && InfoPanel.getSpwnEncounters()) {
+			event = "Medium Encounter: " + getEncounter(mediumTable[InfoPanel.getPartySize()]);
+		} else if (result >= 50 && InfoPanel.getSpwnEncounters()) {
+			event = "Easy Encounter: " + getEncounter(easyTable[InfoPanel.getPartySize()]);
+		} else if (result >= 38 && InfoPanel.getSpwnHazards()) {
+			event = "Hazard!\n" + getHazard();
+		} else if (result >= 26 && InfoPanel.getSpwnTraps()) {
+			event = "Trap!\n" + getTrap();
 		} else if (result >= 20) {
 			event = "Trick!\n" + getTrick();
 		}
 		if (challenge < 100) // caps challenge to avoid spamming deadlies
-			challenge += 5;
+			challenge += 3;
 		return event;
 	}
 
@@ -284,12 +287,14 @@ public class Tables {
 			if (isHardOrDeadlyEncounter(table)) {
 				encounter.append("\nHoard: " + Hoard.getHoard(treasureCR));
 			}
-			encounter.append("\nPossible Monsters:");
+
 			mobs = Arrays.stream(monsters).parallel().unordered().map(e -> new Monster(e))
 					// grab only the appropriate CR
 					.filter(e -> e.CR.equals(CRs[result]))
 					// and only those matching the type
 					.filter(e -> InfoPanel.getTruth(indexes.get(e.type))).collect(Collectors.toList());
+			if (mobs.size() > 0)
+				encounter.append("\nPossible Monsters:");
 			for (Monster m : mobs)
 				encounter.append("\n" + m.name + " XP: " + m.XPvalue + " Book: " + m.source);
 			attempts++;
@@ -349,11 +354,11 @@ public class Tables {
 
 	private final static HashMap<String, List<String>> roomTypes = new HashMap<>();
 	static {
-		for (String s : InfoPanel.RoomTypes){
-			roomTypes.put(s, ResourceLoader.getTable(s+".txt"));
+		for (String s : InfoPanel.RoomTypes) {
+			roomTypes.put(s, ResourceLoader.getTable(s + ".txt"));
 		}
 	}
-	
+
 	public static String getMadness(int i) {
 		if (i == 1)
 			return "For " + Dice.roll(10) * 10 + " hours:\n" + getResultFromTable(Dice.d100(), longTerm);
@@ -365,9 +370,9 @@ public class Tables {
 
 	public static String getDescription() {
 		String result = "", DunType = InfoPanel.getRoomType();
-		if (DunType!=null) {
+		if (DunType != null) {
 			result = getResultFromTable(roomTypes.get(DunType));
-		} else 
+		} else
 			return "";
 		return "**" + result.substring(result.indexOf(",") + 1) + "**\n";
 	}

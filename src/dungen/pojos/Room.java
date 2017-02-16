@@ -72,7 +72,7 @@ public class Room implements Serializable {
 					n = new NPC(npcClass);
 				details += n.toString() + "\n";
 			}
-			details += Tables.getEvents();
+			details += Tables.getEvents(details);
 		} else
 			details = "This is the room where it all began... ";
 		neverTellMeTheOdds -= 2 * InfoPanel.dungeonSize();

@@ -55,8 +55,10 @@ public class Room implements Serializable {
 
 	public Room() {
 		numRooms++;
-		details += Tables.getDescription() + "\n";
+		details += getSize() + "\n";
 		if (roomNumber > 1) {
+
+			details += Tables.getDescription() + "\n";
 			// If it has NPCs, generate the party. 1-3 adventurers.
 			if (hasNPCs) {
 				String npcClass = Tables.getNpcClass();
@@ -71,7 +73,7 @@ public class Room implements Serializable {
 			}
 			details += Tables.getEvents(details);
 		} else
-			details = "This is the room where it all began... ";
+			details += "This is the room where it all began... ";
 		neverTellMeTheOdds -= 2 * InfoPanel.dungeonSize();
 		doors.put("north", maybeDoor());
 		doors.put("west", maybeDoor());
@@ -82,4 +84,11 @@ public class Room implements Serializable {
 	public boolean hasDoor(String string) {
 		return !doors.getOrDefault(string, "").isEmpty();
 	}
+
+	static final List<String> sizes = ResourceLoader.getTable("Room Size.txt");
+
+	private String getSize() {
+		return Tables.getResultFromTable(sizes);
+	}
+
 }
